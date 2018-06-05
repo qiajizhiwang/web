@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<Configuration status="WARN">  
+    <Appenders>  
+        <Console name="Console" target="SYSTEM_OUT" follow="true">  
+            <PatternLayout>  
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>  
+            </PatternLayout>  
+        </Console>  
+        <File name="File" fileName="/data/god/logs/god.log">  
+            <PatternLayout>  
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>  
+            </PatternLayout>  
+        </File>  
+    </Appenders>  
+    <Loggers>  
+        <Logger name="cn.gocheck.god.mapper" level="TRACE" />  
+        <Root level="info">  
+            <AppenderRef ref="Console" />  
+            <AppenderRef ref="File" />  
+        </Root>  
+    </Loggers>  
+</Configuration>  
