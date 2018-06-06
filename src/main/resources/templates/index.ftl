@@ -21,32 +21,65 @@
     
 </head>
 
-<h2>Basic Layout</h2>
-	<p>The layout contains north,south,west,east and center regions.</p>
-	<div style="margin:20px 0;"></div>
-	<div class="easyui-layout" style="width:700px;height:350px;">
-		<div data-options="region:'north'" style="height:50px"></div>
-		<div data-options="region:'south',split:true" style="height:50px;"></div>
-		<div data-options="region:'east',split:true" title="East" style="width:100px;"></div>
-		<div data-options="region:'west',split:true" title="West" style="width:100px;"></div>
-		<div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
-			<table class="easyui-datagrid"
-					data-options="url:'datagrid_data1.json',method:'get',border:false,singleSelect:true,fit:true,fitColumns:true">
-				<thead>
-					<tr>
-						<th data-options="field:'itemid'" width="80">Item ID</th>
-						<th data-options="field:'productid'" width="100">Product ID</th>
-						<th data-options="field:'listprice',align:'right'" width="80">List Price</th>
-						<th data-options="field:'unitcost',align:'right'" width="80">Unit Cost</th>
-						<th data-options="field:'attr1'" width="150">Attribute</th>
-						<th data-options="field:'status',align:'center'" width="60">Status</th>
-					</tr>
-				</thead>
-			</table>
-		</div>
+<body>
+<div class="easyui-layout" >
+      <div id="north" region="north"  style="height:5%">
+      </div>
+	<div region="west" split="true" title="菜单" style="width:15%">
+	<!--	<ul>
+			<li><a  onclick="addTab('baidu','http://www.baidu.com')">baidu</a></li>
+		</ul> -->
+		<ul id="tt" class="easyui-tree"
+			url="data.json" method='get'>
+	</ul>
 	</div>
+	<div id="content" region="center"  >
+	<div class="easyui-tabs" style="height:100%"></div>
+	</div>
+	 <div id="south" region="south"  style="height:5%">
+</div>
 
 
 </body>
-
+<script type="text/javascript">  
+    $(document).ready(function(){  
+        var height1 = $(window).height()-20;  
+        $(".easyui-layout").attr("style","width:100%;height:"+height1+"px");  
+        $(".easyui-layout").layout("resize",{  
+            width:"100%",  
+            height:height1+"px"  
+        });  
+        
+        
+        $('#tt').tree({
+			onClick: function(node){
+	 var url=node.attributes.url;
+	 addTab(node.text,url)
+	}
+});
+    });  
+      
+      
+    $(window).resize(function(){  
+        var height1 = $(window).height()-30;  
+        $(".easyui-layout").attr("style","width:100%;height:"+height1+"px");  
+        $(".easyui-layout").layout("resize",{  
+            width:"100%",  
+            height:height1+"px"  
+        });  
+    });   
+    
+    function addTab(title, url){
+	if ($('.easyui-tabs').tabs('exists', title)){
+		$('.easyui-tabs').tabs('select', title);
+	} else {
+		var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+		$('.easyui-tabs').tabs('add',{
+			title:title,
+			content:content,
+			closable:true
+		});
+	}
+}
+</script>  
 </html>

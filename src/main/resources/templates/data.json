@@ -1,0 +1,18 @@
+[{
+		"id":1,
+		"text":"系统设置",
+		"children":[{
+			"id":11,
+			"text":"用户管理",
+			"attributes":{"url":"http://www.baidu.com"}
+		},{
+			"id":12,
+			"text":"菜单管理",
+			"attributes":{"url":"http://www.baidu.com"}
+		}]
+	},{
+		"id":2,
+		"text":"学校管理"
+		}
+	]
+
