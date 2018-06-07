@@ -50,6 +50,11 @@
 			<artifactId>druid</artifactId>
 			<version>1.0.11</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+			<version>4.1.4</version>
+		</dependency>
 	</dependencies>
 
 	<!-- 设定主仓库，按设定顺序进行查找。 -->

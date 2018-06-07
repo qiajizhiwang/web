@@ -4,7 +4,7 @@
 		"children":[{
 			"id":11,
 			"text":"用户管理",
-			"attributes":{"url":"http://www.baidu.com"}
+			"attributes":{"url":"/system/user"}
 		},{
 			"id":12,
 			"text":"菜单管理",
