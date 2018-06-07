@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-	<classPathEntry
-		location="C:\Users\win\.m2\repository\mysql\mysql-connector-java\5.1.45\mysql-connector-java-5.1.45.jar" />
+<!-- 	<classPathEntry -->
+<!-- 		location="C:\Users\win\.m2\repository\mysql\mysql-connector-java\5.1.45\mysql-connector-java-5.1.45.jar" /> -->
 
+	<classPathEntry
+		location="D:\maven\mvnRespo\mysql\mysql-connector-java\5.1.31/mysql-connector-java-5.1.31.jar" />
+		
 	<context id="context1">
 
 		<commentGenerator>
@@ -15,18 +18,29 @@
 		<jdbcConnection
 			connectionURL="jdbc:mysql://rm-m5e2p875dww1c6f30o.mysql.rds.aliyuncs.com:3306/wisdom_classroom?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnectForPools=true"
 			driverClass="com.mysql.jdbc.Driver" password="tongyuan2512#" userId="gocheck_root" />
-		<javaModelGenerator targetPackage="com.classroom.common.model"
+		<javaModelGenerator targetPackage="com.xiangxing.model"
 			targetProject="src/main/java" />
-		<sqlMapGenerator targetPackage="com.classroom.common.mapper"
+		<sqlMapGenerator targetPackage="com.xiangxing.mapper"
 			targetProject="src/main/java" />
-		<javaClientGenerator targetPackage="com.classroom.common.mapper"
+		<javaClientGenerator targetPackage="com.xiangxing.mapper"
 			targetProject="src/main/java"
 			type="XMLMAPPER" />
 
-		<table tableName="t_crm_wxuser" domainObjectName="Wxuser"></table>
-		<table tableName="t_education_clazz" domainObjectName="Clazz"></table>
-		<table tableName="t_education_course" domainObjectName="Course"></table>
-		<table tableName="t_crm_user" domainObjectName="User"></table>
+		<table tableName="aaa" domainObjectName="aaa"></table>
+<!-- 		<table tableName="sys_menu" domainObjectName="SysMenu"></table> -->
+<!-- 		<table tableName="sys_user" domainObjectName="SysUser"></table> -->
+<!-- 		<table tableName="t_advertising" domainObjectName="Advertising"></table> -->
+<!-- 		<table tableName="t_course" domainObjectName="Course"></table> -->
+<!-- 		<table tableName="t_entry_form" domainObjectName="Entry_form"></table> -->
+<!-- 		<table tableName="t_exam" domainObjectName="Exam"></table> -->
+<!-- 		<table tableName="t_message" domainObjectName="Message"></table> -->
+<!-- 		<table tableName="t_order" domainObjectName="Order"></table> -->
+<!-- 		<table tableName="t_product" domainObjectName="Product"></table> -->
+<!-- 		<table tableName="t_school" domainObjectName="School"></table> -->
+<!-- 		<table tableName="t_student" domainObjectName="Student"></table> -->
+<!-- 		<table tableName="t_student_course" domainObjectName="Student_course"></table> -->
+<!-- 		<table tableName="t_subject" domainObjectName="Subject"></table> -->
+<!-- 		<table tableName="t_teacher" domainObjectName="Teacher"></table> -->
 
 	</context>
 </generatorConfiguration>
