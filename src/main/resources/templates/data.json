@@ -1,18 +1,137 @@
-[{
-		"id":1,
-		"text":"系统设置",
-		"children":[{
-			"id":11,
-			"text":"用户管理",
-			"attributes":{"url":"/system/user"}
-		},{
-			"id":12,
-			"text":"菜单管理",
-			"attributes":{"url":"http://www.baidu.com"}
-		}]
-	},{
-		"id":2,
-		"text":"学校管理"
-		}
-	]
-
+[
+	{
+		"id": 1,
+		"text": "系统设置",
+		"children": [
+			{
+				"id": 11,
+				"text": "用户管理",
+				"attributes": {
+					"url": "/system/user"
+				}
+			},
+			{
+				"id": 12,
+				"text": "菜单管理",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			}
+		]
+	},
+	{
+		"id": 2,
+		"text": "学校管理",
+		"children": [
+			{
+				"id": 21,
+				"text": "学校管理",
+				"attributes": {
+					"url": "/school/school"
+				}
+			},
+			{
+				"id": 22,
+				"text": "教师管理",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			},
+			{
+				"id": 23,
+				"text": "课程管理",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			},
+			{
+				"id": 24,
+				"text": "广告管理",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			},
+			{
+				"id": 25,
+				"text": "消息管理",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			},
+			{
+				"id": 26,
+				"text": "消息类别管理",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			}
+		]
+	},
+	{
+		"id": 3,
+		"text": "学生管理",
+		"children": [
+			{
+				"id": 31,
+				"text": "学生审核",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			},
+			{
+				"id": 32,
+				"text": "学生管理",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			},
+			{
+				"id": 33,
+				"text": "学生注册",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			}
+		]
+	},
+	{
+		"id": 4,
+		"text": "作品管理",
+		"children": [
+			{
+				"id": 41,
+				"text": "上传作品",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			},
+			{
+				"id": 42,
+				"text": "作品管理",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			}
+		]
+	},
+	{
+		"id": 5,
+		"text": "考试管理",
+		"children": [
+			{
+				"id": 51,
+				"text": "科目维护",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			},
+			{
+				"id": 52,
+				"text": "考试信息维护",
+				"attributes": {
+					"url": "http://www.baidu.com"
+				}
+			}
+		]
+	}
+]
