@@ -37,6 +37,12 @@ public abstract class BaseController {
 		jsonObject.put("code", CodeEnum.CODE_10000.getMsg());
 		writeToResponse(jsonObject, response);
 	}
+	
+	public void writeToOkResponse() {
+		JSONObject jsonObject=new JSONObject();
+		jsonObject.put("code", CodeEnum.CODE_10000.getMsg());
+		writeToResponse(jsonObject, response);
+	}
 
 	public void writeToErrorResponse(JSONObject jsonObject) {
 		jsonObject.put("code", CodeEnum.CODE_20000.getMsg());
