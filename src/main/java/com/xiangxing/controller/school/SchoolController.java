@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.BaseController;
@@ -17,8 +16,6 @@ import com.xiangxing.controller.PageResponse;
 import com.xiangxing.mapper.SchoolMapper;
 import com.xiangxing.model.School;
 import com.xiangxing.model.SchoolExample;
-import com.xiangxing.model.SysUser;
-import com.xiangxing.model.SysUserExample;
 
 @Controller
 @RequestMapping("/school")
@@ -28,7 +25,7 @@ public class SchoolController extends BaseController {
 	private SchoolMapper schoolMapper;
 
 	@RequestMapping("/school")
-	public String user() {
+	public String school() {
 		return "school/school";
 	}
 
