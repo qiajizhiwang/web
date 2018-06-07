@@ -12,7 +12,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="renderer" content="webkit">
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <link href="css/easyui.css" rel="stylesheet" />
     <link href="css/icon.css" rel="stylesheet" />
     <script src="js/jquery.min.js"></script>
