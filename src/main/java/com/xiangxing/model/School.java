@@ -1,7 +1,7 @@
 package com.xiangxing.model;
 
 public class School {
-    private String schoolId;
+    private Integer id;
 
     private String code;
 
@@ -13,12 +13,12 @@ public class School {
 
     private String comment;
 
-    public String getSchoolId() {
-        return schoolId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setSchoolId(String schoolId) {
-        this.schoolId = schoolId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCode() {

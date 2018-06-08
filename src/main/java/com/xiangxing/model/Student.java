@@ -3,7 +3,7 @@ package com.xiangxing.model;
 import java.util.Date;
 
 public class Student {
-    private String id;
+    private Integer id;
 
     private String phone;
 
@@ -33,11 +33,11 @@ public class Student {
 
     private Integer status;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

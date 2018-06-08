@@ -23,18 +23,18 @@ public class SchoolServiceImpl implements SchoolService {
 	@Override
 	public List<School> searchSchools(School school) {
 		SchoolExample example = new SchoolExample();
-		example.createCriteria().andSchoolIdIsNotNull();
+		example.createCriteria().andIdIsNotNull();
 		return schoolMapper.selectByExample(example);
 	}
 
 	@Override
-	public void editSchool(School school, String schoolId) {
-		school.setSchoolId(schoolId);
+	public void editSchool(School school, int schoolId) {
+		school.setId(schoolId);
 		schoolMapper.updateByPrimaryKeySelective(school);
 	}
 
 	@Override
-	public void destroySchool(String schoolId) {
+	public void destroySchool(int schoolId) {
 		schoolMapper.deleteByPrimaryKey(schoolId);
 	}
 

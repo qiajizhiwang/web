@@ -41,7 +41,7 @@
 				"id": 23,
 				"text": "课程管理",
 				"attributes": {
-					"url": "http://www.baidu.com"
+					"url": "/course/course"
 				}
 			},
 			{
@@ -72,24 +72,10 @@
 		"text": "学生管理",
 		"children": [
 			{
-				"id": 31,
-				"text": "学生审核",
-				"attributes": {
-					"url": "http://www.baidu.com"
-				}
-			},
-			{
 				"id": 32,
 				"text": "学生管理",
 				"attributes": {
-					"url": "http://www.baidu.com"
-				}
-			},
-			{
-				"id": 33,
-				"text": "学生注册",
-				"attributes": {
-					"url": "http://www.baidu.com"
+					"url": "/student/student"
 				}
 			}
 		]
@@ -98,13 +84,6 @@
 		"id": 4,
 		"text": "作品管理",
 		"children": [
-			{
-				"id": 41,
-				"text": "上传作品",
-				"attributes": {
-					"url": "http://www.baidu.com"
-				}
-			},
 			{
 				"id": 42,
 				"text": "作品管理",
@@ -122,14 +101,14 @@
 				"id": 51,
 				"text": "科目维护",
 				"attributes": {
-					"url": "http://www.baidu.com"
+					"url": "/subject/subject"
 				}
 			},
 			{
 				"id": 52,
 				"text": "考试信息维护",
 				"attributes": {
-					"url": "http://www.baidu.com"
+					"url": "/exam/exam"
 				}
 			}
 		]

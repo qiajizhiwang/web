@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xiangxing.mapper.ExamMapper" >
   <resultMap id="BaseResultMap" type="com.xiangxing.model.Exam" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="INTEGER" />
     <result column="subject_id" property="subjectId" jdbcType="VARCHAR" />
     <result column="rank" property="rank" jdbcType="VARCHAR" />
     <result column="money" property="money" jdbcType="DECIMAL" />
@@ -106,17 +106,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from t_exam
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_exam
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.xiangxing.model.ExamExample" >
     delete from t_exam
@@ -128,7 +128,7 @@
     insert into t_exam (id, subject_id, rank, 
       money, exam_time, open_flag, 
       exam_address)
-    values (#{id,jdbcType=VARCHAR}, #{subjectId,jdbcType=VARCHAR}, #{rank,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{subjectId,jdbcType=VARCHAR}, #{rank,jdbcType=VARCHAR}, 
       #{money,jdbcType=DECIMAL}, #{examTime,jdbcType=VARCHAR}, #{openFlag,jdbcType=VARCHAR}, 
       #{examAddress,jdbcType=VARBINARY})
   </insert>
@@ -159,7 +159,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
+        #{id,jdbcType=INTEGER},
       </if>
       <if test="subjectId != null" >
         #{subjectId,jdbcType=VARCHAR},
@@ -191,7 +191,7 @@
     update t_exam
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=VARCHAR},
+        id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.subjectId != null" >
         subject_id = #{record.subjectId,jdbcType=VARCHAR},
@@ -218,7 +218,7 @@
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map" >
     update t_exam
-    set id = #{record.id,jdbcType=VARCHAR},
+    set id = #{record.id,jdbcType=INTEGER},
       subject_id = #{record.subjectId,jdbcType=VARCHAR},
       rank = #{record.rank,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DECIMAL},
@@ -231,7 +231,7 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update t_exam
-    set id = #{record.id,jdbcType=VARCHAR},
+    set id = #{record.id,jdbcType=INTEGER},
       subject_id = #{record.subjectId,jdbcType=VARCHAR},
       rank = #{record.rank,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DECIMAL},
@@ -263,7 +263,7 @@
         exam_address = #{examAddress,jdbcType=VARBINARY},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xiangxing.model.Exam" >
     update t_exam
@@ -273,7 +273,7 @@
       exam_time = #{examTime,jdbcType=VARCHAR},
       open_flag = #{openFlag,jdbcType=VARCHAR},
       exam_address = #{examAddress,jdbcType=VARBINARY}
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.xiangxing.model.Exam" >
     update t_exam
@@ -282,6 +282,6 @@
       money = #{money,jdbcType=DECIMAL},
       exam_time = #{examTime,jdbcType=VARCHAR},
       open_flag = #{openFlag,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
