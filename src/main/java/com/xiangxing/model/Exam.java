@@ -1,7 +1,7 @@
 package com.xiangxing.model;
 
 public class Exam {
-    private String id;
+    private Integer id;
 
     private String subjectId;
 
@@ -15,11 +15,11 @@ public class Exam {
 
     private byte[] examAddress;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -39,11 +39,11 @@ public class SystemController {
 	public String user(Model model) {
 		List<School> schools = new ArrayList();
 		School school = new School();
-		school.setSchoolId("1");
+		school.setId(1);
 		school.setName("超级大学");
 		schools.add(school);
 		model.addAttribute("schools", schools);
-		model.addAttribute("defaultValue", school.getSchoolId());
+		model.addAttribute("defaultValue", school.getId());
 		return "user";
 	}
 
@@ -73,8 +73,7 @@ public class SystemController {
 	@RequestMapping("/addUser")
 	@ResponseBody
 	public String addUser(User user, String menus) {
-		user.setPassword(
-				new SimpleHash( "MD5",user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());
+		user.setPassword(new SimpleHash("MD5", user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());
 		userMapper.insert(user);
 		for (String menu : menus.split(",")) {
 			UserMenu userMenu = new UserMenu();

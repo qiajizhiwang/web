@@ -26,12 +26,11 @@ public class SchoolController extends BaseController {
 
 	@RequestMapping("/school")
 	public String school() {
-		return "school/school";
+		return "school";
 	}
 
 	@RequestMapping("/saveSchool")
 	public void saveSchool(School school) {
-		school.setSchoolId(school.getCode());
 		schoolService.addSchool(school);
 		writeToOkResponse();
 	}
@@ -52,20 +51,17 @@ public class SchoolController extends BaseController {
 		long total = page.getTotal();
 		return new PageResponse<School>(total, schools);
 
-		// School school = new School();
-		// List<School> schools = schoolService.searchSchools(school);
-		// writeToResponse(JSON.toJSONString(schools), response);
 	}
 
 	@RequestMapping("/editSchool")
-	public void editSchool(School school, String schoolId) {
-		schoolService.editSchool(school, schoolId);
+	public void editSchool(School school, int id) {
+		schoolService.editSchool(school, id);
 		writeToOkResponse();
 	}
 
 	@RequestMapping("/destroySchool")
-	public void destroySchool(String schoolId) {
-		schoolService.destroySchool(schoolId);
+	public void destroySchool(int id) {
+		schoolService.destroySchool(id);
 		writeToOkResponse();
 	}
 
