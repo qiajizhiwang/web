@@ -12,50 +12,54 @@
 
 <body>
 	<!-- <table id="dg" class="easyui-datagrid" style="width:100%;height:500px"
-		url="searchSchools"
+		url="searchCourses"
 		toolbar="#toolbar"
 		rownumbers="true" fitColumns="true" singleSelect="true"> -->
 		
 	<table id="dg" class="easyui-datagrid"  style="width:100%;height:auto"
-	toolbar="#toolbar"	rownumbers="true" pagination="true"  fitColumns="true"	data-options="singleSelect:true,collapsible:true,url:'/school/schoolList',method:'post'">
+	toolbar="#toolbar"	rownumbers="true" pagination="true"  fitColumns="true"	data-options="singleSelect:true,collapsible:true,url:'/course/courseList',method:'post'">
 	
 		<thead>
 			<tr>
-				<th field="schoolId" width="50" editor="{type:'validatebox',options:{required:true}}">学校ID</th>
-				<th field="code" width="50" editor="{type:'validatebox',options:{required:true}}">自定义编码</th>
-				<th field="name" width="50" editor="text">学校名称</th>
-				<th field="adress" width="50" editor="{type:'validatebox',options:{validType:'email'}}">地址</th>
-				<th field="linkman" width="50" editor="text">联系人</th>
+				<th field="name" width="50" editor="{type:'validatebox',options:{required:true}}">课程名称</th>
+				<th field="teacherId" width="50" editor="{type:'validatebox',options:{required:true}}">教师ID</th>
+				<th field="curriculumTime" width="50" editor="text">开课时间</th>
+				<th field="schoolTime" width="50" editor="text">上课时间</th>
+				<th field="comment" width="50" editor="text">课程介绍</th>
 			</tr>
 		</thead>
 	</table>
 	<div id="toolbar">
-		<span>学校名称</span>
+		<span>老师姓名</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
 		<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">搜索</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newSchool()">新增</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editSchool()">编辑</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySchool()">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCourse()">新增</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editCourse()">编辑</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyCourse()">删除</a>
 	</div>
 	
 	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post">
 			<div class="fitem">
-				<label>学校代码</label>
-				<input name="code" class="easyui-validatebox" required="true">
-			</div>
-			<div class="fitem">
-				<label>学校名称</label>
+				<label>课程名称</label>
 				<input name="name" class="easyui-validatebox" required="true">
 			</div>
 			<div class="fitem">
-				<label>地址</label>
-				<input name="adress">
+				<label>教师ID</label>
+				<input name="teacherId" class="easyui-validatebox" required="true">
+			</div>
+			<!-- <div class="fitem">
+				<label>开课时间</label>
+				<input name="curriculumTime">
+			</div> -->
+			<div class="fitem">
+				<label>上课时间</label>
+				<input name="schoolTime">
 			</div>
 			<div class="fitem">
-				<label>联系人</label>
-				<input name="linkman">
+				<label>课程介绍</label>
+				<input name="comment">
 			</div>
 		</form>
 	</div>
@@ -72,27 +76,27 @@
 		});
 	}
 
-	function newSchool(){
+	function newCourse(){
 		$('#dlg').dialog('open').dialog('setTitle','新增');
 		$('#fm').form('clear');
-		url = 'saveSchool';
+		url = 'saveCourse';
 	}
 	
-	function editSchool(){
+	function editCourse(){
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
 			$('#dlg').dialog('open').dialog('setTitle','Edit User');
 			$('#fm').form('load',row);
-			url = 'editSchool?schoolId='+row.schoolId;
+			url = 'editCourse?courseId='+row.courseId;
 		}
 	}
 	
-	function destroySchool(){
+	function destroyCourse(){
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
 				if (r){
-					$.post('destroySchool',{schoolId:row.schoolId},function(result){
+					$.post('destroyCourse',{courseId:row.courseId},function(result){
 						if (result.code==10000){
 							$('#dg').datagrid('reload');	// reload the user data
 						} else {
