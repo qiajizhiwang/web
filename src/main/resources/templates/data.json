@@ -14,7 +14,7 @@
 				"id": 12,
 				"text": "菜单管理",
 				"attributes": {
-					"url": "http://www.baidu.com"
+					"url": "/system/menu"
 				}
 			}
 		]

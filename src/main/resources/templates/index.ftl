@@ -26,11 +26,8 @@
       <div id="north" region="north"  style="height:5%">
       </div>
 	<div region="west" split="true" title="菜单" style="width:15%">
-	<!--	<ul>
-			<li><a  onclick="addTab('baidu','http://www.baidu.com')">baidu</a></li>
-		</ul> -->
 		<ul id="tt" class="easyui-tree"
-			url="data.json" method='get'>
+			url="data.json " method='get'><!--/system/showMenu-->
 	</ul>
 	</div>
 	<div id="content" region="center"  >

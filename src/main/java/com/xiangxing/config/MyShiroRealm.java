@@ -15,15 +15,15 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.xiangxing.mapper.SysUserMapper;
-import com.xiangxing.model.SysUser;
-import com.xiangxing.model.SysUserExample;
+import com.xiangxing.mapper.UserMapper;
+import com.xiangxing.model.User;
+import com.xiangxing.model.UserExample;
 
 @Component
 public class MyShiroRealm extends AuthorizingRealm {
 
 	@Autowired
-	private SysUserMapper sysUserMapper;
+	private UserMapper userMapper;
 
 	public MyShiroRealm() {
 		super();
@@ -44,15 +44,15 @@ public class MyShiroRealm extends AuthorizingRealm {
 		System.out.println(token.getCredentials());
 		// 通过username从数据库中查找 User对象，如果找到，没找到.
 		// 实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-		SysUserExample example = new SysUserExample();
-		example.createCriteria().andLoginNameEqualTo(username);
+		UserExample example = new UserExample();
+		example.createCriteria().andNameEqualTo(username);
 
-		List<SysUser> userInfos = sysUserMapper.selectByExample(example);
+		List<User> userInfos = userMapper.selectByExample(example);
 
 		if (userInfos == null || userInfos.size() != 1) {
 			return null;
 		}
-		SysUser userInfo = userInfos.get(0);
+		User userInfo = userInfos.get(0);
 		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(userInfo, // 用户名
 				userInfo.getPassword(), // 密码
 				ByteSource.Util.bytes(username + "xiaochendaiwolaiqiaji"), // salt=username+salt
