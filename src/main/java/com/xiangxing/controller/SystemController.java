@@ -26,6 +26,7 @@ import com.xiangxing.model.MenuExample;
 import com.xiangxing.model.School;
 import com.xiangxing.model.User;
 import com.xiangxing.model.UserExample;
+import com.xiangxing.model.UserExample.Criteria;
 import com.xiangxing.model.UserMenu;
 import com.xiangxing.model.UserMenuExample;
 import com.xiangxing.vo.MenuVo;
@@ -57,11 +58,16 @@ public class SystemController {
 	@RequestMapping("/userList")
 	@ResponseBody
 	public PageResponse<User> userList(PageRequest pageRequest, String name, Model model) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		Long schoolId = me.getSchoolId();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		UserExample UserExample = new UserExample();
+		Criteria criteria = UserExample.createCriteria();
+		if (me.getType()!= 0 )
+		criteria.andSchoolIdEqualTo(schoolId);
 		if (StringUtils.isNotBlank(name)) {
 			name = "%" + name + "%";
-			UserExample.createCriteria().andNameLike(name);
+			criteria.andNameLike(name);
 
 		}
 
