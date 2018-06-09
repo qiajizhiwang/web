@@ -2,8 +2,13 @@ package com.xiangxing.config;
 
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,6 +32,13 @@ public class MybatisPlusConfig {
 		p.setProperty("dialect", "mysql");
 		pageHelper.setProperties(p);
 		return pageHelper;
+	}
+
+	@Bean
+	public SqlSessionFactory sqlSessionFactory(@Autowired DataSource dataSource) throws Exception {
+		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+		sessionFactory.setDataSource(dataSource);
+		return sessionFactory.getObject();
 	}
 
 }

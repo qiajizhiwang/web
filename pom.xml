@@ -33,6 +33,14 @@
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>${mybatis-spring-boot.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.mybatis.spring.boot</groupId>
+					<artifactId>
+						mybatis-spring-boot-autoconfigure
+					</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -83,34 +91,8 @@
 		
 	</dependencies>
 
-	<!-- 设定主仓库，按设定顺序进行查找。 -->
-	<repositories>
-
-		<repository>
-			<id>central</id>
-			<name>central</name>
-			<!-- 配置仓库的地址 -->
-			<url>http://192.168.1.110/nexus/content/groups/public</url>
-		</repository>
-
-		<!-- <repository> <id>jeesite-repos</id> <name>Jeesite Repository</name> 
-			<url>http://maven.aliyun.com/nexus/content/groups/public</url> </repository> -->
-
-	</repositories>
-
-	<!-- 设定插件仓库 -->
-	<pluginRepositories>
-
-		<pluginRepository>
-			<id>central</id>
-			<name>central</name>
-			<!-- 配置仓库的地址 -->
-			<url>http://192.168.1.110/nexus/content/groups/public</url>
-		</pluginRepository>
 
 
-
-	</pluginRepositories>
 
 	<build>
 		<plugins>
