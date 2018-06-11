@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.TeacherMapper;
+import com.xiangxing.model.Student;
+import com.xiangxing.model.StudentExample;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
 import com.xiangxing.vo.api.ApiResponse;
@@ -24,22 +27,41 @@ public class LoginController {
 	@Autowired
 	private TeacherMapper teacherMapper;
 
-	private Map<String, Long> loginInfos = new ConcurrentHashMap<>();
+	@Autowired
+	private StudentMapper mapper;
+
+	private Map<String, LoginInfo> loginInfos = new ConcurrentHashMap<>();
 
 	@RequestMapping("/login")
 	public ApiResponse login(LoginRequest loginRequest) {
-		TeacherExample example = new TeacherExample();
-		example.createCriteria().andNameEqualTo(loginRequest.getName());
 
-		List teachers = teacherMapper.selectByExample(example);
-		if (!CollectionUtils.isEmpty(teachers)) {
-			Teacher teacher = (Teacher) teachers.get(0);
-			if (teacher.getPassword().equals(loginRequest.getPassword())) {
-				LoginResponse loginResponse = new LoginResponse();
-				String token = UUID.randomUUID().toString().replace("-", "");
-				loginResponse.setToken(token);
-				loginInfos.put(token, teacher.getId());
-				return loginResponse;
+		if (loginRequest.getType() == 1) {
+			TeacherExample example = new TeacherExample();
+			example.createCriteria().andNameEqualTo(loginRequest.getName());
+			List teachers = teacherMapper.selectByExample(example);
+			if (!CollectionUtils.isEmpty(teachers)) {
+				Teacher teacher = (Teacher) teachers.get(0);
+				if (teacher.getPassword().equals(loginRequest.getPassword())) {
+					LoginResponse loginResponse = new LoginResponse();
+					String token = UUID.randomUUID().toString().replace("-", "");
+					loginResponse.setToken(token);
+					loginInfos.put(token, new LoginInfo(teacher.getId(), 1));
+					return loginResponse;
+				}
+			}
+		} else {
+			StudentExample example = new StudentExample();
+			example.createCriteria().andNameEqualTo(loginRequest.getName());
+			List students = mapper.selectByExample(example);
+			if (!CollectionUtils.isEmpty(students)) {
+				Student student = (Student) students.get(0);
+				if (student.getPassword().equals(loginRequest.getPassword())) {
+					LoginResponse loginResponse = new LoginResponse();
+					String token = UUID.randomUUID().toString().replace("-", "");
+					loginResponse.setToken(token);
+					loginInfos.put(token, new LoginInfo(student.getId(), 1));
+					return loginResponse;
+				}
 			}
 		}
 		return ApiResponse.getErrorResponse("登录失败");
