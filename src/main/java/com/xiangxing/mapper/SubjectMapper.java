@@ -10,7 +10,7 @@ public interface SubjectMapper {
 
     int deleteByExample(SubjectExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(Subject record);
 
@@ -18,7 +18,7 @@ public interface SubjectMapper {
 
     List<Subject> selectByExample(SubjectExample example);
 
-    Subject selectByPrimaryKey(Integer id);
+    Subject selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") Subject record, @Param("example") SubjectExample example);
 

@@ -7,7 +7,7 @@ public class User {
 
     private String password;
 
-    private Integer type = 1;
+    private Integer type;
 
     private Long schoolId;
 

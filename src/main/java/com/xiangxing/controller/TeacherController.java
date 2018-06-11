@@ -29,7 +29,6 @@ public class TeacherController extends BaseController {
 
 	@RequestMapping("/saveTeacher")
 	public void saveteacher(Teacher teacher) {
-		teacher.setTeacherId(String.valueOf(new Random().nextInt()));
 		teacherMapper.insertSelective(teacher);
 		writeToOkResponse();
 	}
@@ -59,7 +58,7 @@ public class TeacherController extends BaseController {
 	}
 
 	@RequestMapping("/destroyTeacher")
-	public void destroyteacher(String teacherId) {
+	public void destroyteacher(Long teacherId) {
 		teacherMapper.deleteByPrimaryKey(teacherId);
 		writeToOkResponse();
 	}

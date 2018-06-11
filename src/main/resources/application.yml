@@ -1,9 +1,9 @@
 spring:
     datasource:
         driverClassName : com.mysql.jdbc.Driver
-        url : jdbc:mysql://rm-m5e2p875dww1c6f30o.mysql.rds.aliyuncs.com:3306/wisdom_classroom?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnectForPools=true
-        username : gocheck_root
-        password : tongyuan2512#
+        url : jdbc:mysql://120.78.211.181:3306/xiangxing?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnectForPools=true
+        username : root
+        password : 123456
         type : com.alibaba.druid.pool.DruidDataSource
         
     resources:

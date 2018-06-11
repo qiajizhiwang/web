@@ -50,7 +50,7 @@ public class ExamController extends BaseController {
 	}
 
 	@RequestMapping("/destroyExam")
-	public void destroyexam(Integer examId) {
+	public void destroyexam(Long examId) {
 		examMapper.deleteByPrimaryKey(examId);
 		writeToOkResponse();
 	}

@@ -3,7 +3,7 @@ package com.xiangxing.model;
 import java.util.Date;
 
 public class Order {
-    private String id;
+    private Long id;
 
     private String orderNo;
 
@@ -23,11 +23,11 @@ public class Order {
 
     private Date updateTime;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -58,7 +58,7 @@ public class SubjectController extends BaseController {
 	}
 
 	@RequestMapping("/destroySubject")
-	public void destroysubject(Integer subjectId) {
+	public void destroysubject(Long subjectId) {
 		subjectMapper.deleteByPrimaryKey(subjectId);
 		writeToOkResponse();
 	}

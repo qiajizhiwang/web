@@ -1,9 +1,9 @@
 package com.xiangxing.model;
 
 public class Teacher {
-    private String teacherId;
+    private Long id;
 
-    private String schoolId;
+    private Long schoolId;
 
     private String name;
 
@@ -13,19 +13,19 @@ public class Teacher {
 
     private Integer status;
 
-    public String getTeacherId() {
-        return teacherId;
+    public Long getId() {
+        return id;
     }
 
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getSchoolId() {
+    public Long getSchoolId() {
         return schoolId;
     }
 
-    public void setSchoolId(String schoolId) {
+    public void setSchoolId(Long schoolId) {
         this.schoolId = schoolId;
     }
 

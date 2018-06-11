@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xiangxing.mapper.ExamMapper" >
   <resultMap id="BaseResultMap" type="com.xiangxing.model.Exam" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="subject_id" property="subjectId" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="subject_id" property="subjectId" jdbcType="BIGINT" />
     <result column="rank" property="rank" jdbcType="VARCHAR" />
     <result column="money" property="money" jdbcType="DECIMAL" />
     <result column="exam_time" property="examTime" jdbcType="VARCHAR" />
@@ -106,17 +106,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from t_exam
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from t_exam
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.xiangxing.model.ExamExample" >
     delete from t_exam
@@ -128,7 +128,7 @@
     insert into t_exam (id, subject_id, rank, 
       money, exam_time, open_flag, 
       exam_address)
-    values (#{id,jdbcType=INTEGER}, #{subjectId,jdbcType=VARCHAR}, #{rank,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{subjectId,jdbcType=BIGINT}, #{rank,jdbcType=VARCHAR}, 
       #{money,jdbcType=DECIMAL}, #{examTime,jdbcType=VARCHAR}, #{openFlag,jdbcType=VARCHAR}, 
       #{examAddress,jdbcType=VARBINARY})
   </insert>
@@ -159,10 +159,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="subjectId != null" >
-        #{subjectId,jdbcType=VARCHAR},
+        #{subjectId,jdbcType=BIGINT},
       </if>
       <if test="rank != null" >
         #{rank,jdbcType=VARCHAR},
@@ -191,10 +191,10 @@
     update t_exam
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.subjectId != null" >
-        subject_id = #{record.subjectId,jdbcType=VARCHAR},
+        subject_id = #{record.subjectId,jdbcType=BIGINT},
       </if>
       <if test="record.rank != null" >
         rank = #{record.rank,jdbcType=VARCHAR},
@@ -218,8 +218,8 @@
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map" >
     update t_exam
-    set id = #{record.id,jdbcType=INTEGER},
-      subject_id = #{record.subjectId,jdbcType=VARCHAR},
+    set id = #{record.id,jdbcType=BIGINT},
+      subject_id = #{record.subjectId,jdbcType=BIGINT},
       rank = #{record.rank,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DECIMAL},
       exam_time = #{record.examTime,jdbcType=VARCHAR},
@@ -231,8 +231,8 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update t_exam
-    set id = #{record.id,jdbcType=INTEGER},
-      subject_id = #{record.subjectId,jdbcType=VARCHAR},
+    set id = #{record.id,jdbcType=BIGINT},
+      subject_id = #{record.subjectId,jdbcType=BIGINT},
       rank = #{record.rank,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DECIMAL},
       exam_time = #{record.examTime,jdbcType=VARCHAR},
@@ -245,7 +245,7 @@
     update t_exam
     <set >
       <if test="subjectId != null" >
-        subject_id = #{subjectId,jdbcType=VARCHAR},
+        subject_id = #{subjectId,jdbcType=BIGINT},
       </if>
       <if test="rank != null" >
         rank = #{rank,jdbcType=VARCHAR},
@@ -263,25 +263,25 @@
         exam_address = #{examAddress,jdbcType=VARBINARY},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xiangxing.model.Exam" >
     update t_exam
-    set subject_id = #{subjectId,jdbcType=VARCHAR},
+    set subject_id = #{subjectId,jdbcType=BIGINT},
       rank = #{rank,jdbcType=VARCHAR},
       money = #{money,jdbcType=DECIMAL},
       exam_time = #{examTime,jdbcType=VARCHAR},
       open_flag = #{openFlag,jdbcType=VARCHAR},
       exam_address = #{examAddress,jdbcType=VARBINARY}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.xiangxing.model.Exam" >
     update t_exam
-    set subject_id = #{subjectId,jdbcType=VARCHAR},
+    set subject_id = #{subjectId,jdbcType=BIGINT},
       rank = #{rank,jdbcType=VARCHAR},
       money = #{money,jdbcType=DECIMAL},
       exam_time = #{examTime,jdbcType=VARCHAR},
       open_flag = #{openFlag,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
