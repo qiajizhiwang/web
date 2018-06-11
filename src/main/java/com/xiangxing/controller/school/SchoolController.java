@@ -54,13 +54,13 @@ public class SchoolController extends BaseController {
 	}
 
 	@RequestMapping("/editSchool")
-	public void editSchool(School school, int id) {
+	public void editSchool(School school, Long id) {
 		schoolService.editSchool(school, id);
 		writeToOkResponse();
 	}
 
 	@RequestMapping("/destroySchool")
-	public void destroySchool(int id) {
+	public void destroySchool(Long id) {
 		schoolService.destroySchool(id);
 		writeToOkResponse();
 	}
