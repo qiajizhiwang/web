@@ -30,6 +30,8 @@
 		</thead>
 	</table>
 	<div id="toolbar">
+		<span>学校</span>
+		<input id="schoolId" class="easyui-combobox" name="schoolId" data-options="valueField:'id',textField:'name',url:'../school/comboboxData'">
 		<span>老师姓名</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
 		<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">搜索</a>
@@ -41,26 +43,40 @@
 	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post">
-			<div class="fitem">
-				<label>课程名称</label>
-				<input name="name" class="easyui-validatebox" required="true">
-			</div>
-			<div class="fitem">
-				<label>教师ID</label>
-				<input name="teacherId" class="easyui-validatebox" required="true">
-			</div>
-			<!-- <div class="fitem">
-				<label>开课时间</label>
-				<input name="curriculumTime">
-			</div> -->
-			<div class="fitem">
-				<label>上课时间</label>
-				<input name="schoolTime">
-			</div>
-			<div class="fitem">
-				<label>课程介绍</label>
-				<input name="comment">
-			</div>
+			<table cellpadding="5">
+			<tr>
+				<td>课程名称</td>
+				<td><input name="name" class="easyui-textbox" required="true"></td>
+			</tr>
+			
+			<tr>  
+	            <td align="right">学校</td>  
+<td>  
+    <input id="schoolIdCombox" class="easyui-combobox" />  
+    <input id="schoolId" name="schoolId" qr="schoolId" required="true" type="hidden" class="queryRequired" />  
+</td>   
+	        </tr>  
+	        <tr>  
+	            <td align="right" >教师ID</td>  
+<td>  
+    <input id="teacherCombox" class="easyui-combobox" />  
+    <input id="teacherId" name="teacherId" qr="teacherId" required="true" type="hidden" class="queryRequired" />  
+</td>   
+	        </tr>
+	        
+			<!-- <tr>
+				<td>开课时间</td>
+				<input name="curriculumTime" class="easyui-textbox"></td>
+			</tr> -->
+			<tr>
+				<td>上课时间</td>
+				<td><input name="schoolTime" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>课程介绍</td>
+				<td><input name="comment" class="easyui-textbox"></td>
+			</tr>
+			</table>
 		</form>
 	</div>
 	<div id="dlg-buttons">
@@ -70,6 +86,38 @@
 </body>
 <script type="text/javascript">
 	
+	$(function(){ 
+	
+	$('#schoolIdCombox').combobox({  
+    url: "../school/comboboxData",  
+    editable:false,  
+    valueField:'id',   
+    textField:'name',  
+    panelHeight:'auto',  
+    onSelect : function(data){  
+        $('#schoolId').val(data.id);  
+        //查询类型  
+        $('#teacherId').val('');  
+        $('#teacherCombox').combobox({  
+            url: "../teacher/comboboxData?schoolId="+$('#schoolId').val(),  
+            editable:false,  
+            valueField:'id',   
+            textField:'name',  
+            panelHeight:'auto',  
+            width:100,  
+        }).combobox('clear');  
+    }  
+});  
+
+$('#teacherCombox').combobox({  
+    onSelect : function(data){  
+        $('#teacherId').val(data.id);  
+    }  
+});  
+
+
+    });
+    
 	 function doSearch(){
 		$('#dg').datagrid('load',{
 			name: $('#name').val()
@@ -87,7 +135,7 @@
 		if (row){
 			$('#dlg').dialog('open').dialog('setTitle','Edit User');
 			$('#fm').form('load',row);
-			url = 'editCourse?courseId='+row.courseId;
+			url = 'editCourse?courseId='+row.id;
 		}
 	}
 	
@@ -96,7 +144,7 @@
 		if (row){
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
 				if (r){
-					$.post('destroyCourse',{courseId:row.courseId},function(result){
+					$.post('destroyCourse',{id:row.id},function(result){
 						if (result.code==10000){
 							$('#dg').datagrid('reload');	// reload the user data
 						} else {

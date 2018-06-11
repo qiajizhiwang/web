@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-<!-- 	<classPathEntry -->
-<!-- 		location="C:\Users\win\.m2\repository\mysql\mysql-connector-java\5.1.45\mysql-connector-java-5.1.45.jar" /> -->
 
+<!-- 	<classPathEntry -->
+<!-- 		location="D:\work\gitaaa\web\src\main\resources\mysql-connector-java-5.1.45.jar" /> -->
+		
 	<classPathEntry
 		location="D:\workspace3\web\src\main\resources\mysql-connector-java-5.1.45.jar" />
 		
@@ -26,12 +27,12 @@
 			targetProject="src/main/java"
 			type="XMLMAPPER" />
 
-<!-- 		<table tableName="menu" domainObjectName="Menu"></table>
- -->		<table tableName="user" domainObjectName="User"></table>
+<!-- 		<table tableName="menu" domainObjectName="Menu"></table>-->
+<!-- 		<table tableName="user" domainObjectName="User"></table> -->
 <!-- 		<table tableName="user_menu" domainObjectName="UserMenu"></table> -->
 <!-- 		<table tableName="t_advertising" domainObjectName="Advertising"></table> -->
 <!-- 		<table tableName="t_course" domainObjectName="Course"></table> -->
-<!-- 		<table tableName="t_entry_form" domainObjectName="Entry_form"></table> -->
+<!-- 		<table tableName="t_entry_form" domainObjectName="EntryForm"></table> -->
 <!-- 		<table tableName="t_exam" domainObjectName="Exam"></table> -->
 <!-- 		<table tableName="t_message" domainObjectName="Message"></table> -->
 <!-- 		<table tableName="t_order" domainObjectName="Order"></table> -->

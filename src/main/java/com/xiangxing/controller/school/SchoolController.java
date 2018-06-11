@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.BaseController;
@@ -63,6 +64,15 @@ public class SchoolController extends BaseController {
 	public void destroySchool(Long id) {
 		schoolService.destroySchool(id);
 		writeToOkResponse();
+	}
+
+	@RequestMapping("/comboboxData")
+	@ResponseBody
+	public String comboboxData(PageRequest pageRequest, String name) {
+		SchoolExample schoolExample = new SchoolExample();
+		List<School> schools = schoolMapper.selectByExample(schoolExample);
+		return JSON.toJSONString(schools);
+
 	}
 
 }

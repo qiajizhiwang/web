@@ -22,7 +22,7 @@
 		<thead>
 			<tr>
 				<th field="schoolId" width="50" editor="{type:'validatebox',options:{required:true}}">学校ID</th>
-				<th field="teacherId" width="50" editor="{type:'validatebox',options:{required:true}}">教师ID</th>
+				<th field="id" width="50" editor="{type:'validatebox',options:{required:true}}">教师ID</th>
 				<th field="name" width="50" editor="text">姓名</th>
 				<th field="phone" width="50" editor="text">电话</th>
 			</tr>
@@ -37,25 +37,37 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyTeacher()">删除</a>
 	</div>
 	
-	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+	<div id="dlg" class="easyui-dialog" style="width:400px;height:350px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post">
-			<div class="fitem">
-				<label>学校ID</label>
-				<input name="schoolId" class="easyui-validatebox" required="true">
-			</div>
-			<div class="fitem">
-				<label>姓名</label>
-				<input name="name" class="easyui-validatebox" required="true">
-			</div>
-			<div class="fitem">
-				<label>电话</label>
-				<input name="phone">
-			</div>
-			<div class="fitem">
-				<label>密码</label>
-				<input name="password">
-			</div>
+			<table cellpadding="5">
+			<tr>
+    			<td>学校:</td>
+    			<td>
+        			<input id="schoolId" class="easyui-combobox" name="schoolId" data-options="valueField:'id',textField:'name',url:'../school/comboboxData'">
+    			</td>
+    		</tr>
+			<tr>
+				<td>姓名</td>
+				<td><input name="name" class="easyui-textbox" required="true"></td>
+			</tr>
+			<tr>
+				<td>电话</td>
+				<td><input name="phone" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>密码</td>
+				<td><input name="password" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+    			<td>审核状态:</td>
+    			<td>
+                   <select class="easyui-combobox" name="status" style="width:100px;">
+    			 	<option value=1>不通过</option>
+                  	<option value=0>通过</option>
+                  </select></td>
+    		</tr>
+			</table>
 		</form>
 	</div>
 	<div id="dlg-buttons">
@@ -82,7 +94,7 @@
 		if (row){
 			$('#dlg').dialog('open').dialog('setTitle','Edit User');
 			$('#fm').form('load',row);
-			url = 'editTeacher?teacherId='+row.teacherId;
+			url = 'editTeacher?teacherId='+row.id;
 		}
 	}
 	
@@ -91,7 +103,7 @@
 		if (row){
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
 				if (r){
-					$.post('destroyTeacher',{teacherId:row.teacherId},function(result){
+					$.post('destroyTeacher',{teacherId:row.id},function(result){
 						if (result.code==10000){
 							$('#dg').datagrid('reload');	// reload the user data
 						} else {

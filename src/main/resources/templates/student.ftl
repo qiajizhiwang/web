@@ -48,54 +48,56 @@
 	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post">
-			<div class="fitem">
-				<label>手机号</label>
-				<input name="phone" class="easyui-validatebox" required="true">
-			</div>
-			<div class="fitem">
-				<label>登录密码</label>
-				<input name="password" class="easyui-validatebox" required="true">
-			</div>
-			<div class="fitem">
-				<label>姓名</label>
-				<input name="name">
-			</div>
-			<div class="fitem">
-				<label>性别</label>
-				<input name="gender">
-			</div>
-			<div class="fitem">
-				<label>民族</label>
-				<input name="nation">
-			</div>
-			<div class="fitem">
-				<label>国家</label>
-				<input name="state">
-			</div>
-			<div class="fitem">
-				<label>专业</label>
-				<input name="major">
-			</div>
-			<div class="fitem">
-				<label>级别</label>
-				<input name="grade">
-			</div>
-			<div class="fitem">
-				<label>家庭地址</label>
-				<input name="houseAddress">
-			</div>
-			<div class="fitem">
-				<label>父母电话</label>
-				<input name="homeTelephone">
-			</div>
-			<div class="fitem">
-				<label>身份证号码</label>
-				<input name="idCard">
-			</div>
-			<div class="fitem">
-				<label>审核状态</label>
-				<input name="status">
-			</div>
+			<table cellpadding="5">
+			<tr>
+				<td>手机号</td>
+				<td><input name="phone" class="easyui-textbox" required="true"></td>
+			</tr>
+			<tr>
+				<td>登录密码</td>
+				<td><input name="password" class="easyui-textbox" required="true"></td>
+			</tr>
+			<tr>
+				<td>姓名</td>
+				<td><input name="name" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>性别</td>
+				<td><input name="gender" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>民族</td>
+				<td><input name="nation" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>国家</td>
+				<td><input name="state" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>专业</td>
+				<td><input name="major" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>级别</td>
+				<td><input name="grade" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>家庭地址</td>
+				<td><input name="houseAddress" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>父母电话</td>
+				<td><input name="homeTelephone" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>身份证号码</td>
+				<td><input name="idCard" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>审核状态</td>
+				<td><input name="status" class="easyui-textbox"></td>
+			</tr>
+			</table>
 		</form>
 	</div>
 	<div id="dlg-buttons">

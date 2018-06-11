@@ -38,10 +38,12 @@
 	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post">
-			<div class="fitem">
-				<label>科目名称</label>
-				<input name="name" class="easyui-validatebox" required="true">
-			</div>
+			<table cellpadding="5">
+			<tr>
+				<td>科目名称</td>
+				<td><input name="name" class="easyui-textbox" required="true"></td>
+			</tr>
+			</table>
 		</form>
 	</div>
 	<div id="dlg-buttons">
