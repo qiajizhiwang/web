@@ -1,4 +1,4 @@
-package com.xiangxing.controller;
+package com.xiangxing.controller.admin;
 
 public class PageRequest {
 
