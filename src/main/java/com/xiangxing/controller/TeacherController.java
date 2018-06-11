@@ -1,6 +1,5 @@
 package com.xiangxing.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,15 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-<<<<<<< .mine
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.controller.admin.PageRequest;
 import com.xiangxing.controller.admin.PageResponse;
-=======
 import com.xiangxing.mapper.SchoolMapper;
-
-
->>>>>>> .theirs
 import com.xiangxing.mapper.TeacherMapper;
 import com.xiangxing.model.School;
 import com.xiangxing.model.SchoolExample;
