@@ -59,7 +59,12 @@ public class SystemController {
 	@ResponseBody
 	public PageResponse<User> userList(PageRequest pageRequest, String name, Model model) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
-		Long schoolId = me.getSchoolId();
+		if (null== me){
+			me = new User();
+			me.setType(0);
+		}
+		
+		Long schoolId = me.getSchoolId(); 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		UserExample UserExample = new UserExample();
 		Criteria criteria = UserExample.createCriteria();

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xiangxing.controller.admin.BaseController;
 
 @Controller
 public class FileManagerJsonAction extends BaseController {

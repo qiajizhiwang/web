@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.xiangxing.controller.admin.BaseController;
+import com.xiangxing.controller.admin.PageRequest;
+import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.ExamMapper;
 import com.xiangxing.model.Exam;
 import com.xiangxing.model.ExamExample;

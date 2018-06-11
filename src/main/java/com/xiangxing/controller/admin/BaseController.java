@@ -7,8 +7,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSONObject;
@@ -22,7 +20,7 @@ import com.xiangxing.service.SchoolService;
  */
 public abstract class BaseController {
 
-	private static final Logger log = LogManager.getLogger(BaseController.class);
+//	private static final Logger log = LogManager.getLogger(BaseController.class);
 
 	@Resource
 	protected SchoolService schoolService;
@@ -63,7 +61,7 @@ public abstract class BaseController {
 			out.flush();
 			out.close();
 		} catch (IOException e) {
-			log.error(e.getMessage(), e);
+//			log.error(e.getMessage(), e);
 		}
 	}
 }

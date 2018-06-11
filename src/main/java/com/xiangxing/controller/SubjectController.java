@@ -1,7 +1,6 @@
 package com.xiangxing.controller;
 
 import java.util.List;
-import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.xiangxing.controller.admin.BaseController;
+import com.xiangxing.controller.admin.PageRequest;
+import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.SubjectMapper;
 import com.xiangxing.model.Subject;
 import com.xiangxing.model.SubjectExample;

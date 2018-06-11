@@ -38,6 +38,7 @@ public class MybatisPlusConfig {
 	public SqlSessionFactory sqlSessionFactory(@Autowired DataSource dataSource) throws Exception {
 		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
+		sessionFactory.setPlugins(new Interceptor[]{getInterceptor()});
 		return sessionFactory.getObject();
 	}
 

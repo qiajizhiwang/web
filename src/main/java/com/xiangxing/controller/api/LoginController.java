@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,15 +17,14 @@ import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.LoginRequest;
 import com.xiangxing.vo.api.LoginResponse;
 
-@Controller("/api")
-@RequestMapping
+@RequestMapping("/api")
 @RestController
 public class LoginController {
 
 	@Autowired
 	private TeacherMapper teacherMapper;
 
-	private Map<String, String> loginInfos = new ConcurrentHashMap<>();
+	private Map<String, Long> loginInfos = new ConcurrentHashMap<>();
 
 	@RequestMapping("/login")
 	public ApiResponse login(LoginRequest loginRequest) {
@@ -40,7 +38,7 @@ public class LoginController {
 				LoginResponse loginResponse = new LoginResponse();
 				String token = UUID.randomUUID().toString().replace("-", "");
 				loginResponse.setToken(token);
-				loginInfos.put(token, teacher.getTeacherId());
+				loginInfos.put(token, teacher.getId());
 				return loginResponse;
 			}
 		}
