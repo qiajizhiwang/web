@@ -1,9 +1,9 @@
 package com.xiangxing.model;
 
 public class Exam {
-    private Integer id;
+    private Long id;
 
-    private String subjectId;
+    private Long subjectId;
 
     private String rank;
 
@@ -15,19 +15,19 @@ public class Exam {
 
     private byte[] examAddress;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getSubjectId() {
+    public Long getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(String subjectId) {
+    public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
     }
 

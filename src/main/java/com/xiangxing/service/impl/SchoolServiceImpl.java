@@ -28,13 +28,13 @@ public class SchoolServiceImpl implements SchoolService {
 	}
 
 	@Override
-	public void editSchool(School school, int schoolId) {
+	public void editSchool(School school, Long schoolId) {
 		school.setId(schoolId);
 		schoolMapper.updateByPrimaryKeySelective(school);
 	}
 
 	@Override
-	public void destroySchool(int schoolId) {
+	public void destroySchool(Long schoolId) {
 		schoolMapper.deleteByPrimaryKey(schoolId);
 	}
 

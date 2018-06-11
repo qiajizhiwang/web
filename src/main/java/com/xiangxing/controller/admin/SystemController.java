@@ -40,7 +40,7 @@ public class SystemController {
 	public String user(Model model) {
 		List<School> schools = new ArrayList();
 		School school = new School();
-		school.setId(1);
+		school.setId(1l);
 		school.setName("超级大学");
 		schools.add(school);
 		model.addAttribute("schools", schools);

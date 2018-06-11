@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xiangxing.mapper.ProductMapper" >
   <resultMap id="BaseResultMap" type="com.xiangxing.model.Product" >
-    <result column="id" property="id" jdbcType="VARCHAR" />
-    <result column="student_course_id" property="studentCourseId" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="student_course_id" property="studentCourseId" jdbcType="BIGINT" />
     <result column="作品名称" property="作品名称" jdbcType="VARCHAR" />
     <result column="product_url" property="productUrl" jdbcType="VARCHAR" />
   </resultMap>
@@ -82,6 +82,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
   <delete id="deleteByExample" parameterType="com.xiangxing.model.ProductExample" >
     delete from t_product
     <if test="_parameter != null" >
@@ -91,7 +101,7 @@
   <insert id="insert" parameterType="com.xiangxing.model.Product" >
     insert into t_product (id, student_course_id, 作品名称, 
       product_url)
-    values (#{id,jdbcType=VARCHAR}, #{studentCourseId,jdbcType=VARCHAR}, #{作品名称,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{studentCourseId,jdbcType=BIGINT}, #{作品名称,jdbcType=VARCHAR}, 
       #{productUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Product" >
@@ -112,10 +122,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="studentCourseId != null" >
-        #{studentCourseId,jdbcType=VARCHAR},
+        #{studentCourseId,jdbcType=BIGINT},
       </if>
       <if test="作品名称 != null" >
         #{作品名称,jdbcType=VARCHAR},
@@ -135,10 +145,10 @@
     update t_product
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=VARCHAR},
+        id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.studentCourseId != null" >
-        student_course_id = #{record.studentCourseId,jdbcType=VARCHAR},
+        student_course_id = #{record.studentCourseId,jdbcType=BIGINT},
       </if>
       <if test="record.作品名称 != null" >
         作品名称 = #{record.作品名称,jdbcType=VARCHAR},
@@ -153,12 +163,34 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update t_product
-    set id = #{record.id,jdbcType=VARCHAR},
-      student_course_id = #{record.studentCourseId,jdbcType=VARCHAR},
+    set id = #{record.id,jdbcType=BIGINT},
+      student_course_id = #{record.studentCourseId,jdbcType=BIGINT},
       作品名称 = #{record.作品名称,jdbcType=VARCHAR},
       product_url = #{record.productUrl,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xiangxing.model.Product" >
+    update t_product
+    <set >
+      <if test="studentCourseId != null" >
+        student_course_id = #{studentCourseId,jdbcType=BIGINT},
+      </if>
+      <if test="作品名称 != null" >
+        作品名称 = #{作品名称,jdbcType=VARCHAR},
+      </if>
+      <if test="productUrl != null" >
+        product_url = #{productUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xiangxing.model.Product" >
+    update t_product
+    set student_course_id = #{studentCourseId,jdbcType=BIGINT},
+      作品名称 = #{作品名称,jdbcType=VARCHAR},
+      product_url = #{productUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

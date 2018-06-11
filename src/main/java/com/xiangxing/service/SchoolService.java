@@ -9,8 +9,8 @@ public interface SchoolService {
 
 	public List<School> searchSchools(School school);
 
-	public void editSchool(School school, int schoolId);
+	public void editSchool(School school, Long schoolId);
 
-	public void destroySchool(int schoolId);
+	public void destroySchool(Long schoolId);
 
 }

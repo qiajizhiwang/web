@@ -58,7 +58,7 @@ public class StudentController extends BaseController {
 	}
 
 	@RequestMapping("/destroyStudent")
-	public void destroystudent(Integer studentId) {
+	public void destroystudent(Long studentId) {
 		studentMapper.deleteByPrimaryKey(studentId);
 		writeToOkResponse();
 	}

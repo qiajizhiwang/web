@@ -10,7 +10,7 @@ public interface ExamMapper {
 
     int deleteByExample(ExamExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(Exam record);
 
@@ -20,7 +20,7 @@ public interface ExamMapper {
 
     List<Exam> selectByExample(ExamExample example);
 
-    Exam selectByPrimaryKey(Integer id);
+    Exam selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") Exam record, @Param("example") ExamExample example);
 
