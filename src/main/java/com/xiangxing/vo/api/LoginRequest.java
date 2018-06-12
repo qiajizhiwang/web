@@ -6,6 +6,7 @@ public class LoginRequest {
 
 	private String password;
 
+/*	1 老师 2学生*/
 	private int type;
 
 	public String getName() {

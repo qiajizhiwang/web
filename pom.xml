@@ -4,7 +4,7 @@
 	<groupId>com.xiangxing</groupId>
 	<artifactId>web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -102,6 +102,10 @@
 
 	<build>
 		<plugins>
+		<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<groupId>org.mybatis.generator</groupId>
 				<artifactId>mybatis-generator-maven-plugin</artifactId>
