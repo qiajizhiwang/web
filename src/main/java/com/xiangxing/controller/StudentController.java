@@ -16,6 +16,7 @@ import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentExample;
+import com.xiangxing.utils.MD5Util;
 
 @Controller
 @RequestMapping("/student")
@@ -31,6 +32,7 @@ public class StudentController extends BaseController {
 
 	@RequestMapping("/saveStudent")
 	public void savestudent(Student student) {
+		student.setPassword(MD5Util.MD5Encode(student.getPassword()));
 		studentMapper.insertSelective(student);
 		writeToOkResponse();
 	}

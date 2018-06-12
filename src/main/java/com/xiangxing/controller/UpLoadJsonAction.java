@@ -1,7 +1,6 @@
 package com.xiangxing.controller;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -23,6 +22,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xiangxing.controller.admin.BaseController;
+import com.xiangxing.utils.FileUtil;
 
 @Controller
 public class UpLoadJsonAction extends BaseController {
@@ -119,7 +119,7 @@ public class UpLoadJsonAction extends BaseController {
 			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 			String newFileName = df.format(new Date()) + "_" + new Random().nextInt(1000) + "." + fileExt;
 			try {
-				uploadFile(file.getBytes(), savePath, newFileName);
+				FileUtil.uploadFile(file.getBytes(), savePath, newFileName);
 			} catch (Exception e) {
 				out.println(getError("上传文件失败。"));
 				return;
@@ -129,17 +129,6 @@ public class UpLoadJsonAction extends BaseController {
 			obj.put("url", saveUrl + newFileName);
 			out.println(obj.toJSONString());
 		}
-	}
-
-	public static void uploadFile(byte[] file, String filePath, String fileName) throws Exception {
-		File targetFile = new File(filePath);
-		if (!targetFile.exists()) {
-			targetFile.mkdirs();
-		}
-		FileOutputStream out = new FileOutputStream(filePath + fileName);
-		out.write(file);
-		out.flush();
-		out.close();
 	}
 
 	// 上传报错的提示方法

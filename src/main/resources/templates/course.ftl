@@ -23,8 +23,9 @@
 			<tr>
 				<th field="name" width="50" editor="{type:'validatebox',options:{required:true}}">课程名称</th>
 				<th field="teacherId" width="50" editor="{type:'validatebox',options:{required:true}}">教师ID</th>
-				<th field="curriculumTime" width="50" editor="text">开课时间</th>
+				<th field="showCurriculumTime" width="50" editor="text">开课时间</th>
 				<th field="schoolTime" width="50" editor="text">上课时间</th>
+				<th field="imageUrl" width="50" editor="img">图片</th>
 				<th field="comment" width="50" editor="text">课程介绍</th>
 			</tr>
 		</thead>
@@ -42,7 +43,7 @@
 	
 	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
-		<form id="fm" method="post">
+		<form id="fm" method="post" enctype="multipart/form-data">
 			<table cellpadding="5">
 			<tr>
 				<td>课程名称</td>
@@ -64,17 +65,21 @@
 </td>   
 	        </tr>
 	        
-			<!-- <tr>
+			<tr>
 				<td>开课时间</td>
-				<input name="curriculumTime" class="easyui-textbox"></td>
-			</tr> -->
+				<td><input name="showCurriculumTime" class="easyui-datebox"></td>
+			</tr>
 			<tr>
 				<td>上课时间</td>
 				<td><input name="schoolTime" class="easyui-textbox"></td>
 			</tr>
 			<tr>
+				<td>照片</td>
+				<td><input name="file" class="easyui-filebox" data-options="prompt:'Choose a file...'" style="width:100%"></td>
+			</tr>
+			<tr>
 				<td>课程介绍</td>
-				<td><input name="comment" class="easyui-textbox"></td>
+				<td><input name="comment" class="easyui-textbox" data-options="multiline:true" style="width:100%;height:100px"></td>
 			</tr>
 			</table>
 		</form>
@@ -135,7 +140,7 @@ $('#teacherCombox').combobox({
 		if (row){
 			$('#dlg').dialog('open').dialog('setTitle','Edit User');
 			$('#fm').form('load',row);
-			url = 'editCourse?courseId='+row.id;
+			url = 'editCourse?id='+row.id;
 		}
 	}
 	

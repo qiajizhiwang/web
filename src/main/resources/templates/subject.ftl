@@ -70,7 +70,7 @@
 		if (row){
 			$('#dlg').dialog('open').dialog('setTitle','Edit User');
 			$('#fm').form('load',row);
-			url = 'editSubject?subjectId='+row.subjectId;
+			url = 'editSubject?subjectId='+row.id;
 		}
 	}
 	
@@ -79,7 +79,7 @@
 		if (row){
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
 				if (r){
-					$.post('destroySubject',{subjectId:row.subjectId},function(result){
+					$.post('destroySubject',{subjectId:row.id},function(result){
 						if (result.code==10000){
 							$('#dg').datagrid('reload');	// reload the user data
 						} else {
