@@ -57,7 +57,7 @@
 	    		<tr>
 	    			<td>学校:</td>
 	    			<td>
-            <@selects.select id="schoolId" datas=schools key="schoolId" text="name"  defaultValue=defaultValue/> 
+            <@selects.select id="schoolId" datas=schools key="id" text="name"  defaultValue=defaultValue/> 
 	    			</td>
 	    		</tr>
 	    	
