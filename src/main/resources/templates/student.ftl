@@ -37,7 +37,7 @@
 		</thead>
 	</table>
 	<div id="toolbar">
-		<span>老师姓名</span>
+		<span>学生姓名</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
 		<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newStudent()">新增</a>
@@ -45,7 +45,7 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyStudent()">删除</a>
 	</div>
 	
-	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+	<div id="dlg" class="easyui-dialog" style="width:400px;height:500px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post">
 			<table cellpadding="5">
@@ -124,7 +124,7 @@
 		if (row){
 			$('#dlg').dialog('open').dialog('setTitle','Edit User');
 			$('#fm').form('load',row);
-			url = 'editStudent?studentId='+row.studentId;
+			url = 'editStudent?studentId='+row.id;
 		}
 	}
 	
@@ -133,7 +133,7 @@
 		if (row){
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
 				if (r){
-					$.post('destroyStudent',{studentId:row.studentId},function(result){
+					$.post('destroyStudent',{studentId:row.id},function(result){
 						if (result.code==10000){
 							$('#dg').datagrid('reload');	// reload the user data
 						} else {

@@ -16,21 +16,15 @@ public interface ExamMapper {
 
     int insertSelective(Exam record);
 
-    List<Exam> selectByExampleWithBLOBs(ExamExample example);
-
     List<Exam> selectByExample(ExamExample example);
 
     Exam selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") Exam record, @Param("example") ExamExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") Exam record, @Param("example") ExamExample example);
-
     int updateByExample(@Param("record") Exam record, @Param("example") ExamExample example);
 
     int updateByPrimaryKeySelective(Exam record);
-
-    int updateByPrimaryKeyWithBLOBs(Exam record);
 
     int updateByPrimaryKey(Exam record);
 }

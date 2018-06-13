@@ -11,9 +11,9 @@ public class Exam {
 
     private String examTime;
 
-    private String openFlag;
+    private String examAddress;
 
-    private byte[] examAddress;
+    private String openFlag;
 
     public Long getId() {
         return id;
@@ -55,19 +55,19 @@ public class Exam {
         this.examTime = examTime;
     }
 
+    public String getExamAddress() {
+        return examAddress;
+    }
+
+    public void setExamAddress(String examAddress) {
+        this.examAddress = examAddress;
+    }
+
     public String getOpenFlag() {
         return openFlag;
     }
 
     public void setOpenFlag(String openFlag) {
         this.openFlag = openFlag;
-    }
-
-    public byte[] getExamAddress() {
-        return examAddress;
-    }
-
-    public void setExamAddress(byte[] examAddress) {
-        this.examAddress = examAddress;
     }
 }

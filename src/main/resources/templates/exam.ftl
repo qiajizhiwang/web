@@ -22,7 +22,7 @@
 		<thead>
 			<tr>
 				<th field="id" width="50" editor="{type:'validatebox',options:{required:true}}">考试ID</th>
-				<th field="subjectId" width="50" editor="{type:'validatebox',options:{required:true}}">科目ID</th>
+				<th field="subjectName" width="50" editor="{type:'validatebox',options:{required:true}}">科目</th>
 				<th field="rank" width="50" editor="text">考试级别</th>
 				<th field="money" width="50" editor="text">考试费用</th>
 				<th field="examTime" width="50" editor="text">考试时间</th>
@@ -32,7 +32,7 @@
 		</thead>
 	</table>
 	<div id="toolbar">
-		<span>老师姓名</span>
+		<span>科目</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
 		<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newExam()">新增</a>
@@ -40,33 +40,37 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyExam()">删除</a>
 	</div>
 	
-	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+	<div id="dlg" class="easyui-dialog" style="width:400px;height:500px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post">
-			<div class="fitem">
-				<label>科目ID</label>
-				<input name="subjectId" class="easyui-validatebox" required="true">
-			</div>
-			<div class="fitem">
-				<label>考试级别</label>
-				<input name="rank" class="easyui-validatebox" required="true">
-			</div>
-			<div class="fitem">
-				<label>考试费用</label>
-				<input name="money">
-			</div>
-			<div class="fitem">
-				<label>考试时间</label>
-				<input name="examTime">
-			</div>
-			<div class="fitem">
-				<label>考试地点</label>
-				<input name="examAddress">
-			</div>
-			<div class="fitem">
-				<label>是否开放报名</label>
-				<input name="openFlag">
-			</div>
+			<table cellpadding="5">
+			<tr>
+				<td>科目</td>
+				<td>
+				<input id="subjectId" class="easyui-combobox" name="subjectId" data-options="valueField:'id',textField:'name',url:'../subject/comboboxData'">
+				</td>
+			</tr>
+			<tr>
+				<td>考试级别</td>
+				<td><input name="rank" class="easyui-textbox" required="true"></td>
+			</tr>
+			<tr>
+				<td>考试费用</td>
+				<td><input name="money" class="easyui-textbox" ></td>
+			</tr>
+			<tr>
+				<td>考试时间</td>
+				<td><input name="examTime" class="easyui-textbox" ></td>
+			</tr>
+			<tr>
+				<td>考试地点</td>
+				<td><input name="examAddress" class="easyui-textbox" ></td>
+			</tr>
+			<tr>
+				<td>是否开放报名</td>
+				<td><input name="openFlag" class="easyui-textbox" ></td>
+			</tr>
+			</table>
 		</form>
 	</div>
 	<div id="dlg-buttons">
@@ -93,7 +97,7 @@
 		if (row){
 			$('#dlg').dialog('open').dialog('setTitle','Edit User');
 			$('#fm').form('load',row);
-			url = 'editExam?examId='+row.examId;
+			url = 'editExam?examId='+row.id;
 		}
 	}
 	
@@ -102,7 +106,7 @@
 		if (row){
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
 				if (r){
-					$.post('destroyExam',{examId:row.examId},function(result){
+					$.post('destroyExam',{examId:row.id},function(result){
 						if (result.code==10000){
 							$('#dg').datagrid('reload');	// reload the user data
 						} else {

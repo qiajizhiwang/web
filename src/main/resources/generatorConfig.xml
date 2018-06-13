@@ -17,8 +17,8 @@
 		</commentGenerator>
 
 		<jdbcConnection
-			connectionURL="jdbc:mysql://rm-m5e2p875dww1c6f30o.mysql.rds.aliyuncs.com:3306/wisdom_classroom?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnectForPools=true"
-			driverClass="com.mysql.jdbc.Driver" password="tongyuan2512#" userId="gocheck_root" />
+			connectionURL="jdbc:mysql://120.78.211.181:3306/xiangxing?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnectForPools=true"
+			driverClass="com.mysql.jdbc.Driver" password="123456" userId="root" />
 		<javaModelGenerator targetPackage="com.xiangxing.model"
 			targetProject="src/main/java" />
 		<sqlMapGenerator targetPackage="com.xiangxing.mapper"

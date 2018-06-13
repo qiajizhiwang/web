@@ -22,7 +22,8 @@
 		<thead>
 			<tr>
 				<th field="name" width="50" editor="{type:'validatebox',options:{required:true}}">课程名称</th>
-				<th field="teacherId" width="50" editor="{type:'validatebox',options:{required:true}}">教师ID</th>
+				<th field="schoolName" width="50" editor="{type:'validatebox',options:{required:true}}">学校名称</th>
+				<th field="teacherName" width="50" editor="{type:'validatebox',options:{required:true}}">教师名称</th>
 				<th field="showCurriculumTime" width="50" editor="text">开课时间</th>
 				<th field="schoolTime" width="50" editor="text">上课时间</th>
 				<th field="imageUrl" width="50" editor="img">图片</th>
@@ -32,8 +33,8 @@
 	</table>
 	<div id="toolbar">
 		<span>学校</span>
-		<input id="schoolId" class="easyui-combobox" name="schoolId" data-options="valueField:'id',textField:'name',url:'../school/comboboxData'">
-		<span>老师姓名</span>
+		<input id="searchrSchoolId" class="easyui-combobox" name="searchrSchoolId" data-options="valueField:'id',textField:'name',url:'../school/comboboxData'">
+		<span>课程姓名</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
 		<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCourse()">新增</a>
@@ -41,7 +42,7 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyCourse()">删除</a>
 	</div>
 	
-	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+	<div id="dlg" class="easyui-dialog" style="width:400px;height:500px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post" enctype="multipart/form-data">
 			<table cellpadding="5">
@@ -118,9 +119,8 @@ $('#teacherCombox').combobox({
     onSelect : function(data){  
         $('#teacherId').val(data.id);  
     }  
-});  
-
-
+}); 
+ 
     });
     
 	 function doSearch(){

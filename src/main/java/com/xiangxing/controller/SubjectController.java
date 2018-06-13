@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.BaseController;
@@ -54,7 +55,8 @@ public class SubjectController extends BaseController {
 	}
 
 	@RequestMapping("/editSubject")
-	public void editsubject(Subject subject, String subjectId) {
+	public void editsubject(Subject subject, Long subjectId) {
+		subject.setId(subjectId);
 		subjectMapper.updateByPrimaryKeySelective(subject);
 		writeToOkResponse();
 	}
@@ -65,4 +67,12 @@ public class SubjectController extends BaseController {
 		writeToOkResponse();
 	}
 
+	@RequestMapping("/comboboxData")
+	@ResponseBody
+	public String comboboxData(PageRequest pageRequest, String name) {
+		SubjectExample subjectExample = new SubjectExample();
+		List<Subject> subjects = subjectMapper.selectByExample(subjectExample);
+		return JSON.toJSONString(subjects);
+
+	}
 }

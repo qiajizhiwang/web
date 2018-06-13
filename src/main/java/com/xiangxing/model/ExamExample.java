@@ -424,6 +424,76 @@ public class ExamExample {
             return (Criteria) this;
         }
 
+        public Criteria andExamAddressIsNull() {
+            addCriterion("exam_address is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressIsNotNull() {
+            addCriterion("exam_address is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressEqualTo(String value) {
+            addCriterion("exam_address =", value, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressNotEqualTo(String value) {
+            addCriterion("exam_address <>", value, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressGreaterThan(String value) {
+            addCriterion("exam_address >", value, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressGreaterThanOrEqualTo(String value) {
+            addCriterion("exam_address >=", value, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressLessThan(String value) {
+            addCriterion("exam_address <", value, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressLessThanOrEqualTo(String value) {
+            addCriterion("exam_address <=", value, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressLike(String value) {
+            addCriterion("exam_address like", value, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressNotLike(String value) {
+            addCriterion("exam_address not like", value, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressIn(List<String> values) {
+            addCriterion("exam_address in", values, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressNotIn(List<String> values) {
+            addCriterion("exam_address not in", values, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressBetween(String value1, String value2) {
+            addCriterion("exam_address between", value1, value2, "examAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamAddressNotBetween(String value1, String value2) {
+            addCriterion("exam_address not between", value1, value2, "examAddress");
+            return (Criteria) this;
+        }
+
         public Criteria andOpenFlagIsNull() {
             addCriterion("open_flag is null");
             return (Criteria) this;

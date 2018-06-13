@@ -56,7 +56,8 @@ public class StudentController extends BaseController {
 	}
 
 	@RequestMapping("/editStudent")
-	public void editstudent(Student student, String studentId) {
+	public void editstudent(Student student, Long studentId) {
+		student.setId(studentId);
 		studentMapper.updateByPrimaryKeySelective(student);
 		writeToOkResponse();
 	}

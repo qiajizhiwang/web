@@ -23,6 +23,7 @@ import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.controller.admin.PageRequest;
 import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.CourseMapper;
+import com.xiangxing.mapper.ex.CourseMapperEx;
 import com.xiangxing.model.Course;
 import com.xiangxing.model.CourseExample;
 import com.xiangxing.model.ex.CourseEx;
@@ -41,6 +42,8 @@ public class CourseController extends BaseController {
 
 	@Autowired
 	private CourseMapper courseMapper;
+	@Autowired
+	private CourseMapperEx courseMapperEx;
 
 	// 最大文件大小
 	long maxSize = 1000000;
@@ -134,18 +137,10 @@ public class CourseController extends BaseController {
 
 	@RequestMapping("/courseList")
 	@ResponseBody
-	public PageResponse<CourseEx> courseList(PageRequest pageRequest, String name) {
+	public PageResponse<CourseEx> courseList(PageRequest pageRequest, String name, String searchrSchoolId) {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
-		CourseExample courseExample = new CourseExample();
-		if (StringUtils.isNotBlank(name)) {
-			name = "%" + name + "%";
-			courseExample.createCriteria().andNameLike(name);
-
-		}
-
-		List<Course> courses = courseMapper.selectByExample(courseExample);
-		List<CourseEx> courseExs = JSON.parseArray(JSON.toJSONString(courses), CourseEx.class);
+		List<CourseEx> courseExs = courseMapperEx.courseList(name, searchrSchoolId);
 		for (CourseEx courseEx : courseExs) {
 			courseEx.setShowCurriculumTime(DateUtil.dateToString(courseEx.getCurriculumTime(), DateUtil.patternG));
 		}

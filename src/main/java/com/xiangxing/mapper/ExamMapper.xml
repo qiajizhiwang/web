@@ -7,10 +7,8 @@
     <result column="rank" property="rank" jdbcType="VARCHAR" />
     <result column="money" property="money" jdbcType="DECIMAL" />
     <result column="exam_time" property="examTime" jdbcType="VARCHAR" />
+    <result column="exam_address" property="examAddress" jdbcType="VARCHAR" />
     <result column="open_flag" property="openFlag" jdbcType="VARCHAR" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.xiangxing.model.Exam" extends="BaseResultMap" >
-    <result column="exam_address" property="examAddress" jdbcType="VARBINARY" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,27 +69,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, subject_id, rank, money, exam_time, open_flag
+    id, subject_id, rank, money, exam_time, exam_address, open_flag
   </sql>
-  <sql id="Blob_Column_List" >
-    exam_address
-  </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.xiangxing.model.ExamExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from t_exam
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.ExamExample" >
     select
     <if test="distinct" >
@@ -106,11 +85,9 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from t_exam
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -126,11 +103,11 @@
   </delete>
   <insert id="insert" parameterType="com.xiangxing.model.Exam" >
     insert into t_exam (id, subject_id, rank, 
-      money, exam_time, open_flag, 
-      exam_address)
+      money, exam_time, exam_address, 
+      open_flag)
     values (#{id,jdbcType=BIGINT}, #{subjectId,jdbcType=BIGINT}, #{rank,jdbcType=VARCHAR}, 
-      #{money,jdbcType=DECIMAL}, #{examTime,jdbcType=VARCHAR}, #{openFlag,jdbcType=VARCHAR}, 
-      #{examAddress,jdbcType=VARBINARY})
+      #{money,jdbcType=DECIMAL}, #{examTime,jdbcType=VARCHAR}, #{examAddress,jdbcType=VARCHAR}, 
+      #{openFlag,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Exam" >
     insert into t_exam
@@ -150,11 +127,11 @@
       <if test="examTime != null" >
         exam_time,
       </if>
-      <if test="openFlag != null" >
-        open_flag,
-      </if>
       <if test="examAddress != null" >
         exam_address,
+      </if>
+      <if test="openFlag != null" >
+        open_flag,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -173,11 +150,11 @@
       <if test="examTime != null" >
         #{examTime,jdbcType=VARCHAR},
       </if>
+      <if test="examAddress != null" >
+        #{examAddress,jdbcType=VARCHAR},
+      </if>
       <if test="openFlag != null" >
         #{openFlag,jdbcType=VARCHAR},
-      </if>
-      <if test="examAddress != null" >
-        #{examAddress,jdbcType=VARBINARY},
       </if>
     </trim>
   </insert>
@@ -205,26 +182,13 @@
       <if test="record.examTime != null" >
         exam_time = #{record.examTime,jdbcType=VARCHAR},
       </if>
+      <if test="record.examAddress != null" >
+        exam_address = #{record.examAddress,jdbcType=VARCHAR},
+      </if>
       <if test="record.openFlag != null" >
         open_flag = #{record.openFlag,jdbcType=VARCHAR},
       </if>
-      <if test="record.examAddress != null" >
-        exam_address = #{record.examAddress,jdbcType=VARBINARY},
-      </if>
     </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update t_exam
-    set id = #{record.id,jdbcType=BIGINT},
-      subject_id = #{record.subjectId,jdbcType=BIGINT},
-      rank = #{record.rank,jdbcType=VARCHAR},
-      money = #{record.money,jdbcType=DECIMAL},
-      exam_time = #{record.examTime,jdbcType=VARCHAR},
-      open_flag = #{record.openFlag,jdbcType=VARCHAR},
-      exam_address = #{record.examAddress,jdbcType=VARBINARY}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -236,6 +200,7 @@
       rank = #{record.rank,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DECIMAL},
       exam_time = #{record.examTime,jdbcType=VARCHAR},
+      exam_address = #{record.examAddress,jdbcType=VARCHAR},
       open_flag = #{record.openFlag,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -256,23 +221,13 @@
       <if test="examTime != null" >
         exam_time = #{examTime,jdbcType=VARCHAR},
       </if>
+      <if test="examAddress != null" >
+        exam_address = #{examAddress,jdbcType=VARCHAR},
+      </if>
       <if test="openFlag != null" >
         open_flag = #{openFlag,jdbcType=VARCHAR},
       </if>
-      <if test="examAddress != null" >
-        exam_address = #{examAddress,jdbcType=VARBINARY},
-      </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xiangxing.model.Exam" >
-    update t_exam
-    set subject_id = #{subjectId,jdbcType=BIGINT},
-      rank = #{rank,jdbcType=VARCHAR},
-      money = #{money,jdbcType=DECIMAL},
-      exam_time = #{examTime,jdbcType=VARCHAR},
-      open_flag = #{openFlag,jdbcType=VARCHAR},
-      exam_address = #{examAddress,jdbcType=VARBINARY}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.xiangxing.model.Exam" >
@@ -281,6 +236,7 @@
       rank = #{rank,jdbcType=VARCHAR},
       money = #{money,jdbcType=DECIMAL},
       exam_time = #{examTime,jdbcType=VARCHAR},
+      exam_address = #{examAddress,jdbcType=VARCHAR},
       open_flag = #{openFlag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>

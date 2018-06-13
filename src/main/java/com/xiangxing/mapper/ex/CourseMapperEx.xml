@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiangxing.mapper.ex.CourseMapperEx" >
+  
+  <resultMap id="BaseResultMap" type="com.xiangxing.model.ex.CourseEx" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="teacher_id" property="teacherId" jdbcType="VARCHAR" />
+    <result column="curriculum_time" property="curriculumTime" jdbcType="TIMESTAMP" />
+    <result column="school_time" property="schoolTime" jdbcType="VARCHAR" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="teacherName" property="teacherName" jdbcType="VARCHAR" />
+    <result column="schoolName" property="schoolName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="courseList" resultMap="BaseResultMap">
+    select t1.*,t2.`name` AS teacherName,t3.`name` AS schoolName from t_course t1 
+JOIN t_teacher t2 ON t1.teacher_id=t2.id
+JOIN t_school t3 ON t2.school_id=t3.id
+WHERE 1=1
+    <if test="name != null" >
+AND t1.`name` LIKE CONCAT('%',#{name},'%')
+    </if>
+    <if test="schoolId != null" >
+AND t3.id=#{schoolId}
+    </if>
+  </select>
+  <update id="updateByPrimaryKey" parameterType="com.xiangxing.model.Course" >
+    update t_course
+    set name = #{name,jdbcType=VARCHAR},
+      teacher_id = #{teacherId,jdbcType=VARCHAR},
+      curriculum_time = #{curriculumTime,jdbcType=TIMESTAMP},
+      school_time = #{schoolTime,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
