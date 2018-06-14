@@ -14,6 +14,8 @@ public class MenuVo implements Comparable<MenuVo>{
 
 	private int no;
 	
+	private boolean checked;
+	
 	private Set<MenuVo> children = new TreeSet<>();
 
 	public Long getId() {
@@ -64,6 +66,14 @@ public class MenuVo implements Comparable<MenuVo>{
 	public int compareTo(MenuVo o) {
 		// TODO Auto-generated method stub
 		return this.no < o.no?-1:1;
+	}
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 
 }

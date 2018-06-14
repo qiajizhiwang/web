@@ -31,6 +31,7 @@ import com.xiangxing.model.UserMenu;
 import com.xiangxing.model.UserMenuExample;
 import com.xiangxing.vo.MenuVo;
 import com.xiangxing.vo.MyMenuVo;
+import com.xiangxing.vo.api.ApiResponse;
 
 @Controller
 @RequestMapping("/system")
@@ -59,17 +60,17 @@ public class SystemController {
 	@ResponseBody
 	public PageResponse<User> userList(PageRequest pageRequest, String name, Model model) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
-		if (null== me){
+		if (null == me) {
 			me = new User();
 			me.setType(0);
 		}
-		
-		Long schoolId = me.getSchoolId(); 
+
+		Long schoolId = me.getSchoolId();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		UserExample UserExample = new UserExample();
 		Criteria criteria = UserExample.createCriteria();
-		if (me.getType()!= 0 )
-		criteria.andSchoolIdEqualTo(schoolId);
+		if (me.getType() != 0)
+			criteria.andSchoolIdEqualTo(schoolId);
 		if (StringUtils.isNotBlank(name)) {
 			name = "%" + name + "%";
 			criteria.andNameLike(name);
@@ -83,9 +84,9 @@ public class SystemController {
 
 	@RequestMapping("/addUser")
 	@ResponseBody
-	public String addUser(User user, String menus) {
+	public ApiResponse addUser(User user, String menus) {
 		user.setPassword(
-				new SimpleHash( "MD5",user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());
+				new SimpleHash("MD5", user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());
 		userMapper.insert(user);
 		for (String menu : menus.split(",")) {
 			UserMenu userMenu = new UserMenu();
@@ -94,7 +95,35 @@ public class SystemController {
 			userMenuMapper.insert(userMenu);
 		}
 
-		return "";
+		return new ApiResponse();
+	}
+
+	@RequestMapping("/editUser")
+	@ResponseBody
+	public ApiResponse editUser(User user, String menus) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+
+		// if (user.getSchoolId() != me.getSchoolId()) {
+		// return ApiResponse.getErrorResponse("");
+		// }
+		if (StringUtils.isNotBlank(user.getPassword())) {
+			user.setPassword(
+					new SimpleHash("MD5", user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());
+		}
+		userMapper.updateByPrimaryKey(user);
+		UserMenuExample example = new UserMenuExample();
+		example.createCriteria().andUserIdEqualTo(user.getId());
+		userMenuMapper.deleteByExample(example);
+		if (StringUtils.isNoneBlank(menus)) {
+			for (String menu : menus.split(",")) {
+				UserMenu userMenu = new UserMenu();
+				userMenu.setUserId(user.getId());
+				userMenu.setMenuId(Long.valueOf(menu));
+				userMenuMapper.insert(userMenu);
+			}
+		}
+
+		return new ApiResponse();
 	}
 
 	@RequestMapping("/menu")
@@ -165,9 +194,9 @@ public class SystemController {
 		return new TreeSet(menuMap.values());
 	}
 
-	@RequestMapping("/myMenu")
+	@RequestMapping("/defaultMenu")
 	@ResponseBody
-	public Set<MenuVo> myMenu() {
+	public Set<MyMenuVo> defaultMenu() {
 		MenuExample example = new MenuExample();
 		// 为超级还是普通 if
 
@@ -196,5 +225,29 @@ public class SystemController {
 		return menus;
 	}
 
-}
+	@RequestMapping("/myMenu")
+	@ResponseBody
+	public Set<MyMenuVo> myMenu(long userId) {
 
+		Set<MyMenuVo> allMenus = defaultMenu();
+
+		UserMenuExample example = new UserMenuExample();
+		example.createCriteria().andUserIdEqualTo(userId);
+		List<Long> ids = new ArrayList<>();
+		List<UserMenu> rows = userMenuMapper.selectByExample(example);
+		for (UserMenu m : rows) {
+			ids.add(m.getMenuId());
+		}
+		List<Menu> menus = new ArrayList();
+		for (MyMenuVo menuVo : allMenus) {
+			for (MyMenuVo menuVo1 : menuVo.getChildren()) {
+				if (!ids.contains(menuVo1.getId())) {
+					menuVo1.setChecked(false);
+				}
+			}
+
+		}
+		return allMenus;
+	}
+
+}
