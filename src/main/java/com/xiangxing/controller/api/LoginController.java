@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.TeacherMapper;
 import com.xiangxing.model.Student;
@@ -30,7 +31,6 @@ public class LoginController {
 	@Autowired
 	private StudentMapper mapper;
 
-	private Map<String, LoginInfo> loginInfos = new ConcurrentHashMap<>();
 
 	@RequestMapping("/login")
 	public ApiResponse login(LoginRequest loginRequest) {
@@ -45,7 +45,7 @@ public class LoginController {
 					LoginResponse loginResponse = new LoginResponse();
 					String token = UUID.randomUUID().toString().replace("-", "");
 					loginResponse.setToken(token);
-					loginInfos.put(token, new LoginInfo(teacher.getId(), 1));
+					TokenManager.setUser(token, new LoginInfo(teacher.getId(), 1));
 					return loginResponse;
 				}
 			}
@@ -59,7 +59,7 @@ public class LoginController {
 					LoginResponse loginResponse = new LoginResponse();
 					String token = UUID.randomUUID().toString().replace("-", "");
 					loginResponse.setToken(token);
-					loginInfos.put(token, new LoginInfo(student.getId(), 1));
+					TokenManager.setUser(token, new LoginInfo(student.getId(), 2));
 					return loginResponse;
 				}
 			}

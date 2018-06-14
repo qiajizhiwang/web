@@ -14,6 +14,10 @@ public class ApiResponse {
 	public static ApiResponse getErrorResponse(String memo) {
 		return new ApiResponse(-1, memo);
 	}
+	
+	public static ApiResponse getTokenErrorResponse(String memo) {
+		return new ApiResponse(1, memo);
+	}
 
 	private int status = 0;
 
