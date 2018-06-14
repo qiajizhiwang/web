@@ -49,7 +49,9 @@
 			<table cellpadding="5">
 			<tr>
 				<td>学校代码</td>
-				<td><input name="code" class="easyui-textbox" required="true"></td>
+				<td><input name="code" class="easyui-numberbox" data-options="min:10000,required:true"
+							validType="remote['validateCode','code']"   
+                            missingMessage="学校代码不能空" invalidMessage="学校代码已存在"></td>
 			</tr>
 			<tr>
 				<td><label>学校名称</label>
@@ -63,16 +65,10 @@
 				<td><label>联系人</label></td>
 				<td><input name="linkman" class="easyui-textbox"></td>
 			</tr>
-			<!-- 
-			<tr>
-				<td><label>学校介绍</label></td>
-				<td><input name="comment" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:200px"></td>
-			</tr>
-			-->
 			<tr>
 				<td><label>学校介绍</label></td>
 				<td>
-				<textarea rows="3" style="width:800px;height:400px;" id="comment" name="comment" class="easyui-validatebox" data-options="required:true,validType:'length[1,1000000]'" invalidMessage="最大长度不能超过1000000""></textarea>
+				<textarea rows="3" style="width:800px;height:400px;" id="comment" name="comment" class="easyui-validatebox" data-options="validType:'length[1,1000000]'" invalidMessage="最大长度不能超过1000000"></textarea>
 				</td>
 			</tr>
 			</table>
@@ -131,6 +127,12 @@
 	function editSchool(){
 		var row = $('#dg').datagrid('getSelected');
 		
+		$.post('editSchoolCode',{code:row.code},function(result){
+						if (result.code==10000){
+						} else {
+						}
+					},'json');
+					
 		KindEditor.html('#comment',row.comment);  
 		
 		if (row){

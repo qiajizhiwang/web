@@ -1,5 +1,6 @@
 package com.xiangxing.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,7 @@ import com.xiangxing.model.School;
 import com.xiangxing.model.SchoolExample;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
+import com.xiangxing.model.ex.TeacherEx;
 import com.xiangxing.utils.MD5Util;
 
 @Controller
@@ -46,10 +48,10 @@ public class TeacherController extends BaseController {
 
 	@RequestMapping("/teacher")
 	public String teacher(Model model) {
-		SchoolExample schoolExample = new SchoolExample();
-		List<School> schools = schoolMapper.selectByExample(schoolExample);
-		model.addAttribute("schools", schools);
-		model.addAttribute("defaultValue", schools.get(0).getId());
+//		SchoolExample schoolExample = new SchoolExample();
+//		List<School> schools = schoolMapper.selectByExample(schoolExample);
+//		model.addAttribute("schools", schools);
+//		model.addAttribute("defaultValue", schools.get(0).getId());
 		return "teacher";
 	}
 
@@ -62,7 +64,7 @@ public class TeacherController extends BaseController {
 
 	@RequestMapping("/teacherList")
 	@ResponseBody
-	public PageResponse<Teacher> teacherList(PageRequest pageRequest, String name) {
+	public PageResponse<TeacherEx> teacherList(PageRequest pageRequest, String name) {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		TeacherExample teacherExample = new TeacherExample();
@@ -73,8 +75,24 @@ public class TeacherController extends BaseController {
 		}
 
 		List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
+
+		SchoolExample schoolExample = new SchoolExample();
+		List<School> schools = schoolMapper.selectByExample(schoolExample);
+		HashMap<Long, School> maps = new HashMap<Long, School>();
+		for (School school : schools) {
+			maps.put(school.getId(), school);
+		}
+		List<TeacherEx> teacherExs = JSON.parseArray(JSON.toJSONString(teachers), TeacherEx.class);
+		for (TeacherEx teacherEx : teacherExs) {
+			School school = maps.get(teacherEx.getSchoolId());
+			if (school != null) {
+				teacherEx.setSchoolName(school.getName());
+				teacherEx.setSchoolCode(school.getCode());
+			}
+		}
+
 		long total = page.getTotal();
-		return new PageResponse<Teacher>(total, teachers);
+		return new PageResponse<TeacherEx>(total, teacherExs);
 
 	}
 

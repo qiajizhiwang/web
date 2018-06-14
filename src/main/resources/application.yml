@@ -14,3 +14,10 @@ spring:
 
 server:
     port : 80
+
+#文件上传路径
+upload_file_path: d:/workspace/xiangxing/
+
+#系统地址
+sys_url: http://localhost:80/
+

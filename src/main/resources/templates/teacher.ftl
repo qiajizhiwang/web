@@ -21,7 +21,8 @@
 	
 		<thead>
 			<tr>
-				<th field="schoolId" width="50" editor="{type:'validatebox',options:{required:true}}">学校ID</th>
+				<th field="schoolCode" width="50" editor="{type:'validatebox',options:{required:true}}">学校编码</th>
+				<th field="schoolName" width="50" editor="{type:'validatebox',options:{required:true}}">学校</th>
 				<th field="id" width="50" editor="{type:'validatebox',options:{required:true}}">教师ID</th>
 				<th field="name" width="50" editor="text">姓名</th>
 				<th field="phone" width="50" editor="text">电话</th>
@@ -53,7 +54,7 @@
 			</tr>
 			<tr>
 				<td>电话</td>
-				<td><input name="phone" class="easyui-textbox"></td>
+				<td><input name="phone" class="easyui-textbox" data-options="prompt:'请输入正确的手机号码。',validType:'phoneNum'"></td>
 			</tr>
 			<tr>
 				<td>密码</td>
@@ -77,13 +78,36 @@
 </body>
 <script type="text/javascript">
 	
+	$.extend($.fn.validatebox.defaults.rules, {    
+    phoneNum: { //验证手机号   
+        validator: function(value, param){ 
+         return /^1[3-8]+\d{9}$/.test(value);
+        },    
+        message: '请输入正确的手机号码。'   
+    }
+});
+
 	 function doSearch(){
 		$('#dg').datagrid('load',{
 			name: $('#name').val()
 		});
 	}
 
+	function initSchoolCombobox(){
+		$('#schoolId').combobox({
+	        // url:'../school/comboboxData',
+	        // valueField:'id',
+	        // textField:'name',
+			onLoadSuccess: function (data) {
+			if (data) {
+			   $('#schoolId').combobox('setValue',data[0].id);
+			}
+			}
+			});
+	}
+	
 	function newTeacher(){
+		initSchoolCombobox();
 		$('#dlg').dialog('open').dialog('setTitle','新增');
 		$('#fm').form('clear');
 		url = 'saveTeacher';

@@ -75,4 +75,28 @@ public class SchoolController extends BaseController {
 
 	}
 
+	@RequestMapping("/validateCode")
+	@ResponseBody
+	public boolean validateCode(String code) {
+		boolean validateFlag = true;
+		Object schoolCode = request.getSession().getAttribute("schoolCode");
+		if (schoolCode != null && code.equals(String.valueOf(schoolCode))) {
+			return validateFlag;
+		}
+		SchoolExample schoolExample = new SchoolExample();
+		schoolExample.createCriteria().andCodeEqualTo(code);
+		List<School> schools = schoolMapper.selectByExample(schoolExample);
+		if (schools.size() > 0) {
+			validateFlag = false;
+		}
+		return validateFlag;
+
+	}
+
+	@RequestMapping("/editSchoolCode")
+	public void editSchoolCode(String code) {
+		request.getSession().setAttribute("schoolCode", code);
+
+	}
+
 }
