@@ -7,10 +7,23 @@
     <script src="../js/jquery.min.js"></script>
     <script src="../js/jquery.easyui.min.js"></script>
     <script src="../js/easyui-lang-zh_CN.js"></script>
-    
+<script>
+    $.parser.onComplete = function () {
+       closes();
+    } 
+
+    function closes() {
+        $('#loading').fadeOut('normal', function () {
+            $(this).remove();
+        });
+    }
+</script>    
 </head>
 
 <body>
+<div id="loading" style="position:absolute;z-index:1000;top:0px;left:0px;width:100%;height:100%;background:#DDDDDB;text-align :center;padding-top:20%;">
+     <h1><font color="#15428B">加载中....</font></h1>
+</div> 
 	<!-- <table id="dg" class="easyui-datagrid" style="width:100%;height:500px"
 		url="searchStudents"
 		toolbar="#toolbar"
@@ -32,20 +45,20 @@
 				<th field="houseAddress" width="50" editor="text">家庭地址</th>
 				<th field="homeTelephone" width="50" editor="text">父母电话</th>
 				<th field="idCard" width="50" editor="text">身份证号码</th>
-				<th field="status" width="50" editor="text">审核状态</th>
+				<th field="status" width="50" editor="text" data-options="formatter:statusFormatter">审核状态</th>
+				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
 	</table>
 	<div id="toolbar">
 		<span>学生姓名</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
-		<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">搜索</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newStudent()">新增</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editStudent()">编辑</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyStudent()">删除</a>
+	
 	</div>
 	
-	<div id="dlg" class="easyui-dialog" style="width:400px;height:500px;padding:10px 20px"
+	<div id="dlg" class="easyui-dialog" modal="true" style="width:400px;height:500px;padding:10px 20px" data-options="closed: true"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post">
 			<table cellpadding="5">
@@ -104,8 +117,19 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUser()">保存</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">关闭</a>
 	</div>
+
 </body>
 <script type="text/javascript">
+
+ $(document).ready(function(){  
+  $("#dg").datagrid({
+  
+       onLoadSuccess:function(data){  
+      $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
+      }
+      
+  })
+  })
 	
 	 function doSearch(){
 		$('#dg').datagrid('load',{
@@ -119,7 +143,8 @@
 		url = 'saveStudent';
 	}
 	
-	function editStudent(){
+	function editRow(index){
+	$('#dg').datagrid('selectRow',index);
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
 			$('#dlg').dialog('open').dialog('setTitle','Edit User');
@@ -168,5 +193,19 @@
 			}
 		});
 	}
+	
+	function rowFormatter(value,row,index){  
+               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>";  
+ } 
+ 
+ 
+  function statusFormatter(value,row,index){
+ if(value == 0 )  
+     return "停用"
+ else if (value == 1 )   return "启用"
+ } 
+ 
 </script>
+
+
 </html>

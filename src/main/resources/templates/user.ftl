@@ -10,16 +10,29 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery.easyui.min.js"></script>
      <script src="/js/easyui-lang-zh_CN.js"></script>
+     <script>
+    $.parser.onComplete = function () {
+       closes();
+    } 
+
+    function closes() {
+        $('#loading').fadeOut('normal', function () {
+            $(this).remove();
+        });
+    }
+</script>    
 </head>
 <body>
 
-
+<div id="loading" style="position:absolute;z-index:1000;top:0px;left:0px;width:100%;height:100%;background:#DDDDDB;text-align :center;padding-top:20%;">
+     <h1><font color="#15428B">加载中....</font></h1>
+</div> 
 
 <div id="tb" style="padding:3px">
 	<span>账号</span>
 	<input id="name" style="line-height:26px;border:1px solid #ccc">
-	<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>
-	<a href="#" class="easyui-linkbutton" plain="true" onclick="$('#win').window('open')">新增</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">查询</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="$('#win').window('open')">新增</a>
 	
 </div>
 
@@ -30,7 +43,7 @@
 			<tr>
 				<th data-options="field:'id',width:'10%'">ID</th>
 				<th data-options="field:'name',width:'50%'">登录名</th>
-				<th data-options="field:'status',width:'10%'">状态</th>
+				<th data-options="field:'status',width:'10%',formatter:statusFormatter">状态</th>
 				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
@@ -122,6 +135,15 @@
 </body>
 <script type="text/javascript">  
  $(document).ready(function(){  
+ 
+  $("#tt").datagrid({
+  
+       onLoadSuccess:function(data){  
+      $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
+      }
+      
+  })
+ 
  $('#ff').form({
     url: "addUser",
    onSubmit: function(param){
@@ -141,7 +163,7 @@
 		else{
 		alert("新增失败");
 		}
-    }
+    
     }
 });
 
@@ -191,22 +213,31 @@ function submitForm1(){
 	});
 }
 
- function rowFormatter(value,row,index){  
-               return "<a class='easyui-linkbutton' onclick='editRow("+row.id+","+row.name+","+row.status+")' href='javascript:void(0)' >编辑</a>";  
+function rowFormatter(value,row,index){  
+               return "<a class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>";  
  } 
  
-function editRow(id,name,status){
-
-
-        $("#userId").val(id);
-        $("#userName").textbox("setValue",name);
-        $("#userStatus").combobox('setValue',status);
+ 
+ function statusFormatter(value,row,index){
+ if(value == 0 )  
+     return "停用"
+ else if (value == 1 )   return "启用"
+ } 
+ 
+function editRow(index){
+$('#tt').datagrid('selectRow',index);
+	var row = $('#tt').datagrid('getSelected');
+		if (row){
+        $("#userId").val(row.id);
+        $("#userName").textbox("setValue",row.name);
+        $("#userStatus").combobox('setValue',row.status);
     $('#tt2').tree({
-    url:'/system/myMenu?userId='+id,
+    url:'/system/myMenu?userId='+row.id,
     onlyLeafCheck:true,
     checkbox:true
 });
 $('#edit').window('open')
+ }
  }
  
 
