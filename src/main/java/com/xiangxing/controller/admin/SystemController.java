@@ -103,9 +103,9 @@ public class SystemController {
 	public ApiResponse editUser(User user, String menus) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 
-		// if (user.getSchoolId() != me.getSchoolId()) {
-		// return ApiResponse.getErrorResponse("");
-		// }
+		if (user.getSchoolId() != me.getSchoolId()) {
+			return ApiResponse.getErrorResponse("");
+		}
 		if (StringUtils.isNotBlank(user.getPassword())) {
 			user.setPassword(
 					new SimpleHash("MD5", user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());

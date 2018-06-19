@@ -1,13 +1,29 @@
 package com.xiangxing.model;
 
+import java.util.Date;
+
 public class Product {
     private Long id;
 
+    private String name;
+
+    private String path;
+
+    private Date createTime;
+
     private Long studentCourseId;
 
-    private String 作品名称;
+    private Integer layout;
 
-    private String productUrl;
+    private Integer color;
+
+    private Integer subject;
+
+    private String remark;
+
+    private Integer length;
+
+    private Integer width;
 
     public Long getId() {
         return id;
@@ -15,6 +31,30 @@ public class Product {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Long getStudentCourseId() {
@@ -25,19 +65,51 @@ public class Product {
         this.studentCourseId = studentCourseId;
     }
 
-    public String get作品名称() {
-        return 作品名称;
+    public Integer getLayout() {
+        return layout;
     }
 
-    public void set作品名称(String 作品名称) {
-        this.作品名称 = 作品名称;
+    public void setLayout(Integer layout) {
+        this.layout = layout;
     }
 
-    public String getProductUrl() {
-        return productUrl;
+    public Integer getColor() {
+        return color;
     }
 
-    public void setProductUrl(String productUrl) {
-        this.productUrl = productUrl;
+    public void setColor(Integer color) {
+        this.color = color;
+    }
+
+    public Integer getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Integer subject) {
+        this.subject = subject;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Integer getLength() {
+        return length;
+    }
+
+    public void setLength(Integer length) {
+        this.length = length;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
     }
 }

@@ -137,7 +137,7 @@ public class CourseController extends BaseController {
 
 	@RequestMapping("/courseList")
 	@ResponseBody
-	public PageResponse<CourseEx> courseList(PageRequest pageRequest, String name, String searchrSchoolId) {
+	public PageResponse<CourseEx> courseList(PageRequest pageRequest, String name, Long searchrSchoolId) {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		List<CourseEx> courseExs = courseMapperEx.courseList(name, searchrSchoolId);

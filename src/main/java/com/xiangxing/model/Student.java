@@ -2,14 +2,11 @@ package com.xiangxing.model;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Student {
     private Long id;
 
     private String phone;
 
-    @JsonIgnore
     private String password;
 
     private String name;
@@ -35,6 +32,8 @@ public class Student {
     private String idCard;
 
     private Integer status;
+
+    private Long schoolId;
 
     public Long getId() {
         return id;
@@ -154,5 +153,13 @@ public class Student {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
     }
 }

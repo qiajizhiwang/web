@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Param;
 import com.xiangxing.model.ex.CourseEx;
 
 public interface CourseMapperEx {
-	List<CourseEx> courseList(@Param("name") String name, @Param("schoolId") String schoolId);
+	List<CourseEx> courseList(@Param("name") String name, @Param("schoolId") Long schoolId);
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiangxing.mapper.ex.ProductPoMapper" >
+  
+ 
+  
+  <select id="list" resultType="com.xiangxing.model.ex.ProductPo">
+  select t3.name  as studentName,t3.id as studentId,t4.id as courseId ,t4.name as courseName, t1.*
+   from t_product as t1,t_student_course as t2,t_student as t3,t_course as t4 
+where t1.student_course_id = t2.id and t2.course_id = t4.id and t2.student_id = t3.id
+    <if test="name != null" >
+AND t1.`name` LIKE CONCAT('%',#{name},'%')
+    </if>
+    <if test="schoolId != null" >
+AND t3.school_id=#{schoolId}
+    </if>
+    <if test="courseId != null" >
+AND t2.courseId=#{courseId}
+    </if>
+  </select>
+ 
+</mapper>

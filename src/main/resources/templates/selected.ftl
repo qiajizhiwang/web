@@ -1,5 +1,5 @@
 <#macro select id datas value="" defaultValue="" key="" text="">
-    <select style="width:100%;height:AUTO;padding:5px;" class="easyui-combobox" id="${id}" name="${id}">
+    <select  style="width:100%;height:AUTO;padding:5px;" class="easyui-combobox" id="${id}" name="${id}">
       <#if datas??>
         <#--判断对象是否为map-->
         <#if datas?is_hash_ex>

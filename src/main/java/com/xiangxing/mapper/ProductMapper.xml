@@ -3,9 +3,16 @@
 <mapper namespace="com.xiangxing.mapper.ProductMapper" >
   <resultMap id="BaseResultMap" type="com.xiangxing.model.Product" >
     <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="student_course_id" property="studentCourseId" jdbcType="BIGINT" />
-    <result column="作品名称" property="作品名称" jdbcType="VARCHAR" />
-    <result column="product_url" property="productUrl" jdbcType="VARCHAR" />
+    <result column="layout" property="layout" jdbcType="INTEGER" />
+    <result column="color" property="color" jdbcType="INTEGER" />
+    <result column="subject" property="subject" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="length" property="length" jdbcType="INTEGER" />
+    <result column="width" property="width" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, student_course_id, 作品名称, product_url
+    id, name, path, create_time, student_course_id, layout, color, subject, remark, length, 
+    width
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.ProductExample" >
     select
@@ -99,10 +107,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xiangxing.model.Product" >
-    insert into t_product (id, student_course_id, 作品名称, 
-      product_url)
-    values (#{id,jdbcType=BIGINT}, #{studentCourseId,jdbcType=BIGINT}, #{作品名称,jdbcType=VARCHAR}, 
-      #{productUrl,jdbcType=VARCHAR})
+    insert into t_product (id, name, path, 
+      create_time, student_course_id, layout, 
+      color, subject, remark, 
+      length, width)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{studentCourseId,jdbcType=BIGINT}, #{layout,jdbcType=INTEGER}, 
+      #{color,jdbcType=INTEGER}, #{subject,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{length,jdbcType=INTEGER}, #{width,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Product" >
     insert into t_product
@@ -110,28 +122,70 @@
       <if test="id != null" >
         id,
       </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
       <if test="studentCourseId != null" >
         student_course_id,
       </if>
-      <if test="作品名称 != null" >
-        作品名称,
+      <if test="layout != null" >
+        layout,
       </if>
-      <if test="productUrl != null" >
-        product_url,
+      <if test="color != null" >
+        color,
+      </if>
+      <if test="subject != null" >
+        subject,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+      <if test="width != null" >
+        width,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="studentCourseId != null" >
         #{studentCourseId,jdbcType=BIGINT},
       </if>
-      <if test="作品名称 != null" >
-        #{作品名称,jdbcType=VARCHAR},
+      <if test="layout != null" >
+        #{layout,jdbcType=INTEGER},
       </if>
-      <if test="productUrl != null" >
-        #{productUrl,jdbcType=VARCHAR},
+      <if test="color != null" >
+        #{color,jdbcType=INTEGER},
+      </if>
+      <if test="subject != null" >
+        #{subject,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=INTEGER},
+      </if>
+      <if test="width != null" >
+        #{width,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -147,14 +201,35 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.path != null" >
+        path = #{record.path,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.studentCourseId != null" >
         student_course_id = #{record.studentCourseId,jdbcType=BIGINT},
       </if>
-      <if test="record.作品名称 != null" >
-        作品名称 = #{record.作品名称,jdbcType=VARCHAR},
+      <if test="record.layout != null" >
+        layout = #{record.layout,jdbcType=INTEGER},
       </if>
-      <if test="record.productUrl != null" >
-        product_url = #{record.productUrl,jdbcType=VARCHAR},
+      <if test="record.color != null" >
+        color = #{record.color,jdbcType=INTEGER},
+      </if>
+      <if test="record.subject != null" >
+        subject = #{record.subject,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.length != null" >
+        length = #{record.length,jdbcType=INTEGER},
+      </if>
+      <if test="record.width != null" >
+        width = #{record.width,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -164,9 +239,16 @@
   <update id="updateByExample" parameterType="map" >
     update t_product
     set id = #{record.id,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      path = #{record.path,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
       student_course_id = #{record.studentCourseId,jdbcType=BIGINT},
-      作品名称 = #{record.作品名称,jdbcType=VARCHAR},
-      product_url = #{record.productUrl,jdbcType=VARCHAR}
+      layout = #{record.layout,jdbcType=INTEGER},
+      color = #{record.color,jdbcType=INTEGER},
+      subject = #{record.subject,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      length = #{record.length,jdbcType=INTEGER},
+      width = #{record.width,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -174,23 +256,51 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.xiangxing.model.Product" >
     update t_product
     <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="studentCourseId != null" >
         student_course_id = #{studentCourseId,jdbcType=BIGINT},
       </if>
-      <if test="作品名称 != null" >
-        作品名称 = #{作品名称,jdbcType=VARCHAR},
+      <if test="layout != null" >
+        layout = #{layout,jdbcType=INTEGER},
       </if>
-      <if test="productUrl != null" >
-        product_url = #{productUrl,jdbcType=VARCHAR},
+      <if test="color != null" >
+        color = #{color,jdbcType=INTEGER},
+      </if>
+      <if test="subject != null" >
+        subject = #{subject,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=INTEGER},
+      </if>
+      <if test="width != null" >
+        width = #{width,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.xiangxing.model.Product" >
     update t_product
-    set student_course_id = #{studentCourseId,jdbcType=BIGINT},
-      作品名称 = #{作品名称,jdbcType=VARCHAR},
-      product_url = #{productUrl,jdbcType=VARCHAR}
+    set name = #{name,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      student_course_id = #{studentCourseId,jdbcType=BIGINT},
+      layout = #{layout,jdbcType=INTEGER},
+      color = #{color,jdbcType=INTEGER},
+      subject = #{subject,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      length = #{length,jdbcType=INTEGER},
+      width = #{width,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
