@@ -7,10 +7,23 @@
     <script src="../js/jquery.min.js"></script>
     <script src="../js/jquery.easyui.min.js"></script>
     <script src="../js/easyui-lang-zh_CN.js"></script>
-    
+<script>
+    $.parser.onComplete = function () {
+       closes();
+    } 
+
+    function closes() {
+        $('#loading').fadeOut('normal', function () {
+            $(this).remove();
+        });
+    }
+</script> 
 </head>
 
 <body>
+<div id="loading" style="position:absolute;z-index:1000;top:0px;left:0px;width:100%;height:100%;background:#DDDDDB;text-align :center;padding-top:20%;">
+     <h1><font color="#15428B">加载中....</font></h1>
+</div> 
 	<!-- <table id="dg" class="easyui-datagrid" style="width:100%;height:500px"
 		url="searchCourses"
 		toolbar="#toolbar"
@@ -28,6 +41,7 @@
 				<th field="schoolTime" width="50" editor="text">上课时间</th>
 				<th field="imageUrl" width="50" editor="img">图片</th>
 				<th field="comment" width="50" editor="text">课程介绍</th>
+				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
 	</table>
@@ -36,9 +50,8 @@
 		<input id="searchrSchoolId" class="easyui-combobox" name="searchrSchoolId" data-options="valueField:'id',textField:'name',url:'../school/comboboxData'">
 		<span>课程姓名</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
-		<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">搜索</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCourse()">新增</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editCourse()">编辑</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyCourse()">删除</a>
 	</div>
 	
@@ -125,7 +138,8 @@ $('#teacherCombox').combobox({
     
 	 function doSearch(){
 		$('#dg').datagrid('load',{
-			name: $('#name').val()
+			name: $('#name').val(),
+			searchrSchoolId: $('#searchrSchoolId').val()
 		});
 	}
 
@@ -184,5 +198,29 @@ $('#teacherCombox').combobox({
 			}
 		});
 	}
+	
+	function editRow(index){
+	$('#dg').datagrid('selectRow',index);
+		var row = $('#dg').datagrid('getSelected');
+		if (row){
+			$('#dlg').dialog('open').dialog('setTitle','Edit User');
+			$('#fm').form('load',row);
+			url = 'editCourse?id='+row.id;
+		}
+	}
+	
+	 $(document).ready(function(){  
+  $("#dg").datagrid({
+  
+       onLoadSuccess:function(data){  
+      $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
+      }
+      
+  })
+  })
+  
+	function rowFormatter(value,row,index){  
+               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>";  
+ 	} 
 </script>
 </html>

@@ -7,10 +7,23 @@
     <script src="../js/jquery.min.js"></script>
     <script src="../js/jquery.easyui.min.js"></script>
     <script src="../js/easyui-lang-zh_CN.js"></script>
-    
+<script>
+    $.parser.onComplete = function () {
+       closes();
+    } 
+
+    function closes() {
+        $('#loading').fadeOut('normal', function () {
+            $(this).remove();
+        });
+    }
+</script> 
 </head>
 
 <body>
+<div id="loading" style="position:absolute;z-index:1000;top:0px;left:0px;width:100%;height:100%;background:#DDDDDB;text-align :center;padding-top:20%;">
+     <h1><font color="#15428B">加载中....</font></h1>
+</div> 
 	<!-- <table id="dg" class="easyui-datagrid" style="width:100%;height:500px"
 		url="searchExams"
 		toolbar="#toolbar"
@@ -28,15 +41,15 @@
 				<th field="examTime" width="50" editor="text">考试时间</th>
 				<th field="examAddress" width="50" editor="text">考试地点</th>
 				<th field="openFlag" width="50" editor="text">是否开放报名</th>
+				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
 	</table>
 	<div id="toolbar">
 		<span>科目</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
-		<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">搜索</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newExam()">新增</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editExam()">编辑</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyExam()">删除</a>
 	</div>
 	
@@ -141,5 +154,29 @@
 			}
 		});
 	}
+	
+	function editRow(index){
+	$('#dg').datagrid('selectRow',index);
+		var row = $('#dg').datagrid('getSelected');
+		if (row){
+			$('#dlg').dialog('open').dialog('setTitle','Edit User');
+			$('#fm').form('load',row);
+			url = 'editExam?examId='+row.id;
+		}
+	}
+	
+	 $(document).ready(function(){  
+  $("#dg").datagrid({
+  
+       onLoadSuccess:function(data){  
+      $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
+      }
+      
+  })
+  })
+  
+	function rowFormatter(value,row,index){  
+               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>";  
+ 	}
 </script>
 </html>
