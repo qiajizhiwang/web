@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiangxing.mapper.ex.StudentPoMapper" >
+  
+ 
+  
+  <select id="list" resultType="com.xiangxing.model.ex.StudentPo">
+  select t2.name  as schoolName,t2.id as schoolId, t1.*
+   from t_student as t1,t_school as t2
+where t1.school_id = t2.id
+    <if test="name != null" >
+AND t1.`name` LIKE CONCAT('%',#{name},'%')
+    </if>
+    <if test="schoolId != null" >
+AND t1.school_id=#{schoolId}
+    </if>
+  </select>
+ 
+</mapper>

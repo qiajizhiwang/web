@@ -2,6 +2,7 @@ package com.xiangxing.controller;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import com.xiangxing.model.CourseExample;
 import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.utils.DateUtil;
 import com.xiangxing.utils.FileUtil;
+import com.xiangxing.vo.OptionVo;
 
 /**
  * 课程管理
@@ -146,6 +148,23 @@ public class CourseController extends BaseController {
 		}
 		long total = page.getTotal();
 		return new PageResponse<CourseEx>(total, courseExs);
+
+	}
+	
+	
+	@RequestMapping("/validCourses")
+	@ResponseBody
+	public List<OptionVo> courseList(Long schoolId) {
+
+		List<CourseEx> courseExs = courseMapperEx.courseList(null, schoolId);
+		List options = new ArrayList<>();
+		for (CourseEx courseEx : courseExs) {
+			OptionVo optionVo = new OptionVo();
+			optionVo.setValue(Long.valueOf(courseEx.getId()));
+			optionVo.setText(courseEx.getName()+":"+courseEx.getSchoolTime());
+			options.add(optionVo);
+		}
+		return options;
 
 	}
 

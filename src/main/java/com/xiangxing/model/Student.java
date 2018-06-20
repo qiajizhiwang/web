@@ -2,11 +2,14 @@ package com.xiangxing.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Student {
     private Long id;
 
     private String phone;
 
+    @JsonIgnore
     private String password;
 
     private String name;

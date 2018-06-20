@@ -1,10 +1,12 @@
 package com.xiangxing.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,10 +15,16 @@ import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.controller.admin.PageRequest;
 import com.xiangxing.controller.admin.PageResponse;
+import com.xiangxing.mapper.StudentCourseMapper;
 import com.xiangxing.mapper.StudentMapper;
+import com.xiangxing.mapper.ex.CourseMapperEx;
+import com.xiangxing.mapper.ex.StudentPoMapper;
 import com.xiangxing.model.Student;
-import com.xiangxing.model.StudentExample;
+import com.xiangxing.model.StudentCourse;
+import com.xiangxing.model.User;
+import com.xiangxing.model.ex.StudentPo;
 import com.xiangxing.utils.MD5Util;
+import com.xiangxing.vo.api.ApiResponse;
 
 @Controller
 @RequestMapping("/student")
@@ -25,8 +33,23 @@ public class StudentController extends BaseController {
 	@Autowired
 	private StudentMapper studentMapper;
 
+	@Autowired
+	private StudentPoMapper studentPoMapper;
+
+	@Autowired
+	private CourseMapperEx courseMapperEx;
+
+	@Autowired
+	StudentCourseMapper studentCourseMapper;
+
 	@RequestMapping("/student")
-	public String student() {
+	public String student(Model model) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		List courses = new ArrayList<>();
+		if (me.getType() == 1) {
+			courses = courseMapperEx.courseList(null, me.getSchoolId());
+		}
+		model.addAttribute("courses", courses);
 		return "student";
 	}
 
@@ -39,19 +62,13 @@ public class StudentController extends BaseController {
 
 	@RequestMapping("/studentList")
 	@ResponseBody
-	public PageResponse<Student> studentList(PageRequest pageRequest, String name) {
-
+	public PageResponse<StudentPo> studentList(PageRequest pageRequest, String name) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
-		StudentExample studentExample = new StudentExample();
-		if (StringUtils.isNotBlank(name)) {
-			name = "%" + name + "%";
-			studentExample.createCriteria().andNameLike(name);
 
-		}
-
-		List<Student> students = studentMapper.selectByExample(studentExample);
+		List<StudentPo> students = studentPoMapper.list(name, me.getSchoolId());
 		long total = page.getTotal();
-		return new PageResponse<Student>(total, students);
+		return new PageResponse<StudentPo>(total, students);
 
 	}
 
@@ -66,6 +83,18 @@ public class StudentController extends BaseController {
 	public void destroystudent(Long studentId) {
 		studentMapper.deleteByPrimaryKey(studentId);
 		writeToOkResponse();
+	}
+
+	@RequestMapping("/saveApply")
+	@ResponseBody
+	public ApiResponse saveApply(StudentCourse studentCourse) {
+		try {
+			studentCourseMapper.insert(studentCourse);
+			return new ApiResponse();
+		} catch (Exception e) {
+			return ApiResponse.getErrorResponse("异常");
+		}
+
 	}
 
 }

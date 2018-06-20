@@ -49,7 +49,7 @@
 		</thead>
 	</table>
 	
-	<div id="win" class="easyui-window" title="新增用户"   closed="true"  style="width:40%;height:AUTO;padding:5px;">
+	<div id="win" class="easyui-window" modal="true" title="新增用户"   closed="true"  style="width:40%;height:AUTO;padding:5px;">
     <form id="ff" method="post">
 	    	<table cellpadding="5">
 	    		<tr>
@@ -71,7 +71,7 @@
 	    		<tr>
 	    			<td>学校:</td>
 	    			<td>
-            <@selects.select id="schoolId" datas=schools key="id" text="name"  defaultValue=defaultValue/> 
+            <@selects.select id="schoolId" datas=schools key="id" text="name"  defaultValue=mySchoolId/> 
 	    			</td>
 	    		</tr>
 	    	
@@ -89,7 +89,7 @@
 </div>
 
 
-<div id="edit" class="easyui-window" title="编辑用户"   closed="true"  style="width:40%;height:AUTO;padding:5px;">
+<div id="edit" class="easyui-window" title="编辑用户"  modal="true" closed="true"  style="width:40%;height:AUTO;padding:5px;">
     <form id="ff1" method="post">
     <input hidden type="text" id ="userId" name="id" data-options="required:true"></input>
 	    	<table cellpadding="5">
@@ -112,7 +112,7 @@
 	    		<tr>
 	    			<td>学校:</td>
 	    			<td>
-            <@selects.select id="schoolId" datas=schools key="id" text="name"  defaultValue=defaultValue/> 
+            <@selects.select id="schoolId" datas=schools key="id" text="name"  defaultValue=mySchoolId/> 
 	    			</td>
 	    		</tr>
 	    	

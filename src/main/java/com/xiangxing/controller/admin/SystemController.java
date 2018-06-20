@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.mapper.MenuMapper;
+import com.xiangxing.mapper.SchoolMapper;
 import com.xiangxing.mapper.UserMapper;
 import com.xiangxing.mapper.UserMenuMapper;
 import com.xiangxing.model.Menu;
 import com.xiangxing.model.MenuExample;
 import com.xiangxing.model.School;
+import com.xiangxing.model.SchoolExample;
 import com.xiangxing.model.User;
 import com.xiangxing.model.UserExample;
 import com.xiangxing.model.UserExample.Criteria;
@@ -37,15 +39,11 @@ import com.xiangxing.vo.api.ApiResponse;
 @RequestMapping("/system")
 public class SystemController {
 
+	@Autowired
+	private SchoolMapper schoolMapper;
+
 	@RequestMapping("/user")
 	public String user(Model model) {
-		List<School> schools = new ArrayList();
-		School school = new School();
-		school.setId(1l);
-		school.setName("超级大学");
-		schools.add(school);
-		model.addAttribute("schools", schools);
-		model.addAttribute("defaultValue", school.getId());
 		return "user";
 	}
 
@@ -60,10 +58,6 @@ public class SystemController {
 	@ResponseBody
 	public PageResponse<User> userList(PageRequest pageRequest, String name, Model model) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
-		if (null == me) {
-			me = new User();
-			me.setType(0);
-		}
 
 		Long schoolId = me.getSchoolId();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);

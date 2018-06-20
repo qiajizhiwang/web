@@ -38,8 +38,8 @@
 <!-- 		<table tableName="t_order" domainObjectName="Order"></table> -->
 <!--  		<table tableName="t_product" domainObjectName="Product"></table>  -->
 <!-- 		<table tableName="t_school" domainObjectName="School"></table> -->
-		<table tableName="t_student" domainObjectName="Student"></table>
-<!-- 		<table tableName="t_student_course" domainObjectName="Student_course"></table> -->
+<!-- 		<table tableName="t_student" domainObjectName="Student"></table> -->
+		<table tableName="t_student_course" domainObjectName="StudentCourse"></table>
 <!-- 		<table tableName="t_subject" domainObjectName="Subject"></table> -->
 <!-- 		<table tableName="t_teacher" domainObjectName="Teacher"></table> -->
 

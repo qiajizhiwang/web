@@ -2,6 +2,8 @@
 <html>
 <head>
 <#assign ctx= (request.contextPath)??/>
+<#import "/selected.ftl" as selects/>
+
     <link href="../css/easyui.css" rel="stylesheet" />
     <link href="../css/icon.css" rel="stylesheet" />
     <script src="../js/jquery.min.js"></script>
@@ -24,10 +26,7 @@
 <div id="loading" style="position:absolute;z-index:1000;top:0px;left:0px;width:100%;height:100%;background:#DDDDDB;text-align :center;padding-top:20%;">
      <h1><font color="#15428B">加载中....</font></h1>
 </div> 
-	<!-- <table id="dg" class="easyui-datagrid" style="width:100%;height:500px"
-		url="searchStudents"
-		toolbar="#toolbar"
-		rownumbers="true" fitColumns="true" singleSelect="true"> -->
+	
 		
 	<table id="dg" class="easyui-datagrid"  style="width:100%;height:auto"
 	toolbar="#toolbar"	rownumbers="true" pagination="true"  fitColumns="true"	data-options="singleSelect:true,collapsible:true,url:'/student/studentList',method:'post'">
@@ -59,16 +58,22 @@
 	</div>
 	
 	<div id="dlg" class="easyui-dialog" modal="true" style="width:400px;height:500px;padding:10px 20px" data-options="closed: true"
-		closed="true" buttons="#dlg-buttons">
+		 buttons="#dlg-buttons">
 		<form id="fm" method="post">
 			<table cellpadding="5">
+			<tr>
+				<td>学校</td>
+				<td>
+				   <@selects.select id="schoolId" datas=schools key="id" text="name"  defaultValue=mySchoolId/> 
+                   </td>
+			</tr>
 			<tr>
 				<td>手机号</td>
 				<td><input name="phone" class="easyui-textbox" required="true"></td>
 			</tr>
 			<tr>
 				<td>登录密码</td>
-				<td><input name="password" class="easyui-textbox" required="true"></td>
+				<td><input id="password" name="password" class="easyui-textbox" required="true"></td>
 			</tr>
 			<tr>
 				<td>姓名</td>
@@ -117,15 +122,52 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUser()">保存</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">关闭</a>
 	</div>
+	
+		<div id="apply" class="easyui-dialog" modal="true" style="width:400px;height:500px;padding:10px 20px" data-options="closed: true"
+		 buttons="#apply-buttons">
+		<form id="fm1" method="post">
+		    <input hidden type="text" id ="studentId" name="studentId" data-options="required:true"></input>
+		
+			<table cellpadding="5">
+			<tr>
+				<td>学校</td>
+				<td>
+				      <select id="schoolId1" name="schoolId" style="width:100%;height:AUTO;padding:5px;" class="easyui-combobox" editable=false >
+
+                   </td>
+			</tr>
+			<tr>
+				<td>课程</td>
+				<td>      <select id="courseId" name="courseId" style="width:100%;height:AUTO;padding:5px;" class="easyui-combobox" editable=false >
+ </td>
+			</tr>
+			</table>
+		</form>
+	</div>
+	<div id="apply-buttons">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveApply()">保存</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#apply').dialog('close')">关闭</a>
+	</div>
 
 </body>
 <script type="text/javascript">
 
  $(document).ready(function(){  
+ 
+// $("#apply #schoolId").combo({
+// onChange: function(param){
+ //    $("#apply #courseId").combobox({
+  //  url:'/course/validCourses?schoolId='+$("#apply #schoolId").val()}) 
+   // }
+// }) 
+ 
+ 
   $("#dg").datagrid({
   
        onLoadSuccess:function(data){  
       $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
+      $('.myapply').linkbutton({text:'报名',plain:true,iconCls:'icon-add'});
+      
       }
       
   })
@@ -138,8 +180,11 @@
 	}
 
 	function newStudent(){
+			$("#password").textbox({ required:true  });
 		$('#dlg').dialog('open').dialog('setTitle','新增');
+		var defaultId = $('#dlg #schoolId').val();
 		$('#fm').form('clear');
+		$("#dlg #schoolId").combobox('select', defaultId);
 		url = 'saveStudent';
 	}
 	
@@ -147,9 +192,27 @@
 	$('#dg').datagrid('selectRow',index);
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
+		$("#password").textbox({ required:false  });
 			$('#dlg').dialog('open').dialog('setTitle','Edit User');
 			$('#fm').form('load',row);
 			url = 'editStudent?studentId='+row.id;
+		}
+	}
+	
+	function apply(index){
+	$('#dg').datagrid('selectRow',index);
+		var row = $('#dg').datagrid('getSelected');
+		if (row){
+		$('#apply').dialog('open').dialog('setTitle','报名');
+		$('#apply #studentId').val(row.id);
+		$('#apply #schoolId1').combobox('loadData',[{
+			value: row.schoolId,
+			text: row.schoolName,
+			selected:true
+		}]);
+		
+		$('#apply #courseId').combobox({url:'/course/validCourses?schoolId='+row.schoolId});
+		
 		}
 	}
 	
@@ -187,15 +250,41 @@
 						msg: result.errorMsg
 					});
 				} else {
-					$('#dlg').dialog('close');		// close the dialog
+					$('#apply').dialog('close');		// close the dialog
 					$('#dg').datagrid('reload');	// reload the user data
+				}
+			}
+		});
+			
+			
+	}
+	
+	function saveApply(){
+		$('#fm1').form('submit',{
+			url: "saveApply",
+			onSubmit: function(){
+				return $(this).form('validate');
+			},
+			success: function(result){
+				var result = eval('('+result+')');
+				if (result.status != 0){
+					$.messager.show({
+						title: 'Error',
+						msg: result.memo
+					});
+				} else {
+					$('#dlg').dialog('close');		// close the dialog
+				$.messager.show({
+						title: '报名成功'
+					});
 				}
 			}
 		});
 	}
 	
 	function rowFormatter(value,row,index){  
-               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>";  
+               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>"+
+               "<a  class='myapply' onclick='apply("+index+")' href='javascript:void(0)' >报名</a>";  
  } 
  
  

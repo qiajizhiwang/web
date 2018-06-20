@@ -50,69 +50,12 @@
 		<span>作品名</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newStudent()">新增</a>
+		
 	
 	</div>
 	
-	<div id="dlg" class="easyui-dialog" modal="true" style="width:400px;height:500px;padding:10px 20px" data-options="closed: true"
-		closed="true" buttons="#dlg-buttons">
-		<form id="fm" method="post">
-			<table cellpadding="5">
-			<tr>
-				<td>手机号</td>
-				<td><input name="phone" class="easyui-textbox" required="true"></td>
-			</tr>
-			<tr>
-				<td>登录密码</td>
-				<td><input name="password" class="easyui-textbox" required="true"></td>
-			</tr>
-			<tr>
-				<td>姓名</td>
-				<td><input name="name" class="easyui-textbox"></td>
-			</tr>
-			<tr>
-				<td>性别</td>
-				<td><input name="gender" class="easyui-textbox"></td>
-			</tr>
-			<tr>
-				<td>民族</td>
-				<td><input name="nation" class="easyui-textbox"></td>
-			</tr>
-			<tr>
-				<td>国家</td>
-				<td><input name="state" class="easyui-textbox"></td>
-			</tr>
-			<tr>
-				<td>专业</td>
-				<td><input name="major" class="easyui-textbox"></td>
-			</tr>
-			<tr>
-				<td>级别</td>
-				<td><input name="grade" class="easyui-textbox"></td>
-			</tr>
-			<tr>
-				<td>家庭地址</td>
-				<td><input name="houseAddress" class="easyui-textbox"></td>
-			</tr>
-			<tr>
-				<td>父母电话</td>
-				<td><input name="homeTelephone" class="easyui-textbox"></td>
-			</tr>
-			<tr>
-				<td>身份证号码</td>
-				<td><input name="idCard" class="easyui-textbox"></td>
-			</tr>
-			<tr>
-				<td>审核状态</td>
-				<td><input name="status" class="easyui-textbox"></td>
-			</tr>
-			</table>
-		</form>
-	</div>
-	<div id="dlg-buttons">
-		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUser()">保存</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">关闭</a>
-	</div>
+	
+	
 
 </body>
 <script type="text/javascript">
@@ -133,21 +76,8 @@
 		});
 	}
 
-	function newStudent(){
-		$('#dlg').dialog('open').dialog('setTitle','新增');
-		$('#fm').form('clear');
-		url = 'saveStudent';
-	}
 	
-	function editRow(index){
-	$('#dg').datagrid('selectRow',index);
-		var row = $('#dg').datagrid('getSelected');
-		if (row){
-			$('#dlg').dialog('open').dialog('setTitle','Edit User');
-			$('#fm').form('load',row);
-			url = 'editStudent?studentId='+row.id;
-		}
-	}
+	
 	
 	function destroyStudent(){
 		var row = $('#dg').datagrid('getSelected');
