@@ -22,8 +22,10 @@ import com.xiangxing.model.School;
 import com.xiangxing.model.SchoolExample;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
+import com.xiangxing.model.TeacherExample.Criteria;
 import com.xiangxing.model.ex.TeacherEx;
 import com.xiangxing.utils.MD5Util;
+import com.xiangxing.utils.StringUtil;
 
 @Controller
 @RequestMapping("/teacher")
@@ -48,10 +50,10 @@ public class TeacherController extends BaseController {
 
 	@RequestMapping("/teacher")
 	public String teacher(Model model) {
-//		SchoolExample schoolExample = new SchoolExample();
-//		List<School> schools = schoolMapper.selectByExample(schoolExample);
-//		model.addAttribute("schools", schools);
-//		model.addAttribute("defaultValue", schools.get(0).getId());
+		// SchoolExample schoolExample = new SchoolExample();
+		// List<School> schools = schoolMapper.selectByExample(schoolExample);
+		// model.addAttribute("schools", schools);
+		// model.addAttribute("defaultValue", schools.get(0).getId());
 		return "teacher";
 	}
 
@@ -64,14 +66,18 @@ public class TeacherController extends BaseController {
 
 	@RequestMapping("/teacherList")
 	@ResponseBody
-	public PageResponse<TeacherEx> teacherList(PageRequest pageRequest, String name) {
+	public PageResponse<TeacherEx> teacherList(PageRequest pageRequest, String name, String status) {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		TeacherExample teacherExample = new TeacherExample();
+		Criteria criteria = teacherExample.createCriteria();
 		if (StringUtils.isNotBlank(name)) {
 			name = "%" + name + "%";
-			teacherExample.createCriteria().andNameLike(name);
+			criteria.andNameLike(name);
 
+		}
+		if (StringUtils.isNotBlank(status)) {
+			criteria.andStatusEqualTo(Integer.valueOf(status));
 		}
 
 		List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
@@ -99,6 +105,9 @@ public class TeacherController extends BaseController {
 	@RequestMapping("/editTeacher")
 	public void editteacher(Teacher teacher, Long teacherId) {
 		teacher.setId(teacherId);
+		if (StringUtil.isNotEmpty(teacher.getPassword())) {
+			teacher.setPassword(MD5Util.MD5Encode(teacher.getPassword()));
+		}
 		teacherMapper.updateByPrimaryKeySelective(teacher);
 		writeToOkResponse();
 	}

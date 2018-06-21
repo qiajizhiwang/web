@@ -3,7 +3,7 @@ package com.xiangxing.model;
 import java.util.Date;
 
 public class Course {
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -17,11 +17,13 @@ public class Course {
 
     private String comment;
 
-    public Integer getId() {
+    private Integer status;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -71,5 +73,13 @@ public class Course {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

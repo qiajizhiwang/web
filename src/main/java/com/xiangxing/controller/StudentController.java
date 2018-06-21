@@ -47,7 +47,7 @@ public class StudentController extends BaseController {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		List courses = new ArrayList<>();
 		if (me.getType() == 1) {
-			courses = courseMapperEx.courseList(null, me.getSchoolId());
+			courses = courseMapperEx.courseList(null, me.getSchoolId(), null);
 		}
 		model.addAttribute("courses", courses);
 		return "student";

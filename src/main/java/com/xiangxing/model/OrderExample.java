@@ -315,62 +315,52 @@ public class OrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andStudentIdEqualTo(String value) {
+        public Criteria andStudentIdEqualTo(Long value) {
             addCriterion("student_id =", value, "studentId");
             return (Criteria) this;
         }
 
-        public Criteria andStudentIdNotEqualTo(String value) {
+        public Criteria andStudentIdNotEqualTo(Long value) {
             addCriterion("student_id <>", value, "studentId");
             return (Criteria) this;
         }
 
-        public Criteria andStudentIdGreaterThan(String value) {
+        public Criteria andStudentIdGreaterThan(Long value) {
             addCriterion("student_id >", value, "studentId");
             return (Criteria) this;
         }
 
-        public Criteria andStudentIdGreaterThanOrEqualTo(String value) {
+        public Criteria andStudentIdGreaterThanOrEqualTo(Long value) {
             addCriterion("student_id >=", value, "studentId");
             return (Criteria) this;
         }
 
-        public Criteria andStudentIdLessThan(String value) {
+        public Criteria andStudentIdLessThan(Long value) {
             addCriterion("student_id <", value, "studentId");
             return (Criteria) this;
         }
 
-        public Criteria andStudentIdLessThanOrEqualTo(String value) {
+        public Criteria andStudentIdLessThanOrEqualTo(Long value) {
             addCriterion("student_id <=", value, "studentId");
             return (Criteria) this;
         }
 
-        public Criteria andStudentIdLike(String value) {
-            addCriterion("student_id like", value, "studentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStudentIdNotLike(String value) {
-            addCriterion("student_id not like", value, "studentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStudentIdIn(List<String> values) {
+        public Criteria andStudentIdIn(List<Long> values) {
             addCriterion("student_id in", values, "studentId");
             return (Criteria) this;
         }
 
-        public Criteria andStudentIdNotIn(List<String> values) {
+        public Criteria andStudentIdNotIn(List<Long> values) {
             addCriterion("student_id not in", values, "studentId");
             return (Criteria) this;
         }
 
-        public Criteria andStudentIdBetween(String value1, String value2) {
+        public Criteria andStudentIdBetween(Long value1, Long value2) {
             addCriterion("student_id between", value1, value2, "studentId");
             return (Criteria) this;
         }
 
-        public Criteria andStudentIdNotBetween(String value1, String value2) {
+        public Criteria andStudentIdNotBetween(Long value1, Long value2) {
             addCriterion("student_id not between", value1, value2, "studentId");
             return (Criteria) this;
         }
@@ -385,62 +375,52 @@ public class OrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andEntryFormIdEqualTo(String value) {
+        public Criteria andEntryFormIdEqualTo(Long value) {
             addCriterion("entry_form_id =", value, "entryFormId");
             return (Criteria) this;
         }
 
-        public Criteria andEntryFormIdNotEqualTo(String value) {
+        public Criteria andEntryFormIdNotEqualTo(Long value) {
             addCriterion("entry_form_id <>", value, "entryFormId");
             return (Criteria) this;
         }
 
-        public Criteria andEntryFormIdGreaterThan(String value) {
+        public Criteria andEntryFormIdGreaterThan(Long value) {
             addCriterion("entry_form_id >", value, "entryFormId");
             return (Criteria) this;
         }
 
-        public Criteria andEntryFormIdGreaterThanOrEqualTo(String value) {
+        public Criteria andEntryFormIdGreaterThanOrEqualTo(Long value) {
             addCriterion("entry_form_id >=", value, "entryFormId");
             return (Criteria) this;
         }
 
-        public Criteria andEntryFormIdLessThan(String value) {
+        public Criteria andEntryFormIdLessThan(Long value) {
             addCriterion("entry_form_id <", value, "entryFormId");
             return (Criteria) this;
         }
 
-        public Criteria andEntryFormIdLessThanOrEqualTo(String value) {
+        public Criteria andEntryFormIdLessThanOrEqualTo(Long value) {
             addCriterion("entry_form_id <=", value, "entryFormId");
             return (Criteria) this;
         }
 
-        public Criteria andEntryFormIdLike(String value) {
-            addCriterion("entry_form_id like", value, "entryFormId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntryFormIdNotLike(String value) {
-            addCriterion("entry_form_id not like", value, "entryFormId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntryFormIdIn(List<String> values) {
+        public Criteria andEntryFormIdIn(List<Long> values) {
             addCriterion("entry_form_id in", values, "entryFormId");
             return (Criteria) this;
         }
 
-        public Criteria andEntryFormIdNotIn(List<String> values) {
+        public Criteria andEntryFormIdNotIn(List<Long> values) {
             addCriterion("entry_form_id not in", values, "entryFormId");
             return (Criteria) this;
         }
 
-        public Criteria andEntryFormIdBetween(String value1, String value2) {
+        public Criteria andEntryFormIdBetween(Long value1, Long value2) {
             addCriterion("entry_form_id between", value1, value2, "entryFormId");
             return (Criteria) this;
         }
 
-        public Criteria andEntryFormIdNotBetween(String value1, String value2) {
+        public Criteria andEntryFormIdNotBetween(Long value1, Long value2) {
             addCriterion("entry_form_id not between", value1, value2, "entryFormId");
             return (Criteria) this;
         }

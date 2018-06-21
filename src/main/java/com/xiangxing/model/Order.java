@@ -9,9 +9,9 @@ public class Order {
 
     private String tradeNo;
 
-    private String studentId;
+    private Long studentId;
 
-    private String entryFormId;
+    private Long entryFormId;
 
     private Long money;
 
@@ -47,19 +47,19 @@ public class Order {
         this.tradeNo = tradeNo;
     }
 
-    public String getStudentId() {
+    public Long getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(String studentId) {
+    public void setStudentId(Long studentId) {
         this.studentId = studentId;
     }
 
-    public String getEntryFormId() {
+    public Long getEntryFormId() {
         return entryFormId;
     }
 
-    public void setEntryFormId(String entryFormId) {
+    public void setEntryFormId(Long entryFormId) {
         this.entryFormId = entryFormId;
     }
 

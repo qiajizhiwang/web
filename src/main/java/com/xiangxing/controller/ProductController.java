@@ -47,8 +47,8 @@ public class ProductController extends BaseController {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		List<CourseEx> courses = new ArrayList<>();
 		if (me.getType() == 1) {
-			courses = courseMapperEx.courseList(null, me.getSchoolId());
-			
+			courses = courseMapperEx.courseList(null, me.getSchoolId(), null);
+
 		}
 		model.addAttribute("courses", courses);
 		return "product";
@@ -64,12 +64,12 @@ public class ProductController extends BaseController {
 	@ResponseBody
 	public PageResponse<ProductPo> productList(PageRequest pageRequest, String name, String courseId) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
-        Long schoolId = null;
+		Long schoolId = null;
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
-         if (me.getType()==1){
-        	 schoolId = me.getSchoolId();
-         }
-		List<ProductPo> products = productPoMapper.list(name, courseId,schoolId);
+		if (me.getType() == 1) {
+			schoolId = me.getSchoolId();
+		}
+		List<ProductPo> products = productPoMapper.list(name, courseId, schoolId);
 		long total = page.getTotal();
 		return new PageResponse<ProductPo>(total, products);
 

@@ -4,8 +4,17 @@ import com.xiangxing.model.Course;
 
 public class CourseEx extends Course {
 	private String teacherName;
+	private Long schoolId;
 	private String schoolName;
 	private String showCurriculumTime;
+
+	public Long getSchoolId() {
+		return schoolId;
+	}
+
+	public void setSchoolId(Long schoolId) {
+		this.schoolId = schoolId;
+	}
 
 	public String getTeacherName() {
 		return teacherName;

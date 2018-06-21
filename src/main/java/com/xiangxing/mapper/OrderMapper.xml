@@ -5,8 +5,8 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
     <result column="trade_no" property="tradeNo" jdbcType="VARCHAR" />
-    <result column="student_id" property="studentId" jdbcType="VARCHAR" />
-    <result column="entry_form_id" property="entryFormId" jdbcType="VARCHAR" />
+    <result column="student_id" property="studentId" jdbcType="BIGINT" />
+    <result column="entry_form_id" property="entryFormId" jdbcType="BIGINT" />
     <result column="money" property="money" jdbcType="DECIMAL" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
@@ -111,7 +111,7 @@
       type, status, create_time, 
       update_time)
     values (#{id,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, 
-      #{studentId,jdbcType=VARCHAR}, #{entryFormId,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
+      #{studentId,jdbcType=BIGINT}, #{entryFormId,jdbcType=BIGINT}, #{money,jdbcType=DECIMAL}, 
       #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -160,10 +160,10 @@
         #{tradeNo,jdbcType=VARCHAR},
       </if>
       <if test="studentId != null" >
-        #{studentId,jdbcType=VARCHAR},
+        #{studentId,jdbcType=BIGINT},
       </if>
       <if test="entryFormId != null" >
-        #{entryFormId,jdbcType=VARCHAR},
+        #{entryFormId,jdbcType=BIGINT},
       </if>
       <if test="money != null" >
         #{money,jdbcType=DECIMAL},
@@ -201,10 +201,10 @@
         trade_no = #{record.tradeNo,jdbcType=VARCHAR},
       </if>
       <if test="record.studentId != null" >
-        student_id = #{record.studentId,jdbcType=VARCHAR},
+        student_id = #{record.studentId,jdbcType=BIGINT},
       </if>
       <if test="record.entryFormId != null" >
-        entry_form_id = #{record.entryFormId,jdbcType=VARCHAR},
+        entry_form_id = #{record.entryFormId,jdbcType=BIGINT},
       </if>
       <if test="record.money != null" >
         money = #{record.money,jdbcType=DECIMAL},
@@ -231,8 +231,8 @@
     set id = #{record.id,jdbcType=BIGINT},
       order_no = #{record.orderNo,jdbcType=VARCHAR},
       trade_no = #{record.tradeNo,jdbcType=VARCHAR},
-      student_id = #{record.studentId,jdbcType=VARCHAR},
-      entry_form_id = #{record.entryFormId,jdbcType=VARCHAR},
+      student_id = #{record.studentId,jdbcType=BIGINT},
+      entry_form_id = #{record.entryFormId,jdbcType=BIGINT},
       money = #{record.money,jdbcType=DECIMAL},
       type = #{record.type,jdbcType=INTEGER},
       status = #{record.status,jdbcType=INTEGER},
@@ -252,10 +252,10 @@
         trade_no = #{tradeNo,jdbcType=VARCHAR},
       </if>
       <if test="studentId != null" >
-        student_id = #{studentId,jdbcType=VARCHAR},
+        student_id = #{studentId,jdbcType=BIGINT},
       </if>
       <if test="entryFormId != null" >
-        entry_form_id = #{entryFormId,jdbcType=VARCHAR},
+        entry_form_id = #{entryFormId,jdbcType=BIGINT},
       </if>
       <if test="money != null" >
         money = #{money,jdbcType=DECIMAL},
@@ -279,8 +279,8 @@
     update t_order
     set order_no = #{orderNo,jdbcType=VARCHAR},
       trade_no = #{tradeNo,jdbcType=VARCHAR},
-      student_id = #{studentId,jdbcType=VARCHAR},
-      entry_form_id = #{entryFormId,jdbcType=VARCHAR},
+      student_id = #{studentId,jdbcType=BIGINT},
+      entry_form_id = #{entryFormId,jdbcType=BIGINT},
       money = #{money,jdbcType=DECIMAL},
       type = #{type,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
