@@ -75,16 +75,8 @@ public class CourseController extends BaseController {
 			return;
 		}
 
-		String dirName = request.getParameter("dir");
-		if (dirName == null) {
-			dirName = "image";
-		}
-		if (!extMap.containsKey(dirName)) {
-			System.out.println("目录名不正确。");
-			return;
-		}
 		// 创建文件夹
-		String saveUrl = upload_file_path + dirName + "/";
+		String saveUrl = upload_file_path + "image/";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String ymd = sdf.format(new Date());
 		saveUrl += ymd + "/";
@@ -101,11 +93,6 @@ public class CourseController extends BaseController {
 		// 检查扩展名
 		String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
 
-		if (!Arrays.asList(extMap.get(dirName).split(",")).contains(fileExt)) {
-			logger.error("上传文件扩展名是不允许的扩展名。\n只允许" + extMap.get(dirName) + "格式。");
-			return;
-
-		}
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 		String newFileName = df.format(new Date()) + "_" + new Random().nextInt(1000) + "." + fileExt;
 		try {
@@ -152,7 +139,45 @@ public class CourseController extends BaseController {
 	}
 
 	@RequestMapping("/editCourse")
-	public void editcourse(CourseEx course, Long id) {
+	public void editcourse(CourseEx course, Long id, MultipartFile file) {
+		if (null != file) {
+			// 定义允许上传的文件扩展名
+			HashMap<String, String> extMap = new HashMap<String, String>();
+			extMap.put("image", "gif,jpg,jpeg,png,bmp");
+
+			if (!ServletFileUpload.isMultipartContent(request)) {
+				System.out.println("请选择文件。");
+				return;
+			}
+
+			// 创建文件夹
+			String saveUrl = upload_file_path + "image/";
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			String ymd = sdf.format(new Date());
+			saveUrl += ymd + "/";
+
+			File dirFile = new File(saveUrl);
+			if (!dirFile.exists()) {
+				dirFile.mkdirs();
+			}
+
+			if (file.getSize() > maxSize) {
+				logger.error("上传文件大小超过限制。");
+				return;
+			}
+			// 检查扩展名
+			String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
+
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+			String newFileName = df.format(new Date()) + "_" + new Random().nextInt(1000) + "." + fileExt;
+			try {
+				FileUtil.uploadFile(file.getBytes(), saveUrl, newFileName);
+			} catch (Exception e) {
+				System.out.println("上传文件失败。");
+				return;
+			}
+			course.setImageUrl(saveUrl + newFileName);
+		}
 		course.setId(id);
 		course.setCurriculumTime(DateUtil.stringToDate(course.getShowCurriculumTime()));
 		courseMapper.updateByPrimaryKeySelective(course);
