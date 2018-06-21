@@ -8,4 +8,6 @@ import com.xiangxing.model.ex.CourseEx;
 
 public interface CourseMapperEx {
 	List<CourseEx> courseList(@Param("name") String name, @Param("schoolId") Long schoolId, @Param("status") String status);
+	
+	List<CourseEx> courseListByStudentId(@Param("studentId") Long studentId);
 }

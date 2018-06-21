@@ -22,6 +22,7 @@ import com.xiangxing.mapper.ex.StudentPoMapper;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentCourse;
 import com.xiangxing.model.User;
+import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.model.ex.StudentPo;
 import com.xiangxing.utils.MD5Util;
 import com.xiangxing.vo.api.ApiResponse;
@@ -69,6 +70,17 @@ public class StudentController extends BaseController {
 		List<StudentPo> students = studentPoMapper.list(name, me.getSchoolId());
 		long total = page.getTotal();
 		return new PageResponse<StudentPo>(total, students);
+
+	}
+
+	@RequestMapping("/applyList")
+	@ResponseBody
+	public PageResponse<CourseEx> applyList(PageRequest pageRequest, Long studentId) {
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+
+		List<CourseEx> courseList = courseMapperEx.courseListByStudentId(studentId);
+		long total = page.getTotal();
+		return new PageResponse<CourseEx>(total, courseList);
 
 	}
 
