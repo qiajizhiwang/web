@@ -149,6 +149,11 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#apply').dialog('close')">关闭</a>
 	</div>
 
+		<div id="queryApply" style="width:50%;height:AUTO;padding:10px 20px" class="easyui-window" modal="true"  data-options="closed: true">
+		<table id="applyTable">
+	
+		</div>
+
 </body>
 <script type="text/javascript">
 
@@ -167,6 +172,8 @@
        onLoadSuccess:function(data){  
       $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
       $('.myapply').linkbutton({text:'报名',plain:true,iconCls:'icon-add'});
+        $('.queryApply').linkbutton({text:'查看课程',plain:true,iconCls:'icon-search'});
+      
       
       }
       
@@ -197,6 +204,28 @@
 			$('#fm').form('load',row);
 			url = 'editStudent?studentId='+row.id;
 		}
+	}
+	
+	function queryApply(index){
+	
+	$('#dg').datagrid('selectRow',index);
+		var row = $('#dg').datagrid('getSelected');
+		if (row){
+		  $("#applyTable").datagrid({
+    url:'/student/applyList?studentId='+row.id,
+    rownumbers:true,
+     pagination: true ,
+       fitColumns:true,
+    columns:[[
+		{field:'name',title:'课程'},
+		{field:'showCurriculumTime',title:'开课时间'},
+		{field:'schoolTime',title:'上课时间'},
+		{field:'teacherName',title:'老师'}
+    ]]
+});
+		}
+		$('#queryApply').dialog('open').dialog('setTitle','课程');
+		
 	}
 	
 	function apply(index){
@@ -284,7 +313,8 @@
 	
 	function rowFormatter(value,row,index){  
                return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>"+
-               "<a  class='myapply' onclick='apply("+index+")' href='javascript:void(0)' >报名</a>";  
+               "<a  class='myapply' onclick='apply("+index+")' href='javascript:void(0)' >报名</a>"+
+                "<a  class='queryApply' onclick='queryApply("+index+")' href='javascript:void(0)' >查看课程</a>";  
  } 
  
  
