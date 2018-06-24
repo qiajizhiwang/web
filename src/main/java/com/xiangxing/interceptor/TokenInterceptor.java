@@ -32,9 +32,8 @@ public class TokenInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
 
-
-
 		String token = request.getHeader("token");
+		token = StringUtils.isEmpty(token) ? request.getParameter("token") : token;
 		if (StringUtils.isEmpty(token) || null == TokenManager.getUser(token)) {
 			response.setContentType("application/json; charset=utf-8");
 			PrintWriter writer = response.getWriter();

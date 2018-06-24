@@ -150,7 +150,7 @@
 	</div>
 
 		<div id="queryApply" style="width:50%;height:AUTO;padding:10px 20px" class="easyui-window" modal="true"  data-options="closed: true">
-		<table id="applyTable">
+		<table id="applyTable" style="width:100%;height:AUTO">
 	
 		</div>
 
@@ -302,7 +302,7 @@
 						msg: result.memo
 					});
 				} else {
-					$('#dlg').dialog('close');		// close the dialog
+					$('#apply').dialog('close');		// close the dialog
 				$.messager.show({
 						title: '报名成功'
 					});

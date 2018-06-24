@@ -15,7 +15,16 @@ AND t1.`name` LIKE CONCAT('%',#{name},'%')
 AND t3.school_id=#{schoolId}
     </if>
     <if test="courseId != null" >
-AND t2.courseId=#{courseId}
+AND t2.course_Id=#{courseId}
+    </if>
+  </select>
+  
+   <select id="getListByStudentId" resultType="com.xiangxing.model.ex.ProductPo">
+  select t1.*
+   from t_product as t1,t_student_course as t2 
+where t1.student_course_id = t2.id 
+    <if test="studentId != null" >
+AND t2.`student_Id` =#{studentId}
     </if>
   </select>
  
