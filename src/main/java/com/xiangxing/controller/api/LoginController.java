@@ -1,9 +1,7 @@
 package com.xiangxing.controller.api;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +27,7 @@ public class LoginController {
 	private TeacherMapper teacherMapper;
 
 	@Autowired
-	private StudentMapper mapper;
-
+	private StudentMapper studentMapper;
 
 	@RequestMapping("/login")
 	public ApiResponse login(LoginRequest loginRequest) {
@@ -52,7 +49,7 @@ public class LoginController {
 		} else {
 			StudentExample example = new StudentExample();
 			example.createCriteria().andNameEqualTo(loginRequest.getName());
-			List students = mapper.selectByExample(example);
+			List students = studentMapper.selectByExample(example);
 			if (!CollectionUtils.isEmpty(students)) {
 				Student student = (Student) students.get(0);
 				if (student.getPassword().equals(loginRequest.getPassword())) {
@@ -66,6 +63,35 @@ public class LoginController {
 		}
 		return ApiResponse.getErrorResponse("登录失败");
 
+	}
+
+	@RequestMapping("/editPassword")
+	public ApiResponse editPassword(String oldPassword, String newPassword) {
+		LoginInfo info = TokenManager.getNowUser();
+		if (info.getType() == 1) {
+			Teacher teacher = teacherMapper.selectByPrimaryKey(info.getId());
+			if (oldPassword.equals(teacher.getPassword())) {
+				teacher.setPassword(newPassword);
+				teacherMapper.updateByPrimaryKey(teacher);
+				return new ApiResponse();
+			}
+
+		} else {
+			Student student = studentMapper.selectByPrimaryKey(info.getId());
+			if (oldPassword.equals(student.getPassword())) {
+				student.setPassword(newPassword);
+				studentMapper.updateByPrimaryKey(student);
+				return new ApiResponse();
+			}
+		}
+		return ApiResponse.getErrorResponse("旧密码不正确，无法修改");
+	}
+
+	@RequestMapping("/logout")
+	public ApiResponse logout() {
+		String token = TokenManager.getToken();
+		TokenManager.removeUser(token);
+		return new ApiResponse();
 	}
 
 }

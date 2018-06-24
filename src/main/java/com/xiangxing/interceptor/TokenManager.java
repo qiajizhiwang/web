@@ -15,6 +15,11 @@ public class TokenManager {
 
 	}
 
+	public static void removeUser(String token) {
+		users.remove(token);
+
+	}
+
 	public static LoginInfo getNowUser() {
 		return users.get(getToken());
 
