@@ -37,7 +37,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 		if (StringUtils.isEmpty(token) || null == TokenManager.getUser(token)) {
 			response.setContentType("application/json; charset=utf-8");
 			PrintWriter writer = response.getWriter();
-			writer.print(JSONObject.toJSONString(ApiResponse.getTokenErrorResponse("token无效，请重新登录"),
+			writer.print(JSONObject.toJSONString(ApiResponse.getTokenErrorResponse(),
 					SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat));
 			writer.close();
 			response.flushBuffer();

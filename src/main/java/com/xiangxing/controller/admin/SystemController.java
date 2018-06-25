@@ -96,9 +96,10 @@ public class SystemController {
 	@ResponseBody
 	public ApiResponse editUser(User user, String menus) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
-
-		if (user.getSchoolId() != me.getSchoolId()) {
-			return ApiResponse.getErrorResponse("");
+		if (me.getType() == 1) {
+			if (user.getSchoolId() != me.getSchoolId()) {
+				return ApiResponse.getDenyErrorResponse();
+			}
 		}
 		if (StringUtils.isNotBlank(user.getPassword())) {
 			user.setPassword(

@@ -37,6 +37,7 @@ public class HomeController {
 		List schools = schoolMapper.selectByExample(schoolExample);
 		httpSession.setAttribute("schools", schools);
 		httpSession.setAttribute("mySchoolId", id);
+		httpSession.setAttribute("username", me.getName());
 		return "index";
 	}
 	
