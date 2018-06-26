@@ -61,8 +61,9 @@ public class SystemController {
 
 		Long schoolId = me.getSchoolId();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
-		UserExample UserExample = new UserExample();
-		Criteria criteria = UserExample.createCriteria();
+		UserExample userExample = new UserExample();
+		Criteria criteria = userExample.createCriteria();
+		criteria.andTypeEqualTo(1);
 		if (me.getType() != 0)
 			criteria.andSchoolIdEqualTo(schoolId);
 		if (StringUtils.isNotBlank(name)) {
@@ -71,7 +72,7 @@ public class SystemController {
 
 		}
 
-		List<User> rows = userMapper.selectByExample(UserExample);
+		List<User> rows = userMapper.selectByExample(userExample);
 		long total = page.getTotal();
 		return new PageResponse<User>(total, rows);
 	}
@@ -104,17 +105,22 @@ public class SystemController {
 		if (StringUtils.isNotBlank(user.getPassword())) {
 			user.setPassword(
 					new SimpleHash("MD5", user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());
+		} else {
+			user.setPassword(me.getPassword());
 		}
 		userMapper.updateByPrimaryKey(user);
-		UserMenuExample example = new UserMenuExample();
-		example.createCriteria().andUserIdEqualTo(user.getId());
-		userMenuMapper.deleteByExample(example);
-		if (StringUtils.isNoneBlank(menus)) {
-			for (String menu : menus.split(",")) {
-				UserMenu userMenu = new UserMenu();
-				userMenu.setUserId(user.getId());
-				userMenu.setMenuId(Long.valueOf(menu));
-				userMenuMapper.insert(userMenu);
+
+		if (user.getType() == 1) {
+			UserMenuExample example = new UserMenuExample();
+			example.createCriteria().andUserIdEqualTo(user.getId());
+			userMenuMapper.deleteByExample(example);
+			if (StringUtils.isNoneBlank(menus)) {
+				for (String menu : menus.split(",")) {
+					UserMenu userMenu = new UserMenu();
+					userMenu.setUserId(user.getId());
+					userMenu.setMenuId(Long.valueOf(menu));
+					userMenuMapper.insert(userMenu);
+				}
 			}
 		}
 
