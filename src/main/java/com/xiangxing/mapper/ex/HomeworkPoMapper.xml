@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiangxing.mapper.ex.HomeworkPoMapper">
+
+
+
+	<select id="list" resultType="com.xiangxing.model.ex.HomeworkPo">
+		select t2.status as status,t2.id as id,t3.name as courseName ,t3.id as
+		courseid,t4.name as teacherName, t1.id as homeworkId,t1.*
+		from t_homework as
+		t1,t_student_homework as t2, t_course as t3, t_teacher
+		as t4
+		where t1.id
+		= t2.homework_id and t1.course_id = t3.id and t3.teacher_id =
+		t4.id
+		<if test="studentId != null">
+			AND t2.`student_Id` =#{studentId}
+		</if>
+		<if test="courseId != null">
+			AND t1.courseId=#{courseId}
+		</if>
+		<if test="status != null">
+			AND t2.status=#{status}
+		</if>
+		order by t2.id desc
+	</select>
+
+</mapper>

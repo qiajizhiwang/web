@@ -28,7 +28,7 @@ public class ProductPo implements Serializable {
 
 	private String remark;
 
-	private Integer length;
+	private Integer height;
 
 	private Integer width;
 
@@ -112,14 +112,6 @@ public class ProductPo implements Serializable {
 		this.remark = remark;
 	}
 
-	public Integer getLength() {
-		return length;
-	}
-
-	public void setLength(Integer length) {
-		this.length = length;
-	}
-
 	public Integer getWidth() {
 		return width;
 	}
@@ -158,6 +150,14 @@ public class ProductPo implements Serializable {
 
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
+
+	public void setHeight(Integer height) {
+		this.height = height;
 	}
 
 }

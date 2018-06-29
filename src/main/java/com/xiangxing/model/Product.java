@@ -21,7 +21,7 @@ public class Product {
 
     private String remark;
 
-    private Integer length;
+    private Integer height;
 
     private Integer width;
 
@@ -97,12 +97,12 @@ public class Product {
         this.remark = remark;
     }
 
-    public Integer getLength() {
-        return length;
+    public Integer getHeight() {
+        return height;
     }
 
-    public void setLength(Integer length) {
-        this.length = length;
+    public void setHeight(Integer height) {
+        this.height = height;
     }
 
     public Integer getWidth() {
