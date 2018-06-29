@@ -121,7 +121,7 @@
 	}
 	
 	function rowFormatter(value,row,index){  
-               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>";  
+               return "<a  class='myedit' onclick='showImage("+index+")' href='javascript:void(0)' >展示作品</a>";  
  } 
  
  
