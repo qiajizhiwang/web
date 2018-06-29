@@ -675,63 +675,63 @@ public class ProductExample {
             return (Criteria) this;
         }
 
-        public Criteria andLengthIsNull() {
-            addCriterion("length is null");
+        public Criteria andHeightIsNull() {
+            addCriterion("height is null");
             return (Criteria) this;
         }
 
-        public Criteria andLengthIsNotNull() {
-            addCriterion("length is not null");
+        public Criteria andHeightIsNotNull() {
+            addCriterion("height is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLengthEqualTo(Integer value) {
-            addCriterion("length =", value, "length");
+        public Criteria andHeightEqualTo(Integer value) {
+            addCriterion("height =", value, "height");
             return (Criteria) this;
         }
 
-        public Criteria andLengthNotEqualTo(Integer value) {
-            addCriterion("length <>", value, "length");
+        public Criteria andHeightNotEqualTo(Integer value) {
+            addCriterion("height <>", value, "height");
             return (Criteria) this;
         }
 
-        public Criteria andLengthGreaterThan(Integer value) {
-            addCriterion("length >", value, "length");
+        public Criteria andHeightGreaterThan(Integer value) {
+            addCriterion("height >", value, "height");
             return (Criteria) this;
         }
 
-        public Criteria andLengthGreaterThanOrEqualTo(Integer value) {
-            addCriterion("length >=", value, "length");
+        public Criteria andHeightGreaterThanOrEqualTo(Integer value) {
+            addCriterion("height >=", value, "height");
             return (Criteria) this;
         }
 
-        public Criteria andLengthLessThan(Integer value) {
-            addCriterion("length <", value, "length");
+        public Criteria andHeightLessThan(Integer value) {
+            addCriterion("height <", value, "height");
             return (Criteria) this;
         }
 
-        public Criteria andLengthLessThanOrEqualTo(Integer value) {
-            addCriterion("length <=", value, "length");
+        public Criteria andHeightLessThanOrEqualTo(Integer value) {
+            addCriterion("height <=", value, "height");
             return (Criteria) this;
         }
 
-        public Criteria andLengthIn(List<Integer> values) {
-            addCriterion("length in", values, "length");
+        public Criteria andHeightIn(List<Integer> values) {
+            addCriterion("height in", values, "height");
             return (Criteria) this;
         }
 
-        public Criteria andLengthNotIn(List<Integer> values) {
-            addCriterion("length not in", values, "length");
+        public Criteria andHeightNotIn(List<Integer> values) {
+            addCriterion("height not in", values, "height");
             return (Criteria) this;
         }
 
-        public Criteria andLengthBetween(Integer value1, Integer value2) {
-            addCriterion("length between", value1, value2, "length");
+        public Criteria andHeightBetween(Integer value1, Integer value2) {
+            addCriterion("height between", value1, value2, "height");
             return (Criteria) this;
         }
 
-        public Criteria andLengthNotBetween(Integer value1, Integer value2) {
-            addCriterion("length not between", value1, value2, "length");
+        public Criteria andHeightNotBetween(Integer value1, Integer value2) {
+            addCriterion("height not between", value1, value2, "height");
             return (Criteria) this;
         }
 
