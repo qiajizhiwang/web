@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiangxing.mapper.ex.TeacherPoMapper" >
+  
+ 
+  
+  <select id="myStudents" resultType="com.xiangxing.model.Student">
+  SELECT s.id,s.phone,s.`name`,s.icon FROM t_course c
+JOIN t_student_course sc ON c.id=sc.course_id
+JOIN t_student s ON sc.student_id=s.id
+WHERE c.teacher_id=#{teacherId} 
+<if test="courseId != null and courseId !=0" >
+AND course_id=#{courseId}
+</if>
+  </select>
+
+  <select id="studentProducts" resultType="com.xiangxing.model.ex.ProductPo">
+  SELECT p.id,p.`name`,p.create_time,p.path,s.`name` AS studentName FROM t_course c
+JOIN t_student_course sc ON c.id=sc.course_id
+JOIN t_student s ON sc.student_id=s.id
+JOIN t_product p ON sc.id=p.student_course_id
+WHERE c.teacher_id=1 
+<if test="courseId != null and courseId !=0" >
+AND course_id=#{courseId}
+</if>
+<if test="studentId != null and studentId !=0" >
+AND student_id=#{studentId}
+</if>
+  </select>
+ 
+</mapper>
