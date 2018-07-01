@@ -36,10 +36,10 @@
 <!-- 		<table tableName="t_exam" domainObjectName="Exam"></table> -->
 <!-- 		<table tableName="t_message" domainObjectName="Message"></table> -->
 <!-- 		<table tableName="t_order" domainObjectName="Order"></table> -->
-		<table tableName="t_product" domainObjectName="Product">
+<!-- 		<table tableName="t_product" domainObjectName="Product">
 		<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		
-		</table> 
+		</table>  -->
 <!-- 		<table tableName="t_school" domainObjectName="School"></table> -->
 <!-- 		<table tableName="t_student" domainObjectName="Student"></table> -->
 <!-- 		<table tableName="t_student_course" domainObjectName="StudentCourse"></table> -->
@@ -48,9 +48,13 @@
  <!-- <table tableName="t_homework" domainObjectName="Homework">
 <generatedKey column="id" sqlStatement="MySql" identity="true" />
 </table>  -->
-<table tableName="t_student_homework" domainObjectName="StudentHomework">
+<!-- <table tableName="t_student_homework" domainObjectName="StudentHomework">
 <generatedKey column="id" sqlStatement="MySql" identity="true" />
-</table> 
+</table>  -->
 
+<!-- <table tableName="t_advert" domainObjectName="Advert">
+		<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		
+		</table>  -->
 	</context>
 </generatorConfiguration>

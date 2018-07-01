@@ -3,18 +3,28 @@ package com.xiangxing.controller.api;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.xiangxing.controller.admin.PageRequest;
+import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.interceptor.TokenManager;
+import com.xiangxing.mapper.AdvertMapper;
 import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.TeacherMapper;
+import com.xiangxing.model.Advert;
+import com.xiangxing.model.AdvertExample;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentExample;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
+import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.LoginRequest;
@@ -22,7 +32,7 @@ import com.xiangxing.vo.api.LoginResponse;
 
 @RequestMapping("/api")
 @RestController
-public class ApiLoginController {
+public class ApiSystemController {
 
 	@Autowired
 	private TeacherMapper teacherMapper;
@@ -93,6 +103,22 @@ public class ApiLoginController {
 		String token = TokenManager.getToken();
 		TokenManager.removeUser(token);
 		return new ApiResponse();
+	}
+
+	@Autowired
+	AdvertMapper advertMapper;
+
+	@RequestMapping("/advert")
+	public ApiPageResponse<Advert> advert(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+		AdvertExample advertExample = new AdvertExample();
+		advertExample.createCriteria().andIdIsNotNull();
+		List<Advert> advertExs = advertMapper.selectByExample(advertExample);
+		for (Advert advertEx : advertExs) {
+			advertEx.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + advertEx.getPath());
+		}
+		long total = page.getTotal();
+		return new ApiPageResponse<Advert>(total, advertExs);
 	}
 
 }
