@@ -16,12 +16,13 @@ import com.xiangxing.model.StudentExample;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
 import com.xiangxing.vo.api.ApiResponse;
+import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.LoginRequest;
 import com.xiangxing.vo.api.LoginResponse;
 
 @RequestMapping("/api")
 @RestController
-public class LoginController {
+public class ApiLoginController {
 
 	@Autowired
 	private TeacherMapper teacherMapper;

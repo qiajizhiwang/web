@@ -37,10 +37,11 @@ public class HomeController {
 		List schools = schoolMapper.selectByExample(schoolExample);
 		httpSession.setAttribute("schools", schools);
 		httpSession.setAttribute("mySchoolId", id);
+		httpSession.setAttribute("username", me.getName());
 		return "index";
 	}
 	
-	@RequestMapping(value="/login",method=RequestMethod.GET)
+	@RequestMapping(value="/login")
 	public String login() {
 		return "login";
 	}

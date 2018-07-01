@@ -19,15 +19,44 @@
      <script src="js/jquery.easyui.min.js"></script>
         <script src="js/easyui-lang-zh_CN.js"></script>
     
+    <style>
+        .top-content {
+        align-items: center;
+        box-sizing: border-box;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding: 0 15px;
+        height:AUTO;
+        border-bottom: 1px solid #eee;
+        box-shadow: 0 0 8px #eee;
+    }
+    
+        .flex-wrap {
+        display: flex;
+    }
+    </style>
+    
 </head>
 
 <body>
 <div class="easyui-layout" >
       <div id="north" region="north"  style="height:5%">
+   <div class="flex-wrap top-content">
+      <h3>管理系统</h3>
+   
+            <div>
+                <ul>
+                    <li>
+                        <div style="margin-right: 16px;display: inline-block;font-size: 14px;"><label class="UserName" style="display:inline-block!important;">admin</label>，正在使用系统...</div>
+                        <a href="logout">退出登录</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
       </div>
 	<div region="west" split="true" title="菜单" style="width:15%">
 		<ul id="tt" class="easyui-tree"
-			url="data.json " method='get'><!--/system/showMenu-->
+			url="/system/showMenu " method='get'><!--/system/showMenu-->
 	</ul>
 	</div>
 	<div id="content" region="center"  >

@@ -14,12 +14,16 @@ public class ApiResponse {
 	public static ApiResponse getErrorResponse(String memo) {
 		return new ApiResponse(-1, memo);
 	}
+
+	public static ApiResponse getTokenErrorResponse() {
+		return new ApiResponse(2, "token无效，请重新登录");
+	}
 	
-	public static ApiResponse getTokenErrorResponse(String memo) {
-		return new ApiResponse(1, memo);
+	public static ApiResponse getDenyErrorResponse() {
+		return new ApiResponse(3, "无权限访问");
 	}
 
-	private int status = 0;
+	private int status = 1;
 
 	private String memo;
 

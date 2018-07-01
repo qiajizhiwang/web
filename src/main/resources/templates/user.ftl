@@ -156,7 +156,7 @@
     },
     success:function(data){
 	var data = eval('(' + data + ')');
-		if(data.status==0){
+		if(data.status==1){
 		  $('#win').window('close')
 		  $('#tt').datagrid('reload')
 		}
@@ -179,7 +179,7 @@ $('#ff1').form({
     },
     success:function(data){
         var data = eval('(' + data + ')');
-		if(data.status==0){
+		if(data.status==1){
 		  $('#edit').window('close')
 		  $('#tt').datagrid('reload')
 		}

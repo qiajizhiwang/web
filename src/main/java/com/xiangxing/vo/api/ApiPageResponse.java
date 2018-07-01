@@ -1,8 +1,6 @@
-package com.xiangxing.controller.api;
+package com.xiangxing.vo.api;
 
 import java.util.List;
-
-import com.xiangxing.vo.api.ApiResponse;
 
 public class ApiPageResponse<T> extends ApiResponse{
 

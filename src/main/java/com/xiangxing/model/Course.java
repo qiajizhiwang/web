@@ -7,7 +7,7 @@ public class Course {
 
     private String name;
 
-    private String teacherId;
+    private Long teacherId;
 
     private Date curriculumTime;
 
@@ -35,11 +35,11 @@ public class Course {
         this.name = name;
     }
 
-    public String getTeacherId() {
+    public Long getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(String teacherId) {
+    public void setTeacherId(Long teacherId) {
         this.teacherId = teacherId;
     }
 

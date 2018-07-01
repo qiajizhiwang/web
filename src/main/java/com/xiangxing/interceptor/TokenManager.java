@@ -2,7 +2,7 @@ package com.xiangxing.interceptor;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.xiangxing.controller.api.LoginInfo;
+import com.xiangxing.vo.api.LoginInfo;
 
 public class TokenManager {
 
