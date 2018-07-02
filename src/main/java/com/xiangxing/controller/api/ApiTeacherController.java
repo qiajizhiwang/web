@@ -42,12 +42,15 @@ import com.xiangxing.model.Product;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentCourseExample;
 import com.xiangxing.model.ex.ProductPo;
+import com.xiangxing.utils.MD5Util;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.model.Homework;
 import com.xiangxing.model.Product;
 import com.xiangxing.model.StudentCourse;
 import com.xiangxing.model.StudentCourseExample;
 import com.xiangxing.model.StudentHomework;
+import com.xiangxing.model.Teacher;
+import com.xiangxing.model.TeacherExample;
 import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.ProductVo;
@@ -82,6 +85,12 @@ public class ApiTeacherController {
 	@Autowired
 	private StudentCourseMapper studentCourseMapper;
 
+	/**
+	 * 获取课程
+	 * 
+	 * @param pageRequest
+	 * @return
+	 */
 	@RequestMapping("/myCourses")
 	public ApiResponse myCourses(PageRequest pageRequest) {
 		LoginInfo info = TokenManager.getNowUser();
@@ -99,6 +108,12 @@ public class ApiTeacherController {
 
 	}
 
+	/**
+	 * 获取学生
+	 * 
+	 * @param teacherRequest
+	 * @return
+	 */
 	@RequestMapping("/myStudents")
 	public ApiPageResponse<Student> myStudents(TeacherRequest teacherRequest) {
 		LoginInfo info = TokenManager.getNowUser();
@@ -109,6 +124,12 @@ public class ApiTeacherController {
 
 	}
 
+	/**
+	 * 获取学生作品
+	 * 
+	 * @param teacherRequest
+	 * @return
+	 */
 	@RequestMapping("/studentProducts")
 	public ApiPageResponse<ProductPo> studentProducts(TeacherRequest teacherRequest) {
 		LoginInfo info = TokenManager.getNowUser();
@@ -180,6 +201,31 @@ public class ApiTeacherController {
 			studentHomework.setHomeworkId(homework.getId());
 			studentHomeworkMapper.insert(studentHomework);
 		}
+		return new ApiResponse();
+
+	}
+
+	/**
+	 * 修改密码
+	 * 
+	 * @param name
+	 * @param courseId
+	 * @param studentIds
+	 * @return
+	 */
+	@RequestMapping("/updatePassword")
+	public ApiResponse updatePassword(String oldPassword, String password) {
+		LoginInfo info = TokenManager.getNowUser();
+		TeacherExample example = new TeacherExample();
+		example.createCriteria().andIdEqualTo(info.getId()).andPasswordEqualTo(MD5Util.MD5Encode(oldPassword));
+		List<Teacher> teachers = teacherMapper.selectByExample(example);
+		if (teachers.size() == 0) {
+			return ApiResponse.getErrorResponse("旧密码错误！");
+		}
+		Teacher updateTeacher = new Teacher();
+		updateTeacher.setId(info.getId());
+		updateTeacher.setPassword(MD5Util.MD5Encode(password));
+		teacherMapper.updateByPrimaryKeySelective(updateTeacher);
 		return new ApiResponse();
 
 	}
