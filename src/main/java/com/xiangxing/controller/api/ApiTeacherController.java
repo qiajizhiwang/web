@@ -32,6 +32,8 @@ import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.CourseMapper;
 import com.xiangxing.mapper.CourseSignMapper;
 import com.xiangxing.mapper.HomeworkMapper;
+import com.xiangxing.mapper.NoticeDetailMapper;
+import com.xiangxing.mapper.NoticeMapper;
 import com.xiangxing.mapper.ProductMapper;
 import com.xiangxing.mapper.StudentCourseMapper;
 import com.xiangxing.mapper.StudentHomeworkMapper;
@@ -42,10 +44,13 @@ import com.xiangxing.model.Course;
 import com.xiangxing.model.CourseExample;
 import com.xiangxing.model.CourseSign;
 import com.xiangxing.model.Homework;
+import com.xiangxing.model.Notice;
+import com.xiangxing.model.NoticeDetail;
 import com.xiangxing.model.Product;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentCourse;
 import com.xiangxing.model.StudentCourseExample;
+import com.xiangxing.model.StudentExample;
 import com.xiangxing.model.StudentHomework;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
@@ -59,6 +64,8 @@ import com.xiangxing.vo.api.CourseSignResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.ProductVo;
 import com.xiangxing.vo.api.TeacherRequest;
+
+import freemarker.template.TemplateExceptionHandler;
 
 @RequestMapping("/api/teacher")
 @RestController
@@ -92,6 +99,12 @@ public class ApiTeacherController {
 	@Autowired
 	private CourseSignPoMapper courseSignPoMapper;
 
+	@Autowired
+	NoticeMapper noticeMapper;
+
+	@Autowired
+	NoticeDetailMapper noticeDetailMapper;
+
 	/**
 	 * 获取课程
 	 * 
@@ -111,7 +124,8 @@ public class ApiTeacherController {
 
 		// 过滤字段
 		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(Course.class, "id", "name", "schoolTime");
-		return new ApiPageResponse<Course>(total, JSON.parseArray(JSONObject.toJSONString(courses, filter), Course.class));
+		return new ApiPageResponse<Course>(total,
+				JSON.parseArray(JSONObject.toJSONString(courses, filter), Course.class));
 
 	}
 
@@ -141,7 +155,8 @@ public class ApiTeacherController {
 	public ApiPageResponse<ProductPo> studentProducts(TeacherRequest teacherRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(teacherRequest.getPage(), teacherRequest.getRows(), true);
-		List<ProductPo> productPos = teacherPoMapper.studentProducts(info.getId(), teacherRequest.getCourseId(), teacherRequest.getStudentId());
+		List<ProductPo> productPos = teacherPoMapper.studentProducts(info.getId(), teacherRequest.getCourseId(),
+				teacherRequest.getStudentId());
 		long total = page.getTotal();
 		return new ApiPageResponse<ProductPo>(total, productPos);
 
@@ -151,7 +166,8 @@ public class ApiTeacherController {
 	public ApiResponse uploadProduct(ProductVo productVo) {
 		LoginInfo info = TokenManager.getNowUser();
 		StudentCourseExample example = new StudentCourseExample();
-		example.createCriteria().andCourseIdEqualTo(productVo.getCourseId()).andStudentIdEqualTo(productVo.getStudentId());
+		example.createCriteria().andCourseIdEqualTo(productVo.getCourseId())
+				.andStudentIdEqualTo(productVo.getStudentId());
 		Long studentCourseId = studentCourseMapper.selectByExample(example).get(0).getId();
 		Product product = new Product();
 		try {
@@ -212,30 +228,7 @@ public class ApiTeacherController {
 
 	}
 
-	/**
-	 * 修改密码
-	 * 
-	 * @param name
-	 * @param courseId
-	 * @param studentIds
-	 * @return
-	 */
-	@RequestMapping("/updatePassword")
-	public ApiResponse updatePassword(String oldPassword, String password) {
-		LoginInfo info = TokenManager.getNowUser();
-		TeacherExample example = new TeacherExample();
-		example.createCriteria().andIdEqualTo(info.getId()).andPasswordEqualTo(MD5Util.MD5Encode(oldPassword));
-		List<Teacher> teachers = teacherMapper.selectByExample(example);
-		if (teachers.size() == 0) {
-			return ApiResponse.getErrorResponse("旧密码错误！");
-		}
-		Teacher updateTeacher = new Teacher();
-		updateTeacher.setId(info.getId());
-		updateTeacher.setPassword(MD5Util.MD5Encode(password));
-		teacherMapper.updateByPrimaryKeySelective(updateTeacher);
-		return new ApiResponse();
 
-	}
 
 	/**
 	 * 课程签到
@@ -246,6 +239,7 @@ public class ApiTeacherController {
 	 */
 	@RequestMapping("/courseSign")
 	public ApiResponse courseSign(Long courseId, Long[] studentIds) {
+		LoginInfo info = TokenManager.getNowUser();
 
 		List<Long> asList = Arrays.asList(studentIds);
 		// List<Long> asList = new ArrayList<>();
@@ -258,6 +252,13 @@ public class ApiTeacherController {
 		List<StudentCourse> studentCourses = studentCourseMapper.selectByExample(example);
 
 		CourseSign record = null;
+		Notice notice = new Notice();
+		notice.setType(2);
+		notice.setText("您的孩子已签到");
+		notice.setSender(info.getId());
+		notice.setCreateTime(new Date());
+		notice.setSenderName(teacherMapper.selectByPrimaryKey(info.getId()).getName());
+		noticeMapper.insertSelective(notice);
 
 		for (StudentCourse studentCourse : studentCourses) {
 			// 重复签到忽略
@@ -266,11 +267,17 @@ public class ApiTeacherController {
 				record.setStudentCourseId(studentCourse.getId());
 				if (asList.contains(studentCourse.getStudentId())) {
 					record.setSignFlag(1l);
+					NoticeDetail noticeDetail = new NoticeDetail();
+					noticeDetail.setNoticeId(notice.getId());
+					noticeDetail.setStatus(1);
+					noticeDetail.setReceiver(studentCourse.getStudentId());
+					noticeDetailMapper.insert(noticeDetail);
 				}
 				record.setSignTime(DateUtil.stringToDate(DateUtil.dateToString(new Date(), DateUtil.patternA)));
 				courseSignMapper.insertSelective(record);
+			
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 

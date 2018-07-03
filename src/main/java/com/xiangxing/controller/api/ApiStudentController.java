@@ -22,18 +22,22 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.PageRequest;
 import com.xiangxing.interceptor.TokenManager;
+import com.xiangxing.mapper.NoticeDetailMapper;
 import com.xiangxing.mapper.SchoolMapper;
 import com.xiangxing.mapper.StudentHomeworkMapper;
 import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.TeacherMapper;
 import com.xiangxing.mapper.ex.CourseMapperEx;
 import com.xiangxing.mapper.ex.HomeworkPoMapper;
+import com.xiangxing.mapper.ex.NoticePoMapper;
 import com.xiangxing.mapper.ex.ProductPoMapper;
+import com.xiangxing.model.NoticeDetail;
 import com.xiangxing.model.School;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentHomework;
 import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.model.ex.HomeworkPo;
+import com.xiangxing.model.ex.NoticePo;
 import com.xiangxing.model.ex.ProductPo;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
@@ -169,6 +173,35 @@ public class ApiStudentController {
 					e.printStackTrace();
 				}
 		}
+		return new ApiResponse();
+
+	}
+
+	@Autowired
+	NoticePoMapper noticePoMapper;
+
+	@RequestMapping("/myNotices")
+	public ApiResponse myNotices(PageRequest pageRequest) {
+		LoginInfo info = TokenManager.getNowUser();
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+
+		List notices = noticePoMapper.list(info.getId());
+		long total = page.getTotal();
+		return new ApiPageResponse<NoticePo>(total, notices);
+
+	}
+	
+	@Autowired
+	NoticeDetailMapper noticeDetailMapper;
+	
+	@RequestMapping("/readNotice")
+	public ApiResponse readNotice(Long noticeId) {
+		LoginInfo info = TokenManager.getNowUser();
+
+		NoticeDetail noticeDetail = noticeDetailMapper.selectByPrimaryKey(noticeId);
+		noticeDetail.setReadTime(new Date());
+		noticeDetail.setStatus(2);
+		noticeDetailMapper.updateByPrimaryKey(noticeDetail);
 		return new ApiResponse();
 
 	}
