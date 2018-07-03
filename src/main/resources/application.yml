@@ -32,5 +32,5 @@ Alipay.ALIPAY_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjsaZ7r1q01
 
 product_path:  /data/xiangxing/product/
 homework_path:  /data/xiangxing/homework/
-
+message_path:  /data/xiangxing/message/
 

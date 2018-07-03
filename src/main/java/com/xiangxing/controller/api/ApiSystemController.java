@@ -1,5 +1,6 @@
 package com.xiangxing.controller.api;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,12 +21,16 @@ import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.TeacherMapper;
 import com.xiangxing.model.Advert;
 import com.xiangxing.model.AdvertExample;
+import com.xiangxing.model.Message;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentExample;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
+import com.xiangxing.model.ex.CourseSignPo;
+import com.xiangxing.utils.DateUtil;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
+import com.xiangxing.vo.api.CourseSignResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.LoginRequest;
 import com.xiangxing.vo.api.LoginResponse;
@@ -120,5 +125,7 @@ public class ApiSystemController {
 		long total = page.getTotal();
 		return new ApiPageResponse<Advert>(total, advertExs);
 	}
+	
+
 
 }
