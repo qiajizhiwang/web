@@ -13,7 +13,7 @@ spring:
         request-context-attribute : request
 
 server:
-    port : 8080
+    port : 80
 
 #文件上传路径
 upload_file_path: d:/workspace/xiangxing/

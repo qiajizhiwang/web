@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.xiangxing.model.CourseSign;
+import com.xiangxing.model.ex.CourseSignPo;
 
 public interface CourseSignPoMapper {
 
-	List<CourseSign> getCourseSignInfo(@Param("courseId") Long courseId, @Param("studentId") Long studentId,
+	List<CourseSignPo> getCourseSignInfo(@Param("courseId") Long courseId, @Param("studentId") Long studentId,
 			@Param("singDate") Date singDate);
 }

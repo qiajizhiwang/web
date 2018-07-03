@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -48,11 +49,13 @@ import com.xiangxing.model.StudentCourseExample;
 import com.xiangxing.model.StudentHomework;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
+import com.xiangxing.model.ex.CourseSignPo;
 import com.xiangxing.model.ex.ProductPo;
 import com.xiangxing.utils.DateUtil;
 import com.xiangxing.utils.MD5Util;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
+import com.xiangxing.vo.api.CourseSignResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.ProductVo;
 import com.xiangxing.vo.api.TeacherRequest;
@@ -108,8 +111,7 @@ public class ApiTeacherController {
 
 		// 过滤字段
 		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(Course.class, "id", "name", "schoolTime");
-		return new ApiPageResponse<Course>(total,
-				JSON.parseArray(JSONObject.toJSONString(courses, filter), Course.class));
+		return new ApiPageResponse<Course>(total, JSON.parseArray(JSONObject.toJSONString(courses, filter), Course.class));
 
 	}
 
@@ -139,8 +141,7 @@ public class ApiTeacherController {
 	public ApiPageResponse<ProductPo> studentProducts(TeacherRequest teacherRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(teacherRequest.getPage(), teacherRequest.getRows(), true);
-		List<ProductPo> productPos = teacherPoMapper.studentProducts(info.getId(), teacherRequest.getCourseId(),
-				teacherRequest.getStudentId());
+		List<ProductPo> productPos = teacherPoMapper.studentProducts(info.getId(), teacherRequest.getCourseId(), teacherRequest.getStudentId());
 		long total = page.getTotal();
 		return new ApiPageResponse<ProductPo>(total, productPos);
 
@@ -150,8 +151,7 @@ public class ApiTeacherController {
 	public ApiResponse uploadProduct(ProductVo productVo) {
 		LoginInfo info = TokenManager.getNowUser();
 		StudentCourseExample example = new StudentCourseExample();
-		example.createCriteria().andCourseIdEqualTo(productVo.getCourseId())
-				.andStudentIdEqualTo(productVo.getStudentId());
+		example.createCriteria().andCourseIdEqualTo(productVo.getCourseId()).andStudentIdEqualTo(productVo.getStudentId());
 		Long studentCourseId = studentCourseMapper.selectByExample(example).get(0).getId();
 		Product product = new Product();
 		try {
@@ -248,7 +248,10 @@ public class ApiTeacherController {
 	public ApiResponse courseSign(Long courseId, Long[] studentIds) {
 
 		List<Long> asList = Arrays.asList(studentIds);
-
+		// List<Long> asList = new ArrayList<>();
+		// for (String string : asLista) {
+		// asList.add(Long.valueOf(string));
+		// }
 		// 获取学生课程
 		StudentCourseExample example = new StudentCourseExample();
 		example.createCriteria().andCourseIdEqualTo(courseId);
@@ -260,7 +263,7 @@ public class ApiTeacherController {
 			// 重复签到忽略
 			try {
 				record = new CourseSign();
-				record.setStudentCourseId(studentCourse.getStudentId());
+				record.setStudentCourseId(studentCourse.getId());
 				if (asList.contains(studentCourse.getStudentId())) {
 					record.setSignFlag(1l);
 				}
@@ -285,12 +288,13 @@ public class ApiTeacherController {
 	@RequestMapping("/getCourseSignInfo")
 	public ApiResponse getCourseSignInfo(Long courseId, Long studentId, Long singTime) {
 		Date singDate = null;
-		if (0 != singTime && null != singTime) {
+		if (null != singTime && 0 != singTime) {
 			singDate = DateUtil.stringToDate(DateUtil.dateToString(new Date(singTime), DateUtil.patternA));
 		}
-		List<CourseSign> courseSigns = courseSignPoMapper.getCourseSignInfo(courseId, studentId, singDate);
-
-		return new ApiResponse();
+		List<CourseSignPo> courseSignPos = courseSignPoMapper.getCourseSignInfo(courseId, studentId, singDate);
+		CourseSignResponse courseSignResponse = new CourseSignResponse();
+		courseSignResponse.setCourseSignPos(courseSignPos);
+		return courseSignResponse;
 
 	}
 
