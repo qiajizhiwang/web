@@ -58,8 +58,10 @@
 		
 <!-- <table tableName="t_notice" domainObjectName="Notice">
 <generatedKey column="id" sqlStatement="MySql" identity="true" /></table>  -->
- <table tableName="t_notice_detail" domainObjectName="NoticeDetail">
-<generatedKey column="id" sqlStatement="MySql" identity="true" /></table>  
+<!--  <table tableName="t_notice_detail" domainObjectName="NoticeDetail"> -->
+<!-- <generatedKey column="id" sqlStatement="MySql" identity="true" /></table>   -->
+
+<table tableName="t_course_sign" domainObjectName="CourseSign"></table>
 		
 	</context>
 </generatorConfiguration>
