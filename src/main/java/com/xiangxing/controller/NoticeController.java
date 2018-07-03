@@ -31,6 +31,7 @@ import com.xiangxing.model.Notice;
 import com.xiangxing.model.NoticeExample;
 import com.xiangxing.model.Notice;
 import com.xiangxing.model.NoticeDetail;
+import com.xiangxing.model.NoticeDetailExample;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentExample;
 import com.xiangxing.model.User;
@@ -106,6 +107,9 @@ public class NoticeController {
 	@ResponseBody
 	public ApiResponse destroyNotice(Long id) {
 		noticeMapper.deleteByPrimaryKey(id);
+		NoticeDetailExample detailExample = new NoticeDetailExample();
+		detailExample.createCriteria().andNoticeIdEqualTo(id);
+		noticeDetailMapper.deleteByExample(detailExample);
 		return new ApiResponse();
 	}
 
