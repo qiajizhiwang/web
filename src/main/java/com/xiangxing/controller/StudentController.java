@@ -55,10 +55,11 @@ public class StudentController extends BaseController {
 	}
 
 	@RequestMapping("/saveStudent")
-	public void savestudent(Student student) {
+	@ResponseBody
+	public ApiResponse savestudent(Student student) {
 		student.setPassword(MD5Util.MD5Encode(student.getPassword()));
 		studentMapper.insertSelective(student);
-		writeToOkResponse();
+		return new ApiResponse();
 	}
 
 	@RequestMapping("/studentList")
@@ -85,16 +86,18 @@ public class StudentController extends BaseController {
 	}
 
 	@RequestMapping("/editStudent")
-	public void editstudent(Student student, Long studentId) {
+	@ResponseBody
+	public ApiResponse editstudent(Student student, Long studentId) {
 		student.setId(studentId);
 		studentMapper.updateByPrimaryKeySelective(student);
-		writeToOkResponse();
+		return new ApiResponse();
 	}
 
 	@RequestMapping("/destroyStudent")
-	public void destroystudent(Long studentId) {
+	@ResponseBody
+	public ApiResponse destroystudent(Long studentId) {
 		studentMapper.deleteByPrimaryKey(studentId);
-		writeToOkResponse();
+		return new ApiResponse();
 	}
 
 	@RequestMapping("/saveApply")

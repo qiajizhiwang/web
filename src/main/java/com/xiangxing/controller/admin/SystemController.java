@@ -93,6 +93,13 @@ public class SystemController {
 		return new ApiResponse();
 	}
 
+	@RequestMapping("/destroyUser")
+	@ResponseBody
+	public ApiResponse destroyUser(Long id) {
+	    userMapper.deleteByPrimaryKey(id);
+		return new ApiResponse();
+	}
+	
 	@RequestMapping("/editUser")
 	@ResponseBody
 	public ApiResponse editUser(User user, String menus) {

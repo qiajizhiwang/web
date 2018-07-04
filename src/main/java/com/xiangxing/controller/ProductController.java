@@ -3,6 +3,8 @@ package com.xiangxing.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +64,7 @@ public class ProductController extends BaseController {
 
 	@RequestMapping("/productList")
 	@ResponseBody
-	public PageResponse<ProductPo> productList(PageRequest pageRequest, String name, String courseId) {
+	public PageResponse<ProductPo> productList(PageRequest pageRequest, String name, String courseId,HttpServletRequest httpServletRequest) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		Long schoolId = null;
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
@@ -70,6 +72,9 @@ public class ProductController extends BaseController {
 			schoolId = me.getSchoolId();
 		}
 		List<ProductPo> products = productPoMapper.list(name, courseId, schoolId);
+		for (ProductPo product : products) {
+			product.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + product.getPath());
+		}
 		long total = page.getTotal();
 		return new PageResponse<ProductPo>(total, products);
 
