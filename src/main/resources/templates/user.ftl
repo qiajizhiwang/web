@@ -105,7 +105,7 @@
 	    			<td>状态:</td>
 	    			<td>
                        <select id="userStatus" class="easyui-combobox" name="status" style="width:40%;height:AUTO;padding:5px;">
-	    			 <option selected="selected" value=1>开启</option>
+	    			 <option selected="selected" value=1>启用</option>
                       <option value=0>停用</option>
                       </select></td>
 	    		</tr>
@@ -140,6 +140,8 @@
   
        onLoadSuccess:function(data){  
       $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
+            $('.mydestroy').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});
+      
       }
       
   })
@@ -214,7 +216,7 @@ function submitForm1(){
 }
 
 function rowFormatter(value,row,index){  
-               return "<a class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>";  
+               return "<a class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a> <a class='mydestroy' onclick='destroyRow("+index+")'>删除</a>";  
  } 
  
  
@@ -223,6 +225,28 @@ function rowFormatter(value,row,index){
      return "停用"
  else if (value == 1 )   return "启用"
  } 
+ 
+ function destroyRow(index){
+	$('#tt').datagrid('selectRow',index);
+		var row = $('#tt').datagrid('getSelected');
+		if (row){
+			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
+				if (r){
+					$.post('destroyUser',{id:row.id},function(result){
+						//var result = eval('('+result+')');
+						if (result.status==1){
+							$('#tt').datagrid('reload');	// reload the user data
+						} else {
+							$.messager.show({	// show error message
+								title: 'Error',
+								msg: result.memo
+							});
+						}
+					},'json');
+				}
+			});
+		}
+	}
  
 function editRow(index){
 $('#tt').datagrid('selectRow',index);

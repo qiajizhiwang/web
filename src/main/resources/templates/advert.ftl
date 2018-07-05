@@ -128,7 +128,7 @@
 						} else {
 							$.messager.show({	// show error message
 								title: 'Error',
-								msg: result.errorMsg
+								msg: result.memo
 							});
 						}
 					},'json');

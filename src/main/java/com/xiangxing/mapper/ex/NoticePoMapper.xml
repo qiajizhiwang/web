@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiangxing.mapper.ex.NoticePoMapper">
+
+
+
+	<select id="list" resultType="com.xiangxing.model.ex.NoticePo">
+		select t1.id as id ,t1.`status` as status , t2.text as text,
+		t2.create_time as create_time,t2.sender_name as sender_name ,t2.type
+		as type
+		from t_notice_detail t1,t_notice t2
+		where t1.notice_id = t2.id
+		<if test="studentId != null">
+			AND t1.receiver =#{studentId}
+		</if>
+		order by create_time desc
+	</select>
+
+</mapper>

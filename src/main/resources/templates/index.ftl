@@ -48,7 +48,7 @@
                 <ul>
                     <li>
                         <div style="margin-right: 16px;display: inline-block;font-size: 14px;"><label class="UserName" style="display:inline-block!important;">admin</label>，正在使用系统...</div>
-                        <a href="logout">退出登录</a>
+                        <a href="logout">退出</a>
                     </li>
                 </ul>
             </div>
@@ -62,7 +62,9 @@
 	<div id="content" region="center"  >
 	<div class="easyui-tabs" style="height:100%"></div>
 	</div>
-	 <div id="south" region="south"  style="height:5%">
+	 <div id="south" region="south"  style="height:5%;text-align: center;">
+	 ©2018-2020 学校管理系统
+	 </div>
 </div>
 
 

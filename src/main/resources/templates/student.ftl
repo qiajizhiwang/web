@@ -111,10 +111,14 @@
 				<td>身份证号码</td>
 				<td><input name="idCard" class="easyui-textbox"></td>
 			</tr>
-			<tr>
-				<td>审核状态</td>
-				<td><input name="status" class="easyui-textbox"></td>
-			</tr>
+		    <tr>
+	    			<td>状态:</td>
+	    			<td>
+                       <select id="status" class="easyui-combobox" name="status" style="width:40%;height:AUTO;padding:5px;">
+	    			 <option  selected="selected"  value=1>启用</option>
+                      <option value=0>停用</option>
+                      </select></td>
+	    		</tr>
 			</table>
 		</form>
 	</div>
@@ -251,12 +255,12 @@
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
 				if (r){
 					$.post('destroyStudent',{studentId:row.id},function(result){
-						if (result.code==10000){
+						if (result.status != 1){
 							$('#dg').datagrid('reload');	// reload the user data
 						} else {
 							$.messager.show({	// show error message
 								title: 'Error',
-								msg: result.errorMsg
+								msg: result.memo
 							});
 						}
 					},'json');
@@ -273,13 +277,13 @@
 			},
 			success: function(result){
 				var result = eval('('+result+')');
-				if (result.errorMsg){
+				if (result.status != 1){
 					$.messager.show({
 						title: 'Error',
-						msg: result.errorMsg
+						msg: result.memo
 					});
 				} else {
-					$('#apply').dialog('close');		// close the dialog
+					$('#dlg').dialog('close');		// close the dialog
 					$('#dg').datagrid('reload');	// reload the user data
 				}
 			}
@@ -296,7 +300,7 @@
 			},
 			success: function(result){
 				var result = eval('('+result+')');
-				if (result.status != 0){
+				if (result.status != 1){
 					$.messager.show({
 						title: 'Error',
 						msg: result.memo

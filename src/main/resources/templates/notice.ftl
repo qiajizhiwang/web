@@ -35,7 +35,7 @@
 				<th field="text" width="50" >内容</th>
 				<th field="createTime" width="50" >时间</th>
 				<th field="type" width="50" ,formatter:typeFormatter">类型</th>
-				<th field="senderName" width="50" >类型</th>
+				<th field="senderName" width="50" >发送者</th>
 				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
@@ -81,7 +81,7 @@
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
 				if (r){
 					$.post('notice/destroyNotice',{id:row.id},function(result){
-						var result = eval('('+result+')');
+					//	 result =JSON.parse(result);
 						if (result.status==1){
 							$('#dg').datagrid('reload');	// reload the user data
 						} else {
@@ -103,11 +103,11 @@
 				return $(this).form('validate');
 			},
 			success: function(result){
-				var result = eval('('+result+')');
-				if (result.errorMsg){
+				var result = JSON.parse(result);
+				if (result.status != 1){
 					$.messager.show({
 						title: 'Error',
-						msg: result.errorMsg
+						msg: result.memo
 					});
 				} else {
 					$('#dlg').dialog('close');		// close the dialog
@@ -117,42 +117,12 @@
 		});
 	}
 
-	function editRowSave(){
-		$('#fmedit').form('submit',{
-			url: url,
-			onSubmit: function(){
-				return $(this).form('validate');
-			},
-			success: function(result){
-				var result = eval('('+result+')');
-				if (result.errorMsg){
-					$.messager.show({
-						title: 'Error',
-						msg: result.errorMsg
-					});
-				} else {
-					$('#dlgedit').dialog('close');		// close the dialog
-					$('#dg').datagrid('reload');	// reload the user data
-				}
-			}
-		});
-	}
 	
-	function editRow(index){
-	$('#dg').datagrid('selectRow',index);
-		var row = $('#dg').datagrid('getSelected');
-		if (row){
-			$('#dlgedit').dialog('open').dialog('setTitle','编辑');
-			$('#fmedit').form('load',row);
-			url = 'editNotice?id='+row.id;
-		}
-	}
 	
 	 $(document).ready(function(){  
   $("#dg").datagrid({
   
        onLoadSuccess:function(data){  
-      $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
       $('.mydestroy').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});
       }
       
@@ -160,15 +130,9 @@
   })
   
 	function rowFormatter(value,row,index){  
-               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a> <a class='mydestroy' onclick='destroyRow("+index+")'>删除</a>";  
+               return "<a class='mydestroy' onclick='destroyRow("+index+")'>删除</a>";  
  	} 
  	
- 	function showImg(value, row, index){  
-	    if(row.path){  
-	        return "<img style='width:100px;height:100px;' border='1' src='"+row.path+"'/>";  
-	    }  
-	}
-	
 	function typeFormatter(value,row,index){
 	 if(value == 1 )  
 	     return "学校公告"

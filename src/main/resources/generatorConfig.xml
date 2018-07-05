@@ -6,7 +6,7 @@
 <!-- 		location="D:\work\gitaaa\web\src\main\resources\mysql-connector-java-5.1.45.jar" /> -->
 		
 	<classPathEntry
-		location="D:\workspace\web\src\main\resources\mysql-connector-java-5.1.45.jar" />
+		location="D:\workspace3\web\src\main\resources\mysql-connector-java-5.1.45.jar" />
 		
 	<context id="context1">
 
@@ -61,7 +61,11 @@
 <!--  <table tableName="t_notice_detail" domainObjectName="NoticeDetail"> -->
 <!-- <generatedKey column="id" sqlStatement="MySql" identity="true" /></table>   -->
 
-<table tableName="t_course_sign" domainObjectName="CourseSign"></table>
+<!-- <table tableName="t_course_sign" domainObjectName="CourseSign"></table> -->
+ <table tableName="t_message" domainObjectName="Message">
+<generatedKey column="id" sqlStatement="MySql" identity="true" /></table>  
+<!--  <table tableName="t_message_queue" domainObjectName="MessageQueue">
+<generatedKey column="id" sqlStatement="MySql" identity="true" /></table>   -->
 		
 	</context>
 </generatorConfiguration>

@@ -39,8 +39,9 @@
 				<th field="name" width="50" editor="text">名称</th>
 				<th field="courseName" width="50" editor="text">课程</th>
 				<th field="studentName" width="50" editor="text">学生</th>
+				<th data-options="field:'path',width:100, formatter:showImg">图片</th>
 				<th field="createTime" width="50" editor="text">上传时间</th>
-				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
+			<!--	<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th> -->
 			</tr>
 		</thead>
 	</table>
@@ -54,8 +55,7 @@
 	
 	</div>
 	
-	
-	
+
 
 </body>
 <script type="text/javascript">
@@ -64,7 +64,7 @@
   $("#dg").datagrid({
   
        onLoadSuccess:function(data){  
-      $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
+      $('.myedit').linkbutton({text:'查看作品',plain:true,iconCls:'icon-tip'});
       }
       
   })
@@ -130,6 +130,12 @@
      return "停用"
  else if (value == 1 )   return "启用"
  } 
+ 
+function showImg(value, row, index){  
+	    if(row.path){  
+	        return "<img style='width:100px;height:100px;' border='1' src='"+row.path+"'/>";  
+	    }  
+	}
  
 </script>
 

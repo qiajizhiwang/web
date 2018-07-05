@@ -6,15 +6,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,10 @@ import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.CourseMapper;
 import com.xiangxing.mapper.CourseSignMapper;
 import com.xiangxing.mapper.HomeworkMapper;
+import com.xiangxing.mapper.MessageMapper;
+import com.xiangxing.mapper.MessageQueueMapper;
+import com.xiangxing.mapper.NoticeDetailMapper;
+import com.xiangxing.mapper.NoticeMapper;
 import com.xiangxing.mapper.ProductMapper;
 import com.xiangxing.mapper.StudentCourseMapper;
 import com.xiangxing.mapper.StudentHomeworkMapper;
@@ -42,6 +47,12 @@ import com.xiangxing.model.Course;
 import com.xiangxing.model.CourseExample;
 import com.xiangxing.model.CourseSign;
 import com.xiangxing.model.Homework;
+import com.xiangxing.model.Message;
+import com.xiangxing.model.MessageExample;
+import com.xiangxing.model.MessageQueue;
+import com.xiangxing.model.MessageQueueExample;
+import com.xiangxing.model.Notice;
+import com.xiangxing.model.NoticeDetail;
 import com.xiangxing.model.Product;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentCourse;
@@ -67,6 +78,9 @@ public class ApiTeacherController {
 	@Value(value = "${product_path}")
 	private String imagePath;
 
+	@Value(value = "${message_path}")
+	private String messagePath;
+
 	@Autowired
 	HomeworkMapper homeworkMapper;
 
@@ -91,6 +105,12 @@ public class ApiTeacherController {
 
 	@Autowired
 	private CourseSignPoMapper courseSignPoMapper;
+
+	@Autowired
+	NoticeMapper noticeMapper;
+
+	@Autowired
+	NoticeDetailMapper noticeDetailMapper;
 
 	/**
 	 * 获取课程
@@ -138,10 +158,13 @@ public class ApiTeacherController {
 	 * @return
 	 */
 	@RequestMapping("/studentProducts")
-	public ApiPageResponse<ProductPo> studentProducts(TeacherRequest teacherRequest) {
+	public ApiPageResponse<ProductPo> studentProducts(TeacherRequest teacherRequest, HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(teacherRequest.getPage(), teacherRequest.getRows(), true);
 		List<ProductPo> productPos = teacherPoMapper.studentProducts(info.getId(), teacherRequest.getCourseId(), teacherRequest.getStudentId());
+		for (ProductPo productPo : productPos) {
+			productPo.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + productPo.getPath());
+		}
 		long total = page.getTotal();
 		return new ApiPageResponse<ProductPo>(total, productPos);
 
@@ -157,7 +180,6 @@ public class ApiTeacherController {
 		try {
 			BeanUtils.copyProperties(product, productVo);
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		product.setStudentCourseId(studentCourseId);
@@ -178,7 +200,6 @@ public class ApiTeacherController {
 			product.setPath(path);
 			productMapper.insert(product);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -271,6 +292,7 @@ public class ApiTeacherController {
 	 */
 	@RequestMapping("/courseSign")
 	public ApiResponse courseSign(Long courseId, Long[] studentIds) {
+		LoginInfo info = TokenManager.getNowUser();
 
 		List<Long> asList = Arrays.asList(studentIds);
 		// List<Long> asList = new ArrayList<>();
@@ -283,6 +305,13 @@ public class ApiTeacherController {
 		List<StudentCourse> studentCourses = studentCourseMapper.selectByExample(example);
 
 		CourseSign record = null;
+		Notice notice = new Notice();
+		notice.setType(2);
+		notice.setText("您的孩子已签到");
+		notice.setSender(info.getId());
+		notice.setCreateTime(new Date());
+		notice.setSenderName(teacherMapper.selectByPrimaryKey(info.getId()).getName());
+		noticeMapper.insertSelective(notice);
 
 		for (StudentCourse studentCourse : studentCourses) {
 			// 重复签到忽略
@@ -291,11 +320,17 @@ public class ApiTeacherController {
 				record.setStudentCourseId(studentCourse.getId());
 				if (asList.contains(studentCourse.getStudentId())) {
 					record.setSignFlag(1l);
+					NoticeDetail noticeDetail = new NoticeDetail();
+					noticeDetail.setNoticeId(notice.getId());
+					noticeDetail.setStatus(1);
+					noticeDetail.setReceiver(studentCourse.getStudentId());
+					noticeDetailMapper.insert(noticeDetail);
 				}
 				record.setSignTime(DateUtil.stringToDate(DateUtil.dateToString(new Date(), DateUtil.patternA)));
 				courseSignMapper.insertSelective(record);
-			} catch (Exception e) {
 
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 
@@ -320,6 +355,92 @@ public class ApiTeacherController {
 		CourseSignResponse courseSignResponse = new CourseSignResponse();
 		courseSignResponse.setCourseSignPos(courseSignPos);
 		return courseSignResponse;
+
+	}
+
+	@Autowired
+	MessageMapper messageMapper;
+
+	@Autowired
+	MessageQueueMapper messageQueueMapper;
+
+	@RequestMapping("/getMessages")
+	public ApiPageResponse<Message> getMessages(PageRequest pageRequest, Long studentId, HttpServletRequest httpServletRequest) {
+		LoginInfo info = TokenManager.getNowUser();
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+		MessageQueueExample messageQueueExample = new MessageQueueExample();
+		messageQueueExample.createCriteria().andStudentEqualTo(studentId).andTeacherEqualTo(info.getId());
+		List<MessageQueue> messageQueues = messageQueueMapper.selectByExample(messageQueueExample);
+		MessageQueue messageQueue = null;
+		if (CollectionUtils.isEmpty(messageQueues)) {
+			messageQueue = new MessageQueue();
+			messageQueue.setStudent(studentId);
+			messageQueue.setTeacher(info.getId());
+			messageQueueMapper.insert(messageQueue);
+		} else {
+			messageQueue = messageQueues.get(0);
+		}
+		MessageExample messageExample = new MessageExample();
+		messageExample.createCriteria().andQueueIdEqualTo(messageQueue.getId());
+		messageExample.setOrderByClause("id desc");
+		List<Message> messages = messageMapper.selectByExample(messageExample);
+		for (Message message : messages) {
+			message.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + message.getPath());
+		}
+		long total = page.getTotal();
+		return new ApiPageResponse<Message>(total, messages);
+	}
+
+	@RequestMapping("/sendMessage")
+	public ApiResponse sendMessage(String text, Long studentId, String base64Image) {
+		LoginInfo info = TokenManager.getNowUser();
+		MessageQueueExample messageQueueExample = new MessageQueueExample();
+		messageQueueExample.createCriteria().andStudentEqualTo(studentId).andTeacherEqualTo(info.getId());
+		List<MessageQueue> messageQueues = messageQueueMapper.selectByExample(messageQueueExample);
+		MessageQueue messageQueue = null;
+		if (CollectionUtils.isEmpty(messageQueues)) {
+			messageQueue = new MessageQueue();
+			messageQueue.setStudent(studentId);
+			messageQueue.setTeacher(info.getId());
+			messageQueueMapper.insert(messageQueue);
+		} else {
+			messageQueue = messageQueues.get(0);
+		}
+		Message message = new Message();
+		message.setCreateTime(new Date());
+		message.setOrigin(1);
+		message.setQueueId(messageQueue.getId());
+		if (StringUtils.isEmpty(base64Image)) {
+			message.setType(1);
+			message.setText(text);
+		} else {
+			byte[] imageByte = Base64Utils.decodeFromString(base64Image);
+			BufferedImage image;
+			FileOutputStream fileOutputStream = null;
+			try {
+				String dir = messagePath + File.separator + messageQueue.getId();
+				if (!new File(dir).exists())
+					new File(dir).mkdirs();
+				String path = dir + File.separator + UUID.randomUUID() + ".png";
+				fileOutputStream = new FileOutputStream(path);
+				image = ImageIO.read(new ByteArrayInputStream(imageByte));
+				ImageIO.write(image, "png", fileOutputStream);
+				message.setType(2);
+				message.setPath(path);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (null != fileOutputStream)
+					try {
+						fileOutputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			}
+
+		}
+		messageMapper.insert(message);
+		return null;
 
 	}
 
