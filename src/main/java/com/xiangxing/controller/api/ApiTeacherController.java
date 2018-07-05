@@ -213,6 +213,31 @@ public class ApiTeacherController {
 	}
 
 	/**
+	 * 作业批改
+	 * 
+	 * @param name
+	 * @param courseId
+	 * @param studentIds
+	 * @return
+	 */
+	@RequestMapping("/homeworkCorrecting")
+	public ApiResponse homeworkCorrecting(StudentHomework studentHomework) {
+		StudentHomework updateStudentHomework = new StudentHomework();
+		updateStudentHomework.setId(studentHomework.getId());
+		updateStudentHomework.setLayout(studentHomework.getLayout());
+		updateStudentHomework.setColor(studentHomework.getColor());
+		updateStudentHomework.setSubject(studentHomework.getSubject());
+		updateStudentHomework.setRemark(studentHomework.getRemark());
+		updateStudentHomework.setStatus(3);
+		int i = studentHomeworkMapper.updateByPrimaryKeySelective(updateStudentHomework);
+		if (i == 0) {
+			return ApiResponse.getErrorResponse("作业不存在！");
+		}
+		return new ApiResponse();
+
+	}
+
+	/**
 	 * 修改密码
 	 * 
 	 * @param name
