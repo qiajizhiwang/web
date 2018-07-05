@@ -14,23 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.PageRequest;
-import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.AdvertMapper;
+import com.xiangxing.mapper.ContactMapper;
 import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.TeacherMapper;
 import com.xiangxing.model.Advert;
 import com.xiangxing.model.AdvertExample;
-import com.xiangxing.model.Message;
+import com.xiangxing.model.Contact;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentExample;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
-import com.xiangxing.model.ex.CourseSignPo;
-import com.xiangxing.utils.DateUtil;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
-import com.xiangxing.vo.api.CourseSignResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.LoginRequest;
 import com.xiangxing.vo.api.LoginResponse;
@@ -125,7 +122,21 @@ public class ApiSystemController {
 		long total = page.getTotal();
 		return new ApiPageResponse<Advert>(total, advertExs);
 	}
-	
 
+	@Autowired
+	ContactMapper contactMapper;
+
+	@RequestMapping("/contactMe")
+	public ApiResponse contactMe(String text, String phone, String name) {
+		Contact contact = new Contact();
+		contact.setCreateTime(new Date());
+		contact.setName(name);
+		contact.setPhone(phone);
+		contact.setText(text);
+		contactMapper.insert(contact);
+		return new ApiResponse();
+	}
+	
+	
 
 }
