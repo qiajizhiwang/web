@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import com.xiangxing.model.School;
 import com.xiangxing.model.SchoolExample;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
+import com.xiangxing.model.User;
 import com.xiangxing.model.TeacherExample.Criteria;
 import com.xiangxing.model.ex.TeacherEx;
 import com.xiangxing.utils.MD5Util;
@@ -42,6 +44,11 @@ public class TeacherController extends BaseController {
 		TeacherExample teacherExample = new TeacherExample();
 		if (StringUtils.isNotBlank(schoolId)) {
 			teacherExample.createCriteria().andSchoolIdEqualTo(Long.valueOf(schoolId));
+		} else {
+			User me = (User) SecurityUtils.getSubject().getPrincipal();
+			if (me.getType() == 1) {
+				teacherExample.createCriteria().andSchoolIdEqualTo(me.getSchoolId());
+			}
 		}
 		List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
 		return JSON.toJSONString(teachers);
