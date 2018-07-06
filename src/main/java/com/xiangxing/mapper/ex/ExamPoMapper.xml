@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiangxing.mapper.ex.ExamPoMapper">
+
+
+
+	<select id="get" resultType="com.xiangxing.model.ex.ExamPo">
+		select t1.id as id ,t3.`name` as subjectName,t4.name as
+		studentName,t4.gender as gender, t4.nation as nation,t4.state as state ,
+		t4.birthday as birthday,t5.name as schoolName ,t2.exam_time as examTime,t2.* from
+
+		t_entry_form as t1 ,t_exam as t2 ,t_subject as t3 ,t_student as t4 ,t_school as t5
+
+		where t1.exam_id = t2.id and t1.student_id = t4.id and t3.id =
+		t2.subject_id and t5.id = t2.school_id
+		<if test="examId != null">
+			AND t1.id =#{examId}
+		</if>
+	</select>
+
+</mapper>

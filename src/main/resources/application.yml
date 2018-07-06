@@ -41,4 +41,5 @@ wechat_domain =api.mch.weixin.qq.com
 product_path:  /data/xiangxing/product/
 homework_path:  /data/xiangxing/homework/
 message_path:  /data/xiangxing/message/
+pdf_path:  /data/xiangxing/pdf/
 
