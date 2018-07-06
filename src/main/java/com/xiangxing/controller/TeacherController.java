@@ -87,6 +87,12 @@ public class TeacherController extends BaseController {
 			criteria.andStatusEqualTo(Integer.valueOf(status));
 		}
 
+		// 根据用户过滤老师
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		if (me.getType() == 1) {
+			criteria.andSchoolIdEqualTo(me.getSchoolId());
+		}
+
 		List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
 
 		SchoolExample schoolExample = new SchoolExample();

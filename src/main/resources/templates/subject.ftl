@@ -45,7 +45,6 @@
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newSubject()">新增</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySubject()">删除</a>
 	</div>
 	
 	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
@@ -81,13 +80,14 @@
 	function editSubject(){
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
-			$('#dlg').dialog('open').dialog('setTitle','Edit User');
+			$('#dlg').dialog('open').dialog('setTitle','编辑');
 			$('#fm').form('load',row);
 			url = 'editSubject?subjectId='+row.id;
 		}
 	}
 	
-	function destroySubject(){
+	function destroyRow(index){
+	$('#dg').datagrid('selectRow',index);
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
@@ -132,7 +132,7 @@
 	$('#dg').datagrid('selectRow',index);
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
-			$('#dlg').dialog('open').dialog('setTitle','Edit User');
+			$('#dlg').dialog('open').dialog('setTitle','编辑');
 			$('#fm').form('load',row);
 			url = 'editSubject?subjectId='+row.id;
 		}
@@ -143,13 +143,14 @@
   
        onLoadSuccess:function(data){  
       $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
+      $('.mydestroy').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});
       }
       
   })
   })
   
 	function rowFormatter(value,row,index){  
-               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>";  
+               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a> <a class='mydestroy' onclick='destroyRow("+index+")'>删除</a>";  
  	} 
 </script>
 </html>

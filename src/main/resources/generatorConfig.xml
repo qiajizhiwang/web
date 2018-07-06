@@ -33,7 +33,7 @@
 <!-- 		<table tableName="t_advertising" domainObjectName="Advertising"></table> -->
 <!-- 		<table tableName="t_course" domainObjectName="Course"></table> -->
 <!-- 		<table tableName="t_entry_form" domainObjectName="EntryForm"></table> -->
-<!-- 		<table tableName="t_exam" domainObjectName="Exam"></table> -->
+		<table tableName="t_exam" domainObjectName="Exam"></table>
 <!-- 		<table tableName="t_order" domainObjectName="Order"></table> -->
 <!-- 		<table tableName="t_product" domainObjectName="Product">
 		<generatedKey column="id" sqlStatement="MySql" identity="true" />
@@ -64,8 +64,8 @@
 <!-- <table tableName="t_course_sign" domainObjectName="CourseSign"></table> -->
 <!--  <table tableName="t_message" domainObjectName="Message">
 <generatedKey column="id" sqlStatement="MySql" identity="true" /></table>   -->
- <table tableName="t_contact" domainObjectName="Contact">
-<generatedKey column="id" sqlStatement="MySql" identity="true" /></table> 
+<!--  <table tableName="t_contact" domainObjectName="Contact"> -->
+<!-- <generatedKey column="id" sqlStatement="MySql" identity="true" /></table>  -->
 
 <!--  <table tableName="t_message_queue" domainObjectName="MessageQueue">
 <generatedKey column="id" sqlStatement="MySql" identity="true" /></table>   -->

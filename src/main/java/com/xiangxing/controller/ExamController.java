@@ -3,12 +3,14 @@ package com.xiangxing.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.BaseController;
@@ -18,8 +20,10 @@ import com.xiangxing.mapper.ExamMapper;
 import com.xiangxing.mapper.SubjectMapper;
 import com.xiangxing.model.Exam;
 import com.xiangxing.model.ExamExample;
+import com.xiangxing.model.ExamExample.Criteria;
 import com.xiangxing.model.Subject;
 import com.xiangxing.model.SubjectExample;
+import com.xiangxing.model.User;
 import com.xiangxing.model.ex.ExamEx;
 
 @Controller
@@ -38,6 +42,13 @@ public class ExamController extends BaseController {
 
 	@RequestMapping("/saveExam")
 	public void saveexam(Exam exam) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		if (me.getType() == 1) {
+			exam.setSchoolId(me.getSchoolId());
+		} else {
+			JSONObject jsonObject = new JSONObject();
+			writeToErrorResponse(jsonObject);
+		}
 		examMapper.insertSelective(exam);
 		writeToOkResponse();
 	}
@@ -48,6 +59,12 @@ public class ExamController extends BaseController {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		ExamExample examExample = new ExamExample();
+		Criteria criteria = examExample.createCriteria();
+		criteria.andStatusNotEqualTo(2l);
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		if (me.getType() == 1) {
+			criteria.andSchoolIdEqualTo(me.getSchoolId());
+		}
 		List<Exam> exams = examMapper.selectByExample(examExample);
 
 		SubjectExample subjectExample = new SubjectExample();
@@ -73,8 +90,20 @@ public class ExamController extends BaseController {
 	}
 
 	@RequestMapping("/destroyExam")
-	public void destroyexam(Long examId) {
-		examMapper.deleteByPrimaryKey(examId);
+	public void destroyExam(Long examId) {
+		Exam record = new Exam();
+		record.setId(examId);
+		record.setStatus(2l);
+		examMapper.updateByPrimaryKeySelective(record);
+		writeToOkResponse();
+	}
+
+	@RequestMapping("/auditExam")
+	public void auditExam(Long examId) {
+		Exam record = new Exam();
+		record.setId(examId);
+		record.setStatus(1l);
+		examMapper.updateByPrimaryKeySelective(record);
 		writeToOkResponse();
 	}
 

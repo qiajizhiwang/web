@@ -3,6 +3,8 @@ package com.xiangxing.model;
 public class Exam {
     private Long id;
 
+    private Long schoolId;
+
     private Long subjectId;
 
     private String rank;
@@ -13,7 +15,9 @@ public class Exam {
 
     private String examAddress;
 
-    private String openFlag;
+    private Long openFlag;
+
+    private Long status;
 
     public Long getId() {
         return id;
@@ -21,6 +25,14 @@ public class Exam {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
     }
 
     public Long getSubjectId() {
@@ -63,11 +75,19 @@ public class Exam {
         this.examAddress = examAddress;
     }
 
-    public String getOpenFlag() {
+    public Long getOpenFlag() {
         return openFlag;
     }
 
-    public void setOpenFlag(String openFlag) {
+    public void setOpenFlag(Long openFlag) {
         this.openFlag = openFlag;
+    }
+
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
     }
 }

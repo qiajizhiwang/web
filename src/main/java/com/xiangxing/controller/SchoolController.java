@@ -45,13 +45,21 @@ public class SchoolController extends BaseController {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		SchoolExample schoolExample = new SchoolExample();
-		if (StringUtils.isNotBlank(name)) {
-			name = "%" + name + "%";
-			schoolExample.createCriteria().andNameLike(name);
 
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		List<School> schools = null;
+		if (me.getType() == 1) {
+			School school = schoolMapper.selectByPrimaryKey(me.getSchoolId());
+			schools = new ArrayList<>();
+			schools.add(school);
+		} else {
+			if (StringUtils.isNotBlank(name)) {
+				name = "%" + name + "%";
+				schoolExample.createCriteria().andNameLike(name);
+
+			}
+			schools = schoolMapper.selectByExample(schoolExample);
 		}
-
-		List<School> schools = schoolMapper.selectByExample(schoolExample);
 		long total = page.getTotal();
 		return new PageResponse<School>(total, schools);
 

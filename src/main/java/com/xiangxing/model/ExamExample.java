@@ -164,6 +164,66 @@ public class ExamExample {
             return (Criteria) this;
         }
 
+        public Criteria andSchoolIdIsNull() {
+            addCriterion("school_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdIsNotNull() {
+            addCriterion("school_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdEqualTo(Long value) {
+            addCriterion("school_id =", value, "schoolId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdNotEqualTo(Long value) {
+            addCriterion("school_id <>", value, "schoolId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdGreaterThan(Long value) {
+            addCriterion("school_id >", value, "schoolId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("school_id >=", value, "schoolId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdLessThan(Long value) {
+            addCriterion("school_id <", value, "schoolId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdLessThanOrEqualTo(Long value) {
+            addCriterion("school_id <=", value, "schoolId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdIn(List<Long> values) {
+            addCriterion("school_id in", values, "schoolId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdNotIn(List<Long> values) {
+            addCriterion("school_id not in", values, "schoolId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdBetween(Long value1, Long value2) {
+            addCriterion("school_id between", value1, value2, "schoolId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdNotBetween(Long value1, Long value2) {
+            addCriterion("school_id not between", value1, value2, "schoolId");
+            return (Criteria) this;
+        }
+
         public Criteria andSubjectIdIsNull() {
             addCriterion("subject_id is null");
             return (Criteria) this;
@@ -504,63 +564,113 @@ public class ExamExample {
             return (Criteria) this;
         }
 
-        public Criteria andOpenFlagEqualTo(String value) {
+        public Criteria andOpenFlagEqualTo(Long value) {
             addCriterion("open_flag =", value, "openFlag");
             return (Criteria) this;
         }
 
-        public Criteria andOpenFlagNotEqualTo(String value) {
+        public Criteria andOpenFlagNotEqualTo(Long value) {
             addCriterion("open_flag <>", value, "openFlag");
             return (Criteria) this;
         }
 
-        public Criteria andOpenFlagGreaterThan(String value) {
+        public Criteria andOpenFlagGreaterThan(Long value) {
             addCriterion("open_flag >", value, "openFlag");
             return (Criteria) this;
         }
 
-        public Criteria andOpenFlagGreaterThanOrEqualTo(String value) {
+        public Criteria andOpenFlagGreaterThanOrEqualTo(Long value) {
             addCriterion("open_flag >=", value, "openFlag");
             return (Criteria) this;
         }
 
-        public Criteria andOpenFlagLessThan(String value) {
+        public Criteria andOpenFlagLessThan(Long value) {
             addCriterion("open_flag <", value, "openFlag");
             return (Criteria) this;
         }
 
-        public Criteria andOpenFlagLessThanOrEqualTo(String value) {
+        public Criteria andOpenFlagLessThanOrEqualTo(Long value) {
             addCriterion("open_flag <=", value, "openFlag");
             return (Criteria) this;
         }
 
-        public Criteria andOpenFlagLike(String value) {
-            addCriterion("open_flag like", value, "openFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenFlagNotLike(String value) {
-            addCriterion("open_flag not like", value, "openFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenFlagIn(List<String> values) {
+        public Criteria andOpenFlagIn(List<Long> values) {
             addCriterion("open_flag in", values, "openFlag");
             return (Criteria) this;
         }
 
-        public Criteria andOpenFlagNotIn(List<String> values) {
+        public Criteria andOpenFlagNotIn(List<Long> values) {
             addCriterion("open_flag not in", values, "openFlag");
             return (Criteria) this;
         }
 
-        public Criteria andOpenFlagBetween(String value1, String value2) {
+        public Criteria andOpenFlagBetween(Long value1, Long value2) {
             addCriterion("open_flag between", value1, value2, "openFlag");
             return (Criteria) this;
         }
 
-        public Criteria andOpenFlagNotBetween(String value1, String value2) {
+        public Criteria andOpenFlagNotBetween(Long value1, Long value2) {
             addCriterion("open_flag not between", value1, value2, "openFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(Long value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(Long value) {
+            addCriterion("status <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(Long value) {
+            addCriterion("status >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(Long value) {
+            addCriterion("status >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(Long value) {
+            addCriterion("status <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(Long value) {
+            addCriterion("status <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<Long> values) {
+            addCriterion("status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<Long> values) {
+            addCriterion("status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(Long value1, Long value2) {
+            addCriterion("status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(Long value1, Long value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
     }
