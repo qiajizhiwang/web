@@ -1,8 +1,10 @@
 package com.xiangxing.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.SchoolMapper;
 import com.xiangxing.model.School;
 import com.xiangxing.model.SchoolExample;
+import com.xiangxing.model.User;
 
 @Controller
 @RequestMapping("/school")
@@ -42,13 +45,21 @@ public class SchoolController extends BaseController {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		SchoolExample schoolExample = new SchoolExample();
-		if (StringUtils.isNotBlank(name)) {
-			name = "%" + name + "%";
-			schoolExample.createCriteria().andNameLike(name);
 
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		List<School> schools = null;
+		if (me.getType() == 1) {
+			School school = schoolMapper.selectByPrimaryKey(me.getSchoolId());
+			schools = new ArrayList<>();
+			schools.add(school);
+		} else {
+			if (StringUtils.isNotBlank(name)) {
+				name = "%" + name + "%";
+				schoolExample.createCriteria().andNameLike(name);
+
+			}
+			schools = schoolMapper.selectByExample(schoolExample);
 		}
-
-		List<School> schools = schoolMapper.selectByExample(schoolExample);
 		long total = page.getTotal();
 		return new PageResponse<School>(total, schools);
 
@@ -69,8 +80,16 @@ public class SchoolController extends BaseController {
 	@RequestMapping("/comboboxData")
 	@ResponseBody
 	public String comboboxData(PageRequest pageRequest, String name) {
-		SchoolExample schoolExample = new SchoolExample();
-		List<School> schools = schoolMapper.selectByExample(schoolExample);
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		List<School> schools = null;
+		if (me.getType() == 1) {
+			School school = schoolMapper.selectByPrimaryKey(me.getSchoolId());
+			schools = new ArrayList<>();
+			schools.add(school);
+		} else {
+			SchoolExample schoolExample = new SchoolExample();
+			schools = schoolMapper.selectByExample(schoolExample);
+		}
 		return JSON.toJSONString(schools);
 
 	}

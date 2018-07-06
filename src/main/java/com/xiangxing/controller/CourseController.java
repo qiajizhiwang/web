@@ -3,7 +3,6 @@ package com.xiangxing.controller;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +11,7 @@ import java.util.Random;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -27,6 +27,7 @@ import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.CourseMapper;
 import com.xiangxing.mapper.ex.CourseMapperEx;
 import com.xiangxing.model.Course;
+import com.xiangxing.model.User;
 import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.utils.DateUtil;
 import com.xiangxing.utils.FileUtil;
@@ -112,6 +113,11 @@ public class CourseController extends BaseController {
 	public PageResponse<CourseEx> courseList(PageRequest pageRequest, String name, Long searchrSchoolId, String status) {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+		// 根据用户过滤课程
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		if (me.getType() == 1) {
+			searchrSchoolId = me.getSchoolId();
+		}
 		List<CourseEx> courseExs = courseMapperEx.courseList(name, searchrSchoolId, status);
 		for (CourseEx courseEx : courseExs) {
 			courseEx.setShowCurriculumTime(DateUtil.dateToString(courseEx.getCurriculumTime(), DateUtil.patternG));

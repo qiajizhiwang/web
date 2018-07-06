@@ -17,6 +17,7 @@ import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.SubjectMapper;
 import com.xiangxing.model.Subject;
 import com.xiangxing.model.SubjectExample;
+import com.xiangxing.model.SubjectExample.Criteria;
 
 @Controller
 @RequestMapping("/subject")
@@ -42,9 +43,11 @@ public class SubjectController extends BaseController {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		SubjectExample subjectExample = new SubjectExample();
+		Criteria criteria = subjectExample.createCriteria();
+		criteria.andDelFlagEqualTo(0l);
 		if (StringUtils.isNotBlank(name)) {
 			name = "%" + name + "%";
-			subjectExample.createCriteria().andNameLike(name);
+			criteria.andNameLike(name);
 
 		}
 
@@ -63,7 +66,10 @@ public class SubjectController extends BaseController {
 
 	@RequestMapping("/destroySubject")
 	public void destroysubject(Long subjectId) {
-		subjectMapper.deleteByPrimaryKey(subjectId);
+		Subject record = new Subject();
+		record.setId(subjectId);
+		record.setDelFlag(1l);
+		subjectMapper.updateByPrimaryKeySelective(record);
 		writeToOkResponse();
 	}
 
@@ -71,6 +77,7 @@ public class SubjectController extends BaseController {
 	@ResponseBody
 	public String comboboxData(PageRequest pageRequest, String name) {
 		SubjectExample subjectExample = new SubjectExample();
+		subjectExample.createCriteria().andDelFlagEqualTo(0l);
 		List<Subject> subjects = subjectMapper.selectByExample(subjectExample);
 		return JSON.toJSONString(subjects);
 

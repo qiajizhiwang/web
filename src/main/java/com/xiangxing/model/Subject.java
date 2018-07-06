@@ -5,6 +5,8 @@ public class Subject {
 
     private String name;
 
+    private Long delFlag;
+
     public Long getId() {
         return id;
     }
@@ -19,5 +21,13 @@ public class Subject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(Long delFlag) {
+        this.delFlag = delFlag;
     }
 }

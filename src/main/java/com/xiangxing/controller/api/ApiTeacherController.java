@@ -257,31 +257,31 @@ public class ApiTeacherController {
 		return new ApiResponse();
 
 	}
-
-	/**
-	 * 修改密码
-	 * 
-	 * @param name
-	 * @param courseId
-	 * @param studentIds
-	 * @return
-	 */
-	@RequestMapping("/updatePassword")
-	public ApiResponse updatePassword(String oldPassword, String password) {
-		LoginInfo info = TokenManager.getNowUser();
-		TeacherExample example = new TeacherExample();
-		example.createCriteria().andIdEqualTo(info.getId()).andPasswordEqualTo(MD5Util.MD5Encode(oldPassword));
-		List<Teacher> teachers = teacherMapper.selectByExample(example);
-		if (teachers.size() == 0) {
-			return ApiResponse.getErrorResponse("旧密码错误！");
-		}
-		Teacher updateTeacher = new Teacher();
-		updateTeacher.setId(info.getId());
-		updateTeacher.setPassword(MD5Util.MD5Encode(password));
-		teacherMapper.updateByPrimaryKeySelective(updateTeacher);
-		return new ApiResponse();
-
-	}
+//
+//	/**
+//	 * 修改密码
+//	 * 
+//	 * @param name
+//	 * @param courseId
+//	 * @param studentIds
+//	 * @return
+//	 */
+//	@RequestMapping("/updatePassword")
+//	public ApiResponse updatePassword(String oldPassword, String password) {
+//		LoginInfo info = TokenManager.getNowUser();
+//		TeacherExample example = new TeacherExample();
+//		example.createCriteria().andIdEqualTo(info.getId()).andPasswordEqualTo(MD5Util.MD5Encode(oldPassword));
+//		List<Teacher> teachers = teacherMapper.selectByExample(example);
+//		if (teachers.size() == 0) {
+//			return ApiResponse.getErrorResponse("旧密码错误！");
+//		}
+//		Teacher updateTeacher = new Teacher();
+//		updateTeacher.setId(info.getId());
+//		updateTeacher.setPassword(MD5Util.MD5Encode(password));
+//		teacherMapper.updateByPrimaryKeySelective(updateTeacher);
+//		return new ApiResponse();
+//
+//	}
 
 	/**
 	 * 课程签到
