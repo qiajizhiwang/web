@@ -30,12 +30,12 @@ Alipay.APP_PRIVATE_KEY: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCOxpnu
 Alipay.ALIPAY_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjsaZ7r1q01Ttw0wwjn6YRI4g/jo1WODvBFErS45TV/MyA0S2xAHQ4GZcHb4pQf46KcmSEssuwYjT5zzyrRiyqH6W26Mh/Y2wXk7zy4wK70BEMbR1anGT7hkn2IGkHIM/TE+GjiBKxZaRW7/7r1RPV6l+dFf6ZTKUtpz7RwTm5VAeRx7kq8CeShAumpJNs6F2JTdVJcvM7a9NigANqg0X3/MkQSJ5068E6u8LlRuhMLMl9kxUEqSt7T4hmqBlJOJHwEf9FPi6QS1uUXiSH1KtyO8sho97bgSeCamZwmg2pfOATKjgjFtToi8cowxv78UshAVPMwRwyj7cbAbsnnl77QIDAQAB
 
 #微信支付
-wechat_appId = 
+wechat_appId: 
 #商户号
-wechat_mchID = 
-wechat_key = 
+wechat_mchID: 
+wechat_key:
 #域名
-wechat_domain =api.mch.weixin.qq.com
+wechat_domain: api.mch.weixin.qq.com
 
 
 product_path:  /data/xiangxing/product/
