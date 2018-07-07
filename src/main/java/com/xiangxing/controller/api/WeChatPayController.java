@@ -13,8 +13,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.github.wxpay.sdk.MyConfig;
 import com.github.wxpay.sdk.WXPay;
@@ -32,7 +33,7 @@ import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.PayResponse;
 
-@Controller
+@RestController
 @RequestMapping("/api/weChatPay")
 public class WeChatPayController extends BaseController {
 
@@ -131,6 +132,7 @@ public class WeChatPayController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/tradeQuery")
+	@ResponseBody
 	public ApiResponse tradeQuery() throws Exception {
 		String orderNo = request.getParameter("orderNo");
 
