@@ -29,8 +29,10 @@ import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.EntryFormMapper;
+import com.xiangxing.mapper.ExamMapper;
 import com.xiangxing.mapper.OrderMapper;
 import com.xiangxing.model.EntryForm;
+import com.xiangxing.model.Exam;
 import com.xiangxing.model.Order;
 import com.xiangxing.model.OrderExample;
 import com.xiangxing.utils.StringUtil;
@@ -45,7 +47,7 @@ import com.xiangxing.vo.api.PayResponse;
  *
  */
 @Controller
-@RequestMapping("/alipay")
+@RequestMapping("/api/alipay")
 public class AlipayController extends BaseController {
 
 	private static final Logger logger = LogManager.getLogger(AlipayController.class);
@@ -66,18 +68,24 @@ public class AlipayController extends BaseController {
 
 	@Autowired
 	private EntryFormMapper entryFormMapper;
+
+	@Autowired
+	private ExamMapper examMapper;
+
 	@Autowired
 	private OrderMapper orderMapper;
 
+	private AlipayClient alipayClient;
+
 	/**
-	 * 购买接口
+	 * 创建订单
 	 * 
 	 * @author sh
 	 * @version V1.0
 	 * @throws Exception
 	 */
-	@RequestMapping("/buy")
-	public ApiResponse buy() throws Exception {
+	@RequestMapping("/tradeCreate")
+	public ApiResponse tradeCreate() throws Exception {
 		String entryFormId = request.getParameter("entryFormId");
 		LoginInfo info = TokenManager.getNowUser();
 		Long studentId = info.getId();
@@ -89,21 +97,31 @@ public class AlipayController extends BaseController {
 			return ApiResponse.getErrorResponse("生成支付订单失败，报名信息有误！");
 		}
 		// 实例化客户端
-		AlipayClient alipayClient = new DefaultAlipayClient(SERVER_URL, APP_ID, APP_PRIVATE_KEY, "json", CHARSET, ALIPAY_PUBLIC_KEY, "RSA2");
+		if (null == alipayClient) {
+			alipayClient = new DefaultAlipayClient(SERVER_URL, APP_ID, APP_PRIVATE_KEY, "json", CHARSET,
+					ALIPAY_PUBLIC_KEY, "RSA2");
+		}
 		// 实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
 		AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
 		// SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
 		AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-		model.setBody("我是测试数据");
-		model.setSubject("App支付测试Java");
+		// 可选 对交易或商品的描述
+		// model.setBody("我是测试数据");
+		model.setSubject("报名缴费");
+		Exam exam = examMapper.selectByPrimaryKey(entryForm.getExamId());
+
+		// 订单总金额
+		Long total_amount = exam.getMoney();
 
 		String orderNo = System.currentTimeMillis() + (System.nanoTime() + "").substring(7, 10);
 		model.setOutTradeNo(orderNo);
-		model.setTimeoutExpress("30m");
-		model.setTotalAmount("0.01");
+		// 该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。
+		// 该参数数值不接受小数点， 如 1.5h，可转换为 90m。
+		model.setTimeoutExpress("60m");
+		model.setTotalAmount(String.valueOf(total_amount));
 		model.setProductCode("QUICK_MSECURITY_PAY");
 		request.setBizModel(model);
-		request.setNotifyUrl("http://120.78.211.181:80/alipay/alipayNotify");
+		request.setNotifyUrl("http://120.78.211.181:80/api/alipay/alipayNotify");
 		try {
 			// 这里和普通的接口调用不同，使用的是sdkExecute
 			AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
@@ -114,8 +132,7 @@ public class AlipayController extends BaseController {
 			Order order = new Order();
 			order.setOrderNo(orderNo);
 			order.setStudentId(Long.valueOf(studentId));
-			// TODO
-			order.setMoney(null);
+			order.setMoney(total_amount);
 			Date date = new Date();
 			order.setCreateTime(date);
 			order.setUpdateTime(date);
@@ -137,12 +154,15 @@ public class AlipayController extends BaseController {
 	 * @version V1.0
 	 * @throws Exception
 	 */
-	@RequestMapping("/buysucceed")
-	public ApiResponse buysucceed() throws Exception {
+	@RequestMapping("/tradeQuery")
+	public ApiResponse tradeQuery() throws Exception {
 		String orderNo = request.getParameter("orderNo");
 		String tradeNo = request.getParameter("tradeNo");
-
-		AlipayClient alipayClient = new DefaultAlipayClient(SERVER_URL, APP_ID, APP_PRIVATE_KEY, "json", CHARSET, ALIPAY_PUBLIC_KEY, "RSA2"); // 获得初始化的AlipayClient
+		// 实例化客户端
+		if (null == alipayClient) {
+			alipayClient = new DefaultAlipayClient(SERVER_URL, APP_ID, APP_PRIVATE_KEY, "json", CHARSET,
+					ALIPAY_PUBLIC_KEY, "RSA2"); // 获得初始化的AlipayClient
+		}
 		AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();// 创建API对应的request类
 		// request.setBizContent("{" +
 		// " \"out_trade_no\":\"20150320010101001\"," +
@@ -159,13 +179,11 @@ public class AlipayController extends BaseController {
 		AlipayTradeQueryResponse response = alipayClient.execute(request);// 通过alipayClient调用API，获得对应的response类
 		logger.info("购买确认结果" + response.getBody());
 
-		JSONObject jsonObject = new JSONObject();
-
 		try {
 			JSONObject bodyJsonObject = JSON.parseObject(response.getBody());
 			JSONObject tradeJsonObject = JSON.parseObject(bodyJsonObject.getString("alipay_trade_query_response"));
-			if ("TRADE_FINISHED".equals(tradeJsonObject.getString("trade_status")) || "TRADE_SUCCESS".equals(tradeJsonObject.getString("trade_status"))) {
-				jsonObject.put("info", "订单支付成功！");
+			if ("TRADE_FINISHED".equals(tradeJsonObject.getString("trade_status"))
+					|| "TRADE_SUCCESS".equals(tradeJsonObject.getString("trade_status"))) {
 				OrderExample example = new OrderExample();
 				example.createCriteria().andOrderNoEqualTo(tradeJsonObject.getString("out_trade_no"));
 				List<Order> orders = orderMapper.selectByExample(example);
@@ -179,13 +197,13 @@ public class AlipayController extends BaseController {
 					orderMapper.updateByPrimaryKeySelective(updateOrder);
 				}
 			} else {
-				return ApiResponse.getErrorResponse("订单支付异常，稍后查看订单是否成功购买或联系客服！");
+				return ApiResponse.getErrorResponse("该订单未支付，如果已支付请稍后查看订单是否成功购买或联系客服！");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return ApiResponse.getErrorResponse("订单支付异常，稍后查看订单是否成功购买或联系客服！");
 		}
-		return new ApiResponse();
+		return new ApiResponse(1, "订单支付成功！");
 	}
 
 	/**
@@ -219,7 +237,8 @@ public class AlipayController extends BaseController {
 			logger.info("签名验证" + flag);
 
 			if (flag) {
-				if ("TRADE_FINISHED".equals(params.get("trade_status")) || "TRADE_SUCCESS".equals(params.get("trade_status"))) {
+				if ("TRADE_FINISHED".equals(params.get("trade_status"))
+						|| "TRADE_SUCCESS".equals(params.get("trade_status"))) {
 					logger.info("购买成功更新订单！");
 					OrderExample example = new OrderExample();
 					example.createCriteria().andOrderNoEqualTo(params.get("out_trade_no"));

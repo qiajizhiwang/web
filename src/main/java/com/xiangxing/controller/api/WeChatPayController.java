@@ -1,6 +1,8 @@
 package com.xiangxing.controller.api;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.github.wxpay.sdk.MyConfig;
 import com.github.wxpay.sdk.WXPay;
+import com.github.wxpay.sdk.WXPayUtil;
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.EntryFormMapper;
+import com.xiangxing.mapper.ExamMapper;
 import com.xiangxing.mapper.OrderMapper;
 import com.xiangxing.model.EntryForm;
+import com.xiangxing.model.Exam;
 import com.xiangxing.model.Order;
 import com.xiangxing.model.OrderExample;
 import com.xiangxing.vo.api.ApiResponse;
@@ -28,7 +33,7 @@ import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.PayResponse;
 
 @Controller
-@RequestMapping("/weChatPay")
+@RequestMapping("/api/weChatPay")
 public class WeChatPayController extends BaseController {
 
 	private static final Logger logger = LogManager.getLogger(AlipayController.class);
@@ -48,17 +53,20 @@ public class WeChatPayController extends BaseController {
 	@Autowired
 	private EntryFormMapper entryFormMapper;
 	@Autowired
+	private ExamMapper examMapper;
+
+	@Autowired
 	private OrderMapper orderMapper;
 
 	/**
-	 * 购买接口
+	 * 创建订单
 	 * 
 	 * @author sh
 	 * @version V1.0
 	 * @throws Exception
 	 */
-	@RequestMapping("/buy")
-	public ApiResponse buy() throws Exception {
+	@RequestMapping("/tradeCreate")
+	public ApiResponse tradeCreate() throws Exception {
 		String entryFormId = request.getParameter("entryFormId");
 		LoginInfo info = TokenManager.getNowUser();
 		Long studentId = info.getId();
@@ -70,21 +78,26 @@ public class WeChatPayController extends BaseController {
 			return ApiResponse.getErrorResponse("生成支付订单失败，报名信息有误！");
 		}
 
+		Exam exam = examMapper.selectByPrimaryKey(entryForm.getExamId());
+
+		// 订单总金额
+		Long total_fee = exam.getMoney();
+
 		String orderNo = System.currentTimeMillis() + (System.nanoTime() + "").substring(7, 10);
 
 		MyConfig config = new MyConfig(appId, mchID, key, domain);
 		WXPay wxpay = new WXPay(config, true);
 
 		Map<String, String> data = new HashMap<String, String>();
-		data.put("body", "腾讯充值中心-QQ会员充值");
-		data.put("out_trade_no", "2016090910595900000012");
+		data.put("body", "报名缴费");
+		data.put("out_trade_no", orderNo);
 		data.put("device_info", "");
 		data.put("fee_type", "CNY");
-		data.put("total_fee", "1");
+		data.put("total_fee", String.valueOf(total_fee * 100));
 		data.put("spbill_create_ip", "123.12.12.123");
-		data.put("notify_url", "http://120.78.211.181:80/alipay/alipayNotify");
-		data.put("trade_type", "NATIVE"); // 此处指定为扫码支付
-		data.put("product_id", "12");
+		data.put("notify_url", "http://120.78.211.181:80/api/weChatPay/weChatNotify");
+		data.put("trade_type", "APP"); // 支付类型
+		// data.put("product_id", "12");
 
 		try {
 			Map<String, String> resp = wxpay.unifiedOrder(data);
@@ -94,8 +107,8 @@ public class WeChatPayController extends BaseController {
 			Order order = new Order();
 			order.setOrderNo(orderNo);
 			order.setStudentId(Long.valueOf(studentId));
-			// TODO
-			order.setMoney(null);
+			order.setMoney(total_fee);
+			order.setType(2);
 			Date date = new Date();
 			order.setCreateTime(date);
 			order.setUpdateTime(date);
@@ -117,28 +130,24 @@ public class WeChatPayController extends BaseController {
 	 * @version V1.0
 	 * @throws Exception
 	 */
-	@RequestMapping("/buysucceed")
-	public ApiResponse buysucceed() throws Exception {
+	@RequestMapping("/tradeQuery")
+	public ApiResponse tradeQuery() throws Exception {
 		String orderNo = request.getParameter("orderNo");
-		String tradeNo = request.getParameter("tradeNo");
 
 		MyConfig config = new MyConfig(appId, mchID, key, domain);
 		WXPay wxpay = new WXPay(config, true);
 
 		Map<String, String> data = new HashMap<String, String>();
-		data.put("out_trade_no", "2016090910595900000012");
+		data.put("out_trade_no", orderNo);
 
 		try {
 			Map<String, String> resp = wxpay.orderQuery(data);
-			System.out.println(resp);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			if (true) {
+			logger.info("订单查询：" + resp);
+			String trade_state = resp.get("trade_state");
+			if ("SUCCESS".equals(trade_state)) {
+				logger.info("支付成功：" + orderNo);
 				OrderExample example = new OrderExample();
-				example.createCriteria().andOrderNoEqualTo("");
+				example.createCriteria().andOrderNoEqualTo(orderNo);
 				List<Order> orders = orderMapper.selectByExample(example);
 				if (orders.size() > 0 && 1 == orders.get(0).getStatus()) {
 					// 更新订单
@@ -150,7 +159,7 @@ public class WeChatPayController extends BaseController {
 					orderMapper.updateByPrimaryKeySelective(updateOrder);
 				}
 			} else {
-				return ApiResponse.getErrorResponse("订单支付异常，稍后查看订单是否成功购买或联系客服！");
+				return ApiResponse.getErrorResponse("该订单未支付，如果已支付请稍后查看订单是否成功购买或联系客服！");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -166,40 +175,60 @@ public class WeChatPayController extends BaseController {
 	 * @version V1.0
 	 * @throws Exception
 	 */
-	@RequestMapping("/alipayNotify")
-	public void alipayNotify() {
-		// 获取支付宝POST过来反馈信息
-		Map<String, String> params = new HashMap<String, String>();
-		Map requestParams = request.getParameterMap();
+	@RequestMapping("/weChatNotify")
+	public void weChatNotify() throws Exception {
+		// PrintWriter writer = response.getWriter();
+		InputStream inStream = request.getInputStream();
+		ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int len = 0;
+		while ((len = inStream.read(buffer)) != -1) {
+			outSteam.write(buffer, 0, len);
+		}
+		outSteam.close();
+		inStream.close();
+		String notifyData = new String(outSteam.toByteArray(), "utf-8");
+		System.out.println("微信支付通知结果：" + notifyData);// 支付结果通知的xml格式数据
 
-		if (true) {
-			if ("TRADE_FINISHED".equals(params.get("trade_status")) || "TRADE_SUCCESS".equals(params.get("trade_status"))) {
+		MyConfig config = new MyConfig(appId, mchID, key, domain);
+		WXPay wxpay = new WXPay(config);
+
+		Map<String, String> notifyMap = WXPayUtil.xmlToMap(notifyData); // 转换成map
+
+		if (wxpay.isPayResultNotifySignatureValid(notifyMap)) {
+			// 签名正确
+			// 进行处理。
+			// 注意特殊情况：订单已经退款，但收到了支付结果成功的通知，不应把商户侧订单状态从退款改成支付成功
+			if ("SUCCESS".equals(notifyMap.get("result_code"))) {
 				logger.info("购买成功更新订单！");
 				OrderExample example = new OrderExample();
-				example.createCriteria().andOrderNoEqualTo(params.get("out_trade_no"));
+				example.createCriteria().andOrderNoEqualTo(notifyMap.get("out_trade_no"));
 				List<Order> orders = orderMapper.selectByExample(example);
 				if (orders.size() > 0 && 1 == orders.get(0).getStatus()) {
 					// 更新订单
 					Order updateOrder = new Order();
 					updateOrder.setId(orders.get(0).getId());
-					updateOrder.setTradeNo(params.get("trade_no"));
+					updateOrder.setTradeNo(notifyMap.get("trade_no"));
 					updateOrder.setStatus(0);
 					updateOrder.setUpdateTime(new Date());
 					orderMapper.updateByPrimaryKeySelective(updateOrder);
 				} else if (orders.size() == 0) {
 					logger.info("订单不存在！");
 				}
+
+				// 返回数据
+				PrintWriter pw;
+				try {
+					pw = response.getWriter();
+					pw.write("success");
+					pw.flush();
+					pw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		// 返回数据
-		PrintWriter pw;
-		try {
-			pw = response.getWriter();
-			pw.write("success");
-			pw.flush();
-			pw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} else {
+			// 签名错误，如果数据里没有sign字段，也认为是签名错误
 		}
 
 	}
