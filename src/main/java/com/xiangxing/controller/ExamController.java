@@ -123,8 +123,8 @@ public class ExamController extends BaseController {
 		String path = pdfPath + File.separator + examId + ".pdf";
 		File file = new File(path);
 		if (!file.exists()) {
-			PdfUtils.createPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
-					"apply.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
+			PdfUtils.createPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(), "apply.ftl",
+					new org.apache.commons.beanutils.BeanMap(examPo));
 			file = new File(path);
 		}
 		response.addHeader("pragma", "NO-cache");
@@ -156,7 +156,6 @@ public class ExamController extends BaseController {
 	@RequestMapping("/comboboxData")
 	@ResponseBody
 	public String comboboxData(PageRequest pageRequest, String name) {
-		
 
 		ExamExample examExample = new ExamExample();
 		Criteria criteria = examExample.createCriteria();
@@ -175,7 +174,7 @@ public class ExamController extends BaseController {
 		}
 		List<ExamEx> examExs = JSON.parseArray(JSON.toJSONString(exams), ExamEx.class);
 		for (ExamEx examEx : examExs) {
-			examEx.setSubjectName(maps.get(examEx.getSubjectId()));
+			examEx.setSubjectName(maps.get(examEx.getSubjectId()) + "-" + examEx.getRank());
 		}
 		return JSON.toJSONString(examExs);
 

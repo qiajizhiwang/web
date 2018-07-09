@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiangxing.mapper.ex.EntryFormPoMapper" >
+  
+ 
+  
+  <select id="list" resultType="com.xiangxing.model.ex.EntryFormPo">
+  SELECT t1.id,t1.create_time AS entryTime,t1.exam_id AS examId,t1.student_id AS studentId,t4.`name` AS subjectName,
+t2.rank,
+t3.`name` AS studentName,
+IF(t5.id IS NULL,'未缴费','已缴费') AS payFlag,
+t5.create_time AS payTime
+FROM t_entry_form t1
+JOIN t_exam t2 ON t1.exam_id=t2.id
+JOIN t_student t3 ON t1.student_id=t3.id
+JOIN t_subject t4 ON t2.subject_id=t4.id
+LEFT JOIN t_order t5 ON t1.id=t5.entry_form_id AND t5.`status`=2
+where 1 = 1
+    <if test="schoolId != null and schoolId !=0" >
+AND t2.school_id= #{schoolId}
+    </if>
+    <if test="studentName != null" >
+AND t3.`name` LIKE CONCAT(#{studentName},'%')
+    </if>
+    <if test="examId != null and examId !=0" >
+AND t1.exam_id =#{examId}
+    </if>
+  </select>
+ 
+</mapper>
