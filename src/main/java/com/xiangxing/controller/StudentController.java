@@ -1,6 +1,7 @@
 package com.xiangxing.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
@@ -15,10 +16,12 @@ import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.controller.admin.PageRequest;
 import com.xiangxing.controller.admin.PageResponse;
+import com.xiangxing.mapper.EntryFormMapper;
 import com.xiangxing.mapper.StudentCourseMapper;
 import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.ex.CourseMapperEx;
 import com.xiangxing.mapper.ex.StudentPoMapper;
+import com.xiangxing.model.EntryForm;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentCourse;
 import com.xiangxing.model.User;
@@ -42,6 +45,8 @@ public class StudentController extends BaseController {
 
 	@Autowired
 	StudentCourseMapper studentCourseMapper;
+	@Autowired
+	EntryFormMapper entryFormMapper;
 
 	@RequestMapping("/student")
 	public String student(Model model) {
@@ -105,6 +110,21 @@ public class StudentController extends BaseController {
 	public ApiResponse saveApply(StudentCourse studentCourse) {
 		try {
 			studentCourseMapper.insert(studentCourse);
+			return new ApiResponse();
+		} catch (Exception e) {
+			return ApiResponse.getErrorResponse("异常");
+		}
+
+	}
+
+	@RequestMapping("/saveEntryForm")
+	@ResponseBody
+	public ApiResponse saveEntryForm(EntryForm entryForm) {
+		try {
+			entryForm.setStudentId(entryForm.getId());
+			entryForm.setId(null);
+			entryForm.setCreateTime(new Date());
+			entryFormMapper.insertSelective(entryForm);
 			return new ApiResponse();
 		} catch (Exception e) {
 			return ApiResponse.getErrorResponse("异常");

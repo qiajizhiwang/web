@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +29,8 @@ import com.xiangxing.mapper.SubjectMapper;
 import com.xiangxing.mapper.ex.ExamPoMapper;
 import com.xiangxing.model.Exam;
 import com.xiangxing.model.ExamExample;
+import com.xiangxing.model.School;
+import com.xiangxing.model.SchoolExample;
 import com.xiangxing.model.ExamExample.Criteria;
 import com.xiangxing.model.Subject;
 import com.xiangxing.model.SubjectExample;
@@ -150,4 +153,31 @@ public class ExamController extends BaseController {
 		writeToOkResponse();
 	}
 
+	@RequestMapping("/comboboxData")
+	@ResponseBody
+	public String comboboxData(PageRequest pageRequest, String name) {
+		
+
+		ExamExample examExample = new ExamExample();
+		Criteria criteria = examExample.createCriteria();
+		criteria.andStatusNotEqualTo(2l);
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		if (me.getType() == 1) {
+			criteria.andSchoolIdEqualTo(me.getSchoolId());
+		}
+		List<Exam> exams = examMapper.selectByExample(examExample);
+
+		SubjectExample subjectExample = new SubjectExample();
+		List<Subject> subjects = subjectMapper.selectByExample(subjectExample);
+		HashMap<Long, String> maps = new HashMap<Long, String>();
+		for (Subject subject : subjects) {
+			maps.put(subject.getId(), subject.getName());
+		}
+		List<ExamEx> examExs = JSON.parseArray(JSON.toJSONString(exams), ExamEx.class);
+		for (ExamEx examEx : examExs) {
+			examEx.setSubjectName(maps.get(examEx.getSubjectId()));
+		}
+		return JSON.toJSONString(examExs);
+
+	}
 }

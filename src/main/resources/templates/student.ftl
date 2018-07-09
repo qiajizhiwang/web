@@ -153,10 +153,41 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#apply').dialog('close')">关闭</a>
 	</div>
 
+	<div id="entryForm" class="easyui-dialog" modal="true" style="width:400px;height:500px;padding:10px 20px" data-options="closed: true"
+		 buttons="#entryForm-buttons">
+		<form id="entryFormfm" method="post">
+			<table cellpadding="5">
+			<tr>
+				<td>学生姓名</td>
+				<td>      
+			    <input hidden type="text" id ="id" name="id" data-options="required:true"></input>
+				
+				<input name="name" id ="name" class="easyui-textbox" editable=false>
+ 				</td>
+			</tr>
+			<tr>
+				<td>考试</td>
+				<td>
+				<input id="examId" class="easyui-combobox" name="examId" data-options="valueField:'id',textField:'subjectName',url:'../exam/comboboxData'">
+ 				</td>
+			</tr>
+			</table>
+		</form>
+	</div>
+	<div id="entryForm-buttons">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveEntryForm()">保存</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">关闭</a>
+	</div>
+	
 		<div id="queryApply" style="width:50%;height:AUTO;padding:10px 20px" class="easyui-window" modal="true"  data-options="closed: true">
 		<table id="applyTable" style="width:100%;height:AUTO">
 	
 		</div>
+		
+		
+	
+	
+	
 
 </body>
 <script type="text/javascript">
@@ -175,8 +206,9 @@
   
        onLoadSuccess:function(data){  
       $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
-      $('.myapply').linkbutton({text:'报名',plain:true,iconCls:'icon-add'});
+      $('.myapply').linkbutton({text:'报课',plain:true,iconCls:'icon-add'});
         $('.queryApply').linkbutton({text:'查看课程',plain:true,iconCls:'icon-search'});
+        $('.entryForm').linkbutton({text:'报考',plain:true,iconCls:'icon-add'});
       
       
       }
@@ -204,7 +236,7 @@
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
 		$("#password").textbox({ required:false  });
-			$('#dlg').dialog('open').dialog('setTitle','Edit User');
+			$('#dlg').dialog('open').dialog('setTitle','编辑');
 			$('#fm').form('load',row);
 			url = 'editStudent?studentId='+row.id;
 		}
@@ -236,7 +268,7 @@
 	$('#dg').datagrid('selectRow',index);
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
-		$('#apply').dialog('open').dialog('setTitle','报名');
+		$('#apply').dialog('open').dialog('setTitle','报课');
 		$('#apply #studentId').val(row.id);
 		$('#apply #schoolId1').combobox('loadData',[{
 			value: row.schoolId,
@@ -315,10 +347,45 @@
 		});
 	}
 	
+	
+		function entryForm(index){
+	$('#dg').datagrid('selectRow',index);
+		var row = $('#dg').datagrid('getSelected');
+		if (row){
+		$('#entryForm').dialog('open').dialog('setTitle','报考');
+		$('#entryFormfm').form('load',row);
+		
+		}
+	}
+	
+		function saveEntryForm(){
+		$('#entryFormfm').form('submit',{
+			url: "saveEntryForm",
+			onSubmit: function(){
+				return $(this).form('validate');
+			},
+			success: function(result){
+				var result = eval('('+result+')');
+				if (result.status != 1){
+					$.messager.show({
+						title: 'Error',
+						msg: result.memo
+					});
+				} else {
+					$('#entryForm').dialog('close');		// close the dialog
+				$.messager.show({
+						title: '报考成功'
+					});
+				}
+			}
+		});
+	}
+	
 	function rowFormatter(value,row,index){  
                return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>"+
-               "<a  class='myapply' onclick='apply("+index+")' href='javascript:void(0)' >报名</a>"+
-                "<a  class='queryApply' onclick='queryApply("+index+")' href='javascript:void(0)' >查看课程</a>";  
+               "<a  class='myapply' onclick='apply("+index+")' href='javascript:void(0)' >报课</a>"+
+                "<a  class='queryApply' onclick='queryApply("+index+")' href='javascript:void(0)' >查看课程</a>"
+                +"<a  class='entryForm' onclick='entryForm("+index+")' href='javascript:void(0)' >报考</a>";  
  } 
  
  
