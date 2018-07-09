@@ -108,6 +108,7 @@ public class WeChatPayController extends BaseController {
 			Order order = new Order();
 			order.setOrderNo(orderNo);
 			order.setStudentId(Long.valueOf(studentId));
+			order.setEntryFormId(Long.valueOf(entryFormId));
 			order.setMoney(total_fee);
 			order.setType(2);
 			Date date = new Date();

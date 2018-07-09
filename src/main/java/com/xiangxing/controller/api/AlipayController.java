@@ -113,45 +113,56 @@ public class AlipayController extends BaseController {
 		try {
 			AlipayTradeCreateRequest request = new AlipayTradeCreateRequest();
 
-			request.setBizContent("{" +
-					"\"out_trade_no\":\"20150320010101001\"," +
-					"\"seller_id\":\"2088102146225135\"," +
-					"\"total_amount\":88.88," +
-					"\"discountable_amount\":8.88," +
-					"\"subject\":\"Iphone6 16G\"," +
-					"\"body\":\"Iphone6 16G\"," +
-					"\"buyer_id\":\"2088102146225135\"," +
-					"      \"goods_detail\":[{" +
-					"        \"goods_id\":\"apple-01\"," +
-					"\"goods_name\":\"ipad\"," +
-					"\"quantity\":1," +
-					"\"price\":2000," +
-					"\"goods_category\":\"34543238\"," +
-					"\"body\":\"特价手机\"," +
-					"\"show_url\":\"http://www.alipay.com/xxx.jpg\"" +
-					"        }]," +
-					"\"operator_id\":\"Yx_001\"," +
-					"\"store_id\":\"NJ_001\"," +
-					"\"terminal_id\":\"NJ_T_001\"," +
-					"\"extend_params\":{" +
-					"\"sys_service_provider_id\":\"2088511833207846\"," +
-					"\"industry_reflux_info\":\"{\\\\\\\"scene_code\\\\\\\":\\\\\\\"metro_tradeorder\\\\\\\",\\\\\\\"channel\\\\\\\":\\\\\\\"xxxx\\\\\\\",\\\\\\\"scene_data\\\\\\\":{\\\\\\\"asset_name\\\\\\\":\\\\\\\"ALIPAY\\\\\\\"}}\"," +
-					"\"card_type\":\"S0JP0000\"" +
-					"    }," +
-					"\"timeout_express\":\"90m\"," +
-					"\"settle_info\":{" +
-					"        \"settle_detail_infos\":[{" +
-					"          \"trans_in_type\":\"cardSerialNo\"," +
-					"\"trans_in\":\"A0001\"," +
-					"\"summary_dimension\":\"A0001\"," +
-					"\"amount\":0.1" +
-					"          }]" +
-					"    }," +
-					"\"business_params\":\"{\\\"data\\\":\\\"123\\\"}\"" +
-					"  }");
+//			request.setBizContent("{" +
+//					"\"out_trade_no\":\"20150320010101001\"," +
+//					"\"seller_id\":\"2088102146225135\"," +
+//					"\"total_amount\":88.88," +
+//					"\"discountable_amount\":8.88," +
+//					"\"subject\":\"Iphone6 16G\"," +
+//					"\"body\":\"Iphone6 16G\"," +
+//					"\"buyer_id\":\"2088102146225135\"," +
+//					"      \"goods_detail\":[{" +
+//					"        \"goods_id\":\"apple-01\"," +
+//					"\"goods_name\":\"ipad\"," +
+//					"\"quantity\":1," +
+//					"\"price\":2000," +
+//					"\"goods_category\":\"34543238\"," +
+//					"\"body\":\"特价手机\"," +
+//					"\"show_url\":\"http://www.alipay.com/xxx.jpg\"" +
+//					"        }]," +
+//					"\"operator_id\":\"Yx_001\"," +
+//					"\"store_id\":\"NJ_001\"," +
+//					"\"terminal_id\":\"NJ_T_001\"," +
+//					"\"extend_params\":{" +
+//					"\"sys_service_provider_id\":\"2088511833207846\"," +
+//					"\"industry_reflux_info\":\"{\\\\\\\"scene_code\\\\\\\":\\\\\\\"metro_tradeorder\\\\\\\",\\\\\\\"channel\\\\\\\":\\\\\\\"xxxx\\\\\\\",\\\\\\\"scene_data\\\\\\\":{\\\\\\\"asset_name\\\\\\\":\\\\\\\"ALIPAY\\\\\\\"}}\"," +
+//					"\"card_type\":\"S0JP0000\"" +
+//					"    }," +
+//					"\"timeout_express\":\"90m\"," +
+//					"\"settle_info\":{" +
+//					"        \"settle_detail_infos\":[{" +
+//					"          \"trans_in_type\":\"cardSerialNo\"," +
+//					"\"trans_in\":\"A0001\"," +
+//					"\"summary_dimension\":\"A0001\"," +
+//					"\"amount\":0.1" +
+//					"          }]" +
+//					"    }," +
+//					"\"business_params\":\"{\\\"data\\\":\\\"123\\\"}\"" +
+//					"  }");
+//			
+			JSONObject bizContent = new JSONObject();
+			bizContent.put("out_trade_no", "20150320010101002");
+			bizContent.put("total_amount", "1.88");
+			bizContent.put("subject", "测试");
+			bizContent.put("buyer_id", "2088102169711954");
+//			2088102176172599
+//			bizContent.put("timeout_express", "60m");
+			request.setBizContent(bizContent.toJSONString());
+			System.out.println("yyy:"+request.getBizContent());
+			
 					AlipayTradeCreateResponse response = alipayClient.execute(request);
 					System.out.println(JSON.toJSONString(response));
-					System.out.println(response.getBody());
+//					System.out.println(response.getBody());
 					if(response.isSuccess()){
 					System.out.println("调用成功");
 					} else {
@@ -200,6 +211,7 @@ public class AlipayController extends BaseController {
 			Order order = new Order();
 			order.setOrderNo(orderNo);
 			order.setStudentId(Long.valueOf(studentId));
+			order.setEntryFormId(Long.valueOf(entryFormId));
 			order.setMoney(total_amount);
 			Date date = new Date();
 			order.setCreateTime(date);
@@ -209,7 +221,8 @@ public class AlipayController extends BaseController {
 			PayResponse payResponse = new PayResponse();
 			payResponse.setOrderInfo(response.getBody());
 			return payResponse;
-		} catch (AlipayApiException e) {
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
 			return ApiResponse.getErrorResponse("生成支付订单失败，系统异常！");
 		}
 
