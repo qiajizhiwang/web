@@ -48,7 +48,7 @@ public class EntryFormController extends BaseController {
 		if (me.getType() == 1) {
 			schoolId = me.getSchoolId();
 		}
-		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(schoolId, studentName, examId);
+		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(schoolId, studentName, examId,null);
 		long total = page.getTotal();
 		return new PageResponse<EntryFormPo>(total, entryFormPos);
 

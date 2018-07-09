@@ -5,9 +5,10 @@
  
   
   <select id="list" resultType="com.xiangxing.model.ex.EntryFormPo">
-  SELECT t1.id,t1.create_time AS entryTime,t1.exam_id AS examId,t1.student_id AS studentId,t4.`name` AS subjectName,
+  SELECT t1.id,t1.id AS entryFormId,t1.create_time AS entryTime,t1.exam_id AS examId,t1.student_id AS studentId,t4.`name` AS subjectName,
 t2.rank,
 t3.`name` AS studentName,
+t2.money AS entryFee,
 IF(t5.id IS NULL,'未缴费','已缴费') AS payFlag,
 t5.create_time AS payTime
 FROM t_entry_form t1
@@ -19,12 +20,16 @@ where 1 = 1
     <if test="schoolId != null and schoolId !=0" >
 AND t2.school_id= #{schoolId}
     </if>
+    <if test="studentId != null and studentId !=0" >
+AND t1.student_id= #{studentId}
+    </if>
     <if test="studentName != null" >
 AND t3.`name` LIKE CONCAT(#{studentName},'%')
     </if>
     <if test="examId != null and examId !=0" >
 AND t1.exam_id =#{examId}
     </if>
+ORDER BY t1.create_time DESC
   </select>
  
 </mapper>

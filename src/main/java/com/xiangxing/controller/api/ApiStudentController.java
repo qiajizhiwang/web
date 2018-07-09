@@ -16,15 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.PageRequest;
+import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.MessageMapper;
 import com.xiangxing.mapper.MessageQueueMapper;
@@ -34,6 +37,7 @@ import com.xiangxing.mapper.StudentHomeworkMapper;
 import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.TeacherMapper;
 import com.xiangxing.mapper.ex.CourseMapperEx;
+import com.xiangxing.mapper.ex.EntryFormPoMapper;
 import com.xiangxing.mapper.ex.HomeworkPoMapper;
 import com.xiangxing.mapper.ex.NoticePoMapper;
 import com.xiangxing.mapper.ex.ProductPoMapper;
@@ -45,7 +49,9 @@ import com.xiangxing.model.NoticeDetail;
 import com.xiangxing.model.School;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentHomework;
+import com.xiangxing.model.User;
 import com.xiangxing.model.ex.CourseEx;
+import com.xiangxing.model.ex.EntryFormPo;
 import com.xiangxing.model.ex.HomeworkPo;
 import com.xiangxing.model.ex.NoticePo;
 import com.xiangxing.model.ex.ProductPo;
@@ -61,7 +67,7 @@ public class ApiStudentController {
 
 	@Value(value = "${homework_path}")
 	private String imagePath;
-	
+
 	@Value(value = "${message_path}")
 	private String messagePath;
 
@@ -82,6 +88,9 @@ public class ApiStudentController {
 
 	@Autowired
 	StudentHomeworkMapper studentHomeworkMapper;
+
+	@Autowired
+	private EntryFormPoMapper entryFormPoMapper;
 
 	@RequestMapping("/myCourses")
 	public ApiResponse myCourses(PageRequest pageRequest) {
@@ -255,7 +264,7 @@ public class ApiStudentController {
 		long total = page.getTotal();
 		return new ApiPageResponse<Message>(total, messages);
 	}
-	
+
 	@RequestMapping("/sendMessage")
 	public ApiResponse sendMessage(String text, Long teacherId, String base64Image) {
 		LoginInfo info = TokenManager.getNowUser();
@@ -311,4 +320,20 @@ public class ApiStudentController {
 
 	}
 
+	/**
+	 * 获取学生报名信息
+	 * @param pageRequest
+	 * @return
+	 */
+	@RequestMapping("/entryFormList")
+	@ResponseBody
+	public ApiResponse entryFormList(PageRequest pageRequest) {
+
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+		LoginInfo info = TokenManager.getNowUser();
+		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(null, null, null, info.getId());
+		long total = page.getTotal();
+		return new ApiPageResponse<EntryFormPo>(total, entryFormPos);
+
+	}
 }

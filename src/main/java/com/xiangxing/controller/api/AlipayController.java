@@ -23,10 +23,8 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
-import com.alipay.api.request.AlipayTradeCreateRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
-import com.alipay.api.response.AlipayTradeCreateResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.interceptor.TokenManager;
@@ -111,101 +109,21 @@ public class AlipayController extends BaseController {
 					ALIPAY_PUBLIC_KEY, "RSA2");
 		}
 		try {
-			AlipayTradeCreateRequest request = new AlipayTradeCreateRequest();
 
-//			request.setBizContent("{" +
-//					"\"out_trade_no\":\"20150320010101001\"," +
-//					"\"seller_id\":\"2088102146225135\"," +
-//					"\"total_amount\":88.88," +
-//					"\"discountable_amount\":8.88," +
-//					"\"subject\":\"Iphone6 16G\"," +
-//					"\"body\":\"Iphone6 16G\"," +
-//					"\"buyer_id\":\"2088102146225135\"," +
-//					"      \"goods_detail\":[{" +
-//					"        \"goods_id\":\"apple-01\"," +
-//					"\"goods_name\":\"ipad\"," +
-//					"\"quantity\":1," +
-//					"\"price\":2000," +
-//					"\"goods_category\":\"34543238\"," +
-//					"\"body\":\"特价手机\"," +
-//					"\"show_url\":\"http://www.alipay.com/xxx.jpg\"" +
-//					"        }]," +
-//					"\"operator_id\":\"Yx_001\"," +
-//					"\"store_id\":\"NJ_001\"," +
-//					"\"terminal_id\":\"NJ_T_001\"," +
-//					"\"extend_params\":{" +
-//					"\"sys_service_provider_id\":\"2088511833207846\"," +
-//					"\"industry_reflux_info\":\"{\\\\\\\"scene_code\\\\\\\":\\\\\\\"metro_tradeorder\\\\\\\",\\\\\\\"channel\\\\\\\":\\\\\\\"xxxx\\\\\\\",\\\\\\\"scene_data\\\\\\\":{\\\\\\\"asset_name\\\\\\\":\\\\\\\"ALIPAY\\\\\\\"}}\"," +
-//					"\"card_type\":\"S0JP0000\"" +
-//					"    }," +
-//					"\"timeout_express\":\"90m\"," +
-//					"\"settle_info\":{" +
-//					"        \"settle_detail_infos\":[{" +
-//					"          \"trans_in_type\":\"cardSerialNo\"," +
-//					"\"trans_in\":\"A0001\"," +
-//					"\"summary_dimension\":\"A0001\"," +
-//					"\"amount\":0.1" +
-//					"          }]" +
-//					"    }," +
-//					"\"business_params\":\"{\\\"data\\\":\\\"123\\\"}\"" +
-//					"  }");
-//			
-			JSONObject bizContent = new JSONObject();
-			bizContent.put("out_trade_no", "20150320010101002");
-			bizContent.put("total_amount", "1.88");
-			bizContent.put("subject", "测试");
-			bizContent.put("buyer_id", "2088102169711954");
-//			2088102176172599
-//			bizContent.put("timeout_express", "60m");
-			request.setBizContent(bizContent.toJSONString());
-			System.out.println("yyy:"+request.getBizContent());
-			
-					AlipayTradeCreateResponse response = alipayClient.execute(request);
-					System.out.println(JSON.toJSONString(response));
-//					System.out.println(response.getBody());
-					if(response.isSuccess()){
-					System.out.println("调用成功");
-					} else {
-					System.out.println("调用失败");
-					}
-					
-//			JSONObject bizContent = new JSONObject();
-//			bizContent.put("out_trade_no", orderNo);
-//			bizContent.put("total_amount", "100");
-//			bizContent.put("subject", "报名缴费");
-//			bizContent.put("timeout_express", "60m");
-//			request.setBizContent(bizContent.toJSONString());// 设置业务参数
-//			request.setNotifyUrl("http://120.78.211.181:80/api/alipay/alipayNotify");
-//
-//			AlipayTradeCreateResponse response = alipayClient.execute(request);
-//			System.out.println(JSON.toJSONString(response));
-//			System.out.println(response.getBody());
-//			if (response.isSuccess()) {
-//				System.out.println("调用成功");
-//			} else {
-//				System.out.println("调用失败");
-//			}
-
-//			// 实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
-//			AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
-//			// SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
-//			AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-//			// 可选 对交易或商品的描述
-//			// model.setBody("我是测试数据");
-//			model.setSubject("报名缴费");
-//			model.setOutTradeNo(orderNo);
-//			// 该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。
-//			// 该参数数值不接受小数点， 如 1.5h，可转换为 90m。
-//			model.setTimeoutExpress("60m");
-//			model.setTotalAmount(String.valueOf(total_amount));
-//			model.setProductCode("QUICK_MSECURITY_PAY");
-//			request.setBizModel(model);
-//			request.setNotifyUrl("http://120.78.211.181:80/api/alipay/alipayNotify");
-//
-//			// 这里和普通的接口调用不同，使用的是sdkExecute
-//			AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
-//			System.out.println(response.getBody());// 就是orderString
-//													// 可以直接给客户端请求，无需再做处理。
+			AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
+			// SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
+			AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+			model.setBody("报名缴费");
+			model.setSubject("报名缴费");
+			model.setOutTradeNo(orderNo);
+			model.setTimeoutExpress("60m");
+			model.setTotalAmount(String.valueOf(total_amount));
+			model.setProductCode("QUICK_MSECURITY_PAY");
+			request.setBizModel(model);
+			request.setNotifyUrl("http://120.78.211.181:80/api/alipay/alipayNotify");
+			// 这里和普通的接口调用不同，使用的是sdkExecute
+			AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
+			System.out.println(response.getBody());// 就是orderString 可以直接给客户端请求，无需再做处理。
 
 			// 生成订单信息
 			Order order = new Order();
@@ -222,7 +140,7 @@ public class AlipayController extends BaseController {
 			payResponse.setOrderInfo(response.getBody());
 			return payResponse;
 		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 			return ApiResponse.getErrorResponse("生成支付订单失败，系统异常！");
 		}
 
