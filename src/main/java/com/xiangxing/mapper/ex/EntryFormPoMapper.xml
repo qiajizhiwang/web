@@ -8,6 +8,11 @@
   SELECT t1.id,t1.id AS entryFormId,t1.create_time AS entryTime,t1.exam_id AS examId,t1.student_id AS studentId,t4.`name` AS subjectName,
 t2.rank,
 t3.`name` AS studentName,
+t3.gender,
+t3.birthday,
+t3.nation,
+t3.state,
+t3.major,
 t2.money AS entryFee,
 IF(t5.id IS NULL,'未缴费','已缴费') AS payFlag,
 t5.create_time AS payTime
