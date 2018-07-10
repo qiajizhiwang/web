@@ -9,6 +9,24 @@ public class EntryFormPo extends EntryForm {
 	private String studentName;
 	private String payFlag;
 	private String payTime;
+	private Long entryFormId;
+	private Long entryFee;
+
+	public Long getEntryFormId() {
+		return entryFormId;
+	}
+
+	public void setEntryFormId(Long entryFormId) {
+		this.entryFormId = entryFormId;
+	}
+
+	public Long getEntryFee() {
+		return entryFee;
+	}
+
+	public void setEntryFee(Long entryFee) {
+		this.entryFee = entryFee;
+	}
 
 	public String getEntryTime() {
 		return entryTime;
