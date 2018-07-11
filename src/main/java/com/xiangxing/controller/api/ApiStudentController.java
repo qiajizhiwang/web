@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Base64Utils;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.PageRequest;
-import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.MessageMapper;
 import com.xiangxing.mapper.MessageQueueMapper;
@@ -39,6 +37,7 @@ import com.xiangxing.mapper.TeacherMapper;
 import com.xiangxing.mapper.ex.CourseMapperEx;
 import com.xiangxing.mapper.ex.EntryFormPoMapper;
 import com.xiangxing.mapper.ex.HomeworkPoMapper;
+import com.xiangxing.mapper.ex.MessageQueuePoMapper;
 import com.xiangxing.mapper.ex.NoticePoMapper;
 import com.xiangxing.mapper.ex.ProductPoMapper;
 import com.xiangxing.model.Message;
@@ -49,10 +48,10 @@ import com.xiangxing.model.NoticeDetail;
 import com.xiangxing.model.School;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentHomework;
-import com.xiangxing.model.User;
 import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.model.ex.EntryFormPo;
 import com.xiangxing.model.ex.HomeworkPo;
+import com.xiangxing.model.ex.MessageQueuePo;
 import com.xiangxing.model.ex.NoticePo;
 import com.xiangxing.model.ex.ProductPo;
 import com.xiangxing.vo.api.ApiPageResponse;
@@ -335,5 +334,17 @@ public class ApiStudentController {
 		long total = page.getTotal();
 		return new ApiPageResponse<EntryFormPo>(total, entryFormPos);
 
+	}
+	
+	@Autowired
+	MessageQueuePoMapper messageQueuePoMapper;
+	
+	@RequestMapping("/getQueues")
+	public ApiPageResponse<MessageQueuePo> getQueues(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
+		LoginInfo info = TokenManager.getNowUser();
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+		List<MessageQueuePo> messages = messageQueuePoMapper.list(null,info.getId());
+		long total = page.getTotal();
+		return new ApiPageResponse<MessageQueuePo>(total, messages);
 	}
 }
