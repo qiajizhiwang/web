@@ -42,6 +42,7 @@ import com.xiangxing.mapper.StudentCourseMapper;
 import com.xiangxing.mapper.StudentHomeworkMapper;
 import com.xiangxing.mapper.TeacherMapper;
 import com.xiangxing.mapper.ex.CourseSignPoMapper;
+import com.xiangxing.mapper.ex.HomeworkPoMapper;
 import com.xiangxing.mapper.ex.TeacherPoMapper;
 import com.xiangxing.model.Course;
 import com.xiangxing.model.CourseExample;
@@ -58,12 +59,11 @@ import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentCourse;
 import com.xiangxing.model.StudentCourseExample;
 import com.xiangxing.model.StudentHomework;
-import com.xiangxing.model.Teacher;
-import com.xiangxing.model.TeacherExample;
 import com.xiangxing.model.ex.CourseSignPo;
+import com.xiangxing.model.ex.HomeworkPo;
 import com.xiangxing.model.ex.ProductPo;
+import com.xiangxing.model.ex.StudentHomeworkPo;
 import com.xiangxing.utils.DateUtil;
-import com.xiangxing.utils.MD5Util;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.CourseSignResponse;
@@ -83,6 +83,9 @@ public class ApiTeacherController {
 
 	@Autowired
 	HomeworkMapper homeworkMapper;
+	
+	@Autowired
+	HomeworkPoMapper homeworkPoMapper;
 
 	@Autowired
 	StudentHomeworkMapper studentHomeworkMapper;
@@ -254,8 +257,44 @@ public class ApiTeacherController {
 		if (i == 0) {
 			return ApiResponse.getErrorResponse("作业不存在！");
 		}
-		return new ApiResponse();
+		return new ApiResponse();}
+	
+	/**
+	 * 获取学生作业
+	 * @param getStudentHomework
+	 * @return
+	 */
+	@RequestMapping("/getStudentHomework")
+	public ApiResponse getStudentHomework(PageRequest pageRequest,Long homeworkId) {
+		LoginInfo info = TokenManager.getNowUser();
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
+		List<StudentHomeworkPo> studentHomeworkPos = homeworkPoMapper.getStudentHomework(homeworkId);
+
+		long total = page.getTotal();
+
+		return new ApiPageResponse<StudentHomeworkPo>(total, studentHomeworkPos);
+
+	}
+	
+	/**
+	 * 获取作业列表
+	 * @param getHomework
+	 * @return
+	 */
+	@RequestMapping("/getHomework")
+	public ApiResponse getHomework(PageRequest pageRequest) {
+
+		LoginInfo info = TokenManager.getNowUser();
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+
+		List<HomeworkPo> homeworkPos = homeworkPoMapper.getTeacherHomeWork(info.getId());
+
+		long total = page.getTotal();
+
+		// 过滤字段
+		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(HomeworkPo.class, "id", "name", "courseName");
+		return new ApiPageResponse<HomeworkPo>(total, JSON.parseArray(JSONObject.toJSONString(homeworkPos, filter), HomeworkPo.class));
 	}
 //
 //	/**
