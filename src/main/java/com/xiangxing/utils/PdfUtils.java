@@ -2,11 +2,9 @@ package com.xiangxing.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -18,9 +16,10 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontProvider;
 import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerFontProvider;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 import freemarker.template.Configuration;
@@ -33,36 +32,66 @@ public class PdfUtils {
 	public static void main(String[] args) {
 		Map map = new HashMap();
 		map.put("studentName", "1");
-		new PdfUtils().createPdf("D:/c.pdf",PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),"apply.ftl",map);
+		new PdfUtils().createPdf("D:/c.pdf", PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
+				"apply.ftl", map);
 	}
 
 	public static void createPdf(String pdfFile, String templateBaseDir, String templateFile, Map globalMap) {
+		PdfWriter mPdfWriter = null;
+		Document document = null;
 		try {
 			BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", false);
-			Font font = new Font(bfChinese, 12, Font.NORMAL);
 
-			Document document = new Document(PageSize.A4, 10, 10, 10, 10);
-			PdfWriter mPdfWriter = PdfWriter.getInstance(document,
-					new FileOutputStream(pdfFile));
+			document = new Document(PageSize.A4, 10, 10, 10, 10);
+			mPdfWriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
 			document.open();
-
 
 			String html = loadFtlHtml(new File(templateBaseDir), templateFile, globalMap);
 			XMLWorkerHelper.getInstance().parseXHtml(mPdfWriter, document,
-					new ByteArrayInputStream(html.getBytes("UTF-8")), Charset.forName("UTF-8"), new ChinaFontProvide());
-			document.close();
-			mPdfWriter.close();
+					new ByteArrayInputStream(html.getBytes("UTF-8")), Charset.forName("UTF-8"),
+					new XMLWorkerFontProvider());
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+
+			document.close();
+			mPdfWriter.close();
+		}
+	}
+
+	public static void createMiniPdf(String pdfFile, String templateBaseDir, String templateFile, Map globalMap) {
+		PdfWriter mPdfWriter = null;
+		Document document = null;
+		try {
+			BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", false);
+			Rectangle rectangle = new Rectangle(264f, 368.5f);
+			document = new Document(rectangle, 0, 0, 0, 0);
+			mPdfWriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
+			document.open();
+
+			String html = loadFtlHtml(new File(templateBaseDir), templateFile, globalMap);
+			XMLWorkerHelper.getInstance().parseXHtml(mPdfWriter, document,
+					new ByteArrayInputStream(html.getBytes("UTF-8")), Charset.forName("UTF-8"),
+					new XMLWorkerFontProvider());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			document.close();
+			mPdfWriter.close();
 		}
 	}
 
 	public static String loadFtlHtml(File baseDir, String fileName, Map globalMap) {
-		
 
 		Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
 		try {

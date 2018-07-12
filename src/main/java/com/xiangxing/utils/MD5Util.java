@@ -34,4 +34,7 @@ public class MD5Util {
 
 	private static final String hexDigits[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
 
+	public static void main(String[] args) {
+		System.out.println(MD5Util.MD5Encode("123456"));
+	}
 }

@@ -37,6 +37,7 @@ import com.xiangxing.model.SubjectExample;
 import com.xiangxing.model.User;
 import com.xiangxing.model.ex.ExamEx;
 import com.xiangxing.model.ex.ExamPo;
+import com.xiangxing.utils.HanyuPinyinHelper;
 import com.xiangxing.utils.PdfUtils;
 
 @Controller
@@ -117,21 +118,49 @@ public class ExamController extends BaseController {
 	@Value(value = "${pdf_path}")
 	private String pdfPath;
 
-	@RequestMapping("/printApply")
-	public void printApply(Long examId, HttpServletResponse response) throws IOException {
+	@RequestMapping("/exportApplyTable")
+	public void exportApplyTable(Long examId, HttpServletResponse response) throws IOException {
 		ExamPo examPo = poMapper.get(examId);
-		String path = pdfPath + File.separator + examId + ".pdf";
+		examPo.setPinyin(HanyuPinyinHelper.toHanyuPinyin(examPo.getStudentName()));
+		String path = pdfPath + File.separator +"考生报名表"+ examId + ".pdf";
 		File file = new File(path);
 		if (!file.exists()) {
-			PdfUtils.createPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(), "apply.ftl",
-					new org.apache.commons.beanutils.BeanMap(examPo));
+			PdfUtils.createPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
+					"apply.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
 			file = new File(path);
 		}
 		response.addHeader("pragma", "NO-cache");
 		response.addHeader("Cache-Control", "no-cache");
 		response.addDateHeader("Expries", 0);
 		response.setContentType("application/pdf;charset=utf-8");
-		response.addHeader("Content-Disposition", "attachment;filename=" + examId + ".pdf");
+		response.addHeader("Content-Disposition", "attachment;filename=table" + examId + ".pdf");
+		FileInputStream fileInputStream = new FileInputStream(file);
+		OutputStream out = response.getOutputStream();
+		int length = 0;
+		byte buffer[] = new byte[1024];
+		while ((length = fileInputStream.read(buffer)) != -1) {
+			out.write(buffer, 0, length);
+		}
+		fileInputStream.close();
+		out.flush();
+		out.close();
+	}
+	
+	@RequestMapping("/exportExamTicket")
+	public void exportExamTicket(Long examId, HttpServletResponse response) throws IOException {
+		ExamPo examPo = poMapper.get(examId);
+		String path = pdfPath + File.separator +"准考证"+ examId + ".pdf";
+		File file = new File(path);
+		if (!file.exists()) {
+			PdfUtils.createMiniPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
+					"exam.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
+			file = new File(path);
+		}
+		response.addHeader("pragma", "NO-cache");
+		response.addHeader("Cache-Control", "no-cache");
+		response.addDateHeader("Expries", 0);
+		response.setContentType("application/pdf;charset=utf-8");
+		response.addHeader("Content-Disposition", "attachment;filename=ticket" + examId + ".pdf");
 		FileInputStream fileInputStream = new FileInputStream(file);
 		OutputStream out = response.getOutputStream();
 		int length = 0;

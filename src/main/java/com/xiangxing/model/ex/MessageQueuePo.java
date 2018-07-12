@@ -3,7 +3,7 @@ package com.xiangxing.model.ex;
 import java.util.Date;
 
 public class MessageQueuePo {
-	
+
 	private Long id;
 
 	private Long studentId;
@@ -17,6 +17,10 @@ public class MessageQueuePo {
 	private String studentName;
 
 	private String teacherName;
+
+	private Integer origin;
+
+	private Integer type;
 
 	public Long getStudentId() {
 		return studentId;
@@ -72,6 +76,22 @@ public class MessageQueuePo {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Integer getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(Integer origin) {
+		this.origin = origin;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 }

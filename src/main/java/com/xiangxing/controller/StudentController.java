@@ -28,6 +28,7 @@ import com.xiangxing.model.User;
 import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.model.ex.StudentPo;
 import com.xiangxing.utils.MD5Util;
+import com.xiangxing.utils.StringUtil;
 import com.xiangxing.vo.api.ApiResponse;
 
 @Controller
@@ -94,6 +95,10 @@ public class StudentController extends BaseController {
 	@ResponseBody
 	public ApiResponse editstudent(Student student, Long studentId) {
 		student.setId(studentId);
+		if (StringUtil.isNotEmpty(student.getPassword())) {
+			student.setPassword(MD5Util.MD5Encode(student.getPassword()));
+		}
+		student.setPassword(MD5Util.MD5Encode(student.getPassword()));
 		studentMapper.updateByPrimaryKeySelective(student);
 		return new ApiResponse();
 	}

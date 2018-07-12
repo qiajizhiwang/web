@@ -26,6 +26,7 @@ import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentExample;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
+import com.xiangxing.utils.MD5Util;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.LoginInfo;
@@ -51,7 +52,7 @@ public class ApiSystemController {
 			List teachers = teacherMapper.selectByExample(example);
 			if (!CollectionUtils.isEmpty(teachers)) {
 				Teacher teacher = (Teacher) teachers.get(0);
-				if (teacher.getPassword().equals(loginRequest.getPassword())) {
+				if (teacher.getPassword().equals(MD5Util.MD5Encode(loginRequest.getPassword()))) {
 					LoginResponse loginResponse = new LoginResponse();
 					String token = UUID.randomUUID().toString().replace("-", "");
 					loginResponse.setToken(token);
@@ -65,7 +66,7 @@ public class ApiSystemController {
 			List students = studentMapper.selectByExample(example);
 			if (!CollectionUtils.isEmpty(students)) {
 				Student student = (Student) students.get(0);
-				if (student.getPassword().equals(loginRequest.getPassword())) {
+				if (student.getPassword().equals(MD5Util.MD5Encode(loginRequest.getPassword()))) {
 					LoginResponse loginResponse = new LoginResponse();
 					String token = UUID.randomUUID().toString().replace("-", "");
 					loginResponse.setToken(token);
@@ -83,16 +84,16 @@ public class ApiSystemController {
 		LoginInfo info = TokenManager.getNowUser();
 		if (info.getType() == 1) {
 			Teacher teacher = teacherMapper.selectByPrimaryKey(info.getId());
-			if (oldPassword.equals(teacher.getPassword())) {
-				teacher.setPassword(newPassword);
+			if (MD5Util.MD5Encode(oldPassword).equals(teacher.getPassword())) {
+				teacher.setPassword(MD5Util.MD5Encode(newPassword));
 				teacherMapper.updateByPrimaryKey(teacher);
 				return new ApiResponse();
 			}
 
 		} else {
 			Student student = studentMapper.selectByPrimaryKey(info.getId());
-			if (oldPassword.equals(student.getPassword())) {
-				student.setPassword(newPassword);
+			if (MD5Util.MD5Encode(oldPassword).equals(student.getPassword())) {
+				student.setPassword(MD5Util.MD5Encode(newPassword));
 				studentMapper.updateByPrimaryKey(student);
 				return new ApiResponse();
 			}

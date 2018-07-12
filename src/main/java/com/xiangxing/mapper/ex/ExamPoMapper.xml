@@ -6,8 +6,8 @@
 
 	<select id="get" resultType="com.xiangxing.model.ex.ExamPo">
 		select t1.id as id ,t3.`name` as subjectName,t4.name as
-		studentName,t4.gender as gender, t4.nation as nation,t4.state as state ,
-		t4.birthday as birthday,t5.name as schoolName ,t2.exam_time as examTime,t2.* from
+		studentName,t4.gender as gender, t4.nation as nation,t4.state as state ,t1.create_time as createTime,
+		t4.birthday as birthday,t5.name as schoolName ,t2.exam_time as examTime,t2.exam_Address as examAddress,t2.* from
 
 		t_entry_form as t1 ,t_exam as t2 ,t_subject as t3 ,t_student as t4 ,t_school as t5
 

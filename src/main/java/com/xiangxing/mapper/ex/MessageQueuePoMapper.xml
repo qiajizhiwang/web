@@ -6,18 +6,17 @@
 
 	<select id="list"
 		resultType="com.xiangxing.model.ex.MessageQueuePo">
-		select t3.id as id ,t1.name as studentName,t2.name as teacherName, t3.teacher as
-		teacherId,t3.student as studentId,max(t4.create_Time) as time,t4.text as message
+	select t3.id as id ,t1.name as studentName,t2.name as teacherName, t3.teacher as
+		teacherId,t3.student as studentId,t4.create_Time as time,t4.text as message,t4.type as type ,t4.origin as origin
 		from t_student as t1,t_teacher as t2,t_message_queue as t3,t_message as t4
-		where t1.id = t3.student and t2.id = t3.teacher and t3.id = t4.queue_id 
+		where t1.id = t3.student and t2.id = t3.teacher and t3.id = t4.queue_id and t4.id in  (select max(id) as id from  t_message   group by queue_id)   
 		<if test="studentId != null">
 			AND t3.student=#{studentId}
 		</if>
 		<if test="teacherId != null">
 			AND t3.teacher=#{teacherId}
 		</if>
-		group by t3.id 
-		order by time desc
+	order by t4.create_Time desc
 	</select>
 
 </mapper>

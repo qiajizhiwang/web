@@ -13,6 +13,8 @@ public class ExamPo {
 	private Long money;
 
 	private String examTime;
+	
+	private Date createTime;
 
 	private String examAddress;
 
@@ -28,9 +30,11 @@ public class ExamPo {
 
 	private String state;
 
-	private Date birthday;
+	private Date birthday; 
 
 	private String schoolName;
+	
+	private String pinyin;
 
 	public Long getId() {
 		return id;
@@ -142,6 +146,22 @@ public class ExamPo {
 
 	public void setSchoolName(String schoolName) {
 		this.schoolName = schoolName;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getPinyin() {
+		return pinyin;
+	}
+
+	public void setPinyin(String pinyin) {
+		this.pinyin = pinyin;
 	}
 
 }
