@@ -18,7 +18,7 @@ public class HanyuPinyinHelper {
 		char[] cl_chars = ChineseLanguage.trim().toCharArray();
 		String hanyupinyin = "";
 		HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
-		defaultFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);// 输出拼音全部大写 LOWERCASE 小写
+		defaultFormat.setCaseType(HanyuPinyinCaseType.LOWERCASE);// 输出拼音全部UPPERCASE 大写 LOWERCASE 小写
 		defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);// 不带声调
 		defaultFormat.setVCharType(HanyuPinyinVCharType.WITH_V);
 		try {
