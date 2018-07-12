@@ -440,7 +440,7 @@ public class ApiTeacherController {
 
 		}
 		messageMapper.insert(message);
-		return null;
+		return new ApiResponse();
 
 	}
 

@@ -316,7 +316,7 @@ public class ApiStudentController {
 
 		}
 		messageMapper.insert(message);
-		return null;
+		return new ApiResponse();
 
 	}
 
