@@ -7,6 +7,8 @@ public class CourseEx extends Course {
 	private Long schoolId;
 	private String schoolName;
 	private String showCurriculumTime;
+	private Integer period;
+	private Integer signPeriod;
 
 	public Long getSchoolId() {
 		return schoolId;
@@ -38,6 +40,22 @@ public class CourseEx extends Course {
 
 	public void setShowCurriculumTime(String showCurriculumTime) {
 		this.showCurriculumTime = showCurriculumTime;
+	}
+
+	public Integer getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(Integer period) {
+		this.period = period;
+	}
+
+	public Integer getSignPeriod() {
+		return signPeriod;
+	}
+
+	public void setSignPeriod(Integer signPeriod) {
+		this.signPeriod = signPeriod;
 	}
 
 }

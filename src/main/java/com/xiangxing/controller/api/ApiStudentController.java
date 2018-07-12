@@ -40,6 +40,7 @@ import com.xiangxing.mapper.ex.HomeworkPoMapper;
 import com.xiangxing.mapper.ex.MessageQueuePoMapper;
 import com.xiangxing.mapper.ex.NoticePoMapper;
 import com.xiangxing.mapper.ex.ProductPoMapper;
+import com.xiangxing.model.Course;
 import com.xiangxing.model.Message;
 import com.xiangxing.model.MessageExample;
 import com.xiangxing.model.MessageQueue;
@@ -92,11 +93,14 @@ public class ApiStudentController {
 	private EntryFormPoMapper entryFormPoMapper;
 
 	@RequestMapping("/myCourses")
-	public ApiResponse myCourses(PageRequest pageRequest) {
+	public ApiResponse myCourses(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
-		List courses = courseMapperEx.courseListByStudentId(info.getId());
+		List<CourseEx> courses = courseMapperEx.courseListByStudentId(info.getId());
+		for (CourseEx course : courses) {
+			course.setImageUrl(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + course.getImageUrl());
+		}
 		long total = page.getTotal();
 		return new ApiPageResponse<CourseEx>(total, courses);
 
