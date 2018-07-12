@@ -30,11 +30,16 @@
 	
 		<thead>
 			<tr>
-				<th field="studentId" width="50" editor="{type:'validatebox',options:{required:true}}">学生id</th>
+				<th field="studentId" width="15" editor="{type:'validatebox',options:{required:true}}">学生id</th>
 				<th field="studentName" width="50" editor="{type:'validatebox',options:{required:true}}">学生姓名</th>
+				<th field="gender" width="20" editor="{type:'validatebox',options:{required:true}}">性别</th>
+				<th field="birthday" width="70" editor="{type:'validatebox',options:{required:true}}">出生日期</th>
+				<th field="nation" width="30" editor="{type:'validatebox',options:{required:true}}">民族</th>
+				<th field="state" width="30" editor="{type:'validatebox',options:{required:true}}">国家</th>
+				<th field="major" width="50" editor="{type:'validatebox',options:{required:true}}">专业</th>
 				<th field="subjectName" width="50" editor="{type:'validatebox',options:{required:true}}">科目</th>
 				<th field="rank" width="50" editor="text">考试级别</th>
-				<th field="entryTime" width="50" editor="text">报考时间</th>
+				<th field="entryTime" width="70" editor="text">报考时间</th>
 				<th field="payFlag" width="50" editor="text">缴费状态</th>
 				<th field="payTime" width="50" editor="text">缴费时间</th>
 			</tr>
@@ -46,6 +51,7 @@
 		<span>考试科目</span>
 		<input id="examId" class="easyui-combobox" name="examId" data-options="valueField:'id',textField:'subjectName',url:'../exam/comboboxData'">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="doExcle()">导出excel</a>
 	</div>
 	
 	<div id="dlg" class="easyui-dialog" style="width:400px;height:500px;padding:10px 20px"
@@ -93,6 +99,12 @@
 			studentName: $('#studentName').val(),
 			examId: $('#examId').val()
 		});
+	}
+
+	 function doExcle(){
+	 
+	 	 
+		window.location.href="doExcle?examId="+$('#examId').val();
 	}
 
 	
