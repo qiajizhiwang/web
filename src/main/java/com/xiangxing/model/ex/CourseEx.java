@@ -7,8 +7,17 @@ public class CourseEx extends Course {
 	private Long schoolId;
 	private String schoolName;
 	private String showCurriculumTime;
+	private String showFinishTime;
 	private Integer period;
 	private Integer signPeriod;
+
+	public String getShowFinishTime() {
+		return showFinishTime;
+	}
+
+	public void setShowFinishTime(String showFinishTime) {
+		this.showFinishTime = showFinishTime;
+	}
 
 	public Long getSchoolId() {
 		return schoolId;

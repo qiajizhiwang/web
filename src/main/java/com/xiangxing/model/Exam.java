@@ -1,5 +1,7 @@
 package com.xiangxing.model;
 
+import java.util.Date;
+
 public class Exam {
     private Long id;
 
@@ -16,6 +18,8 @@ public class Exam {
     private String examAddress;
 
     private Long openFlag;
+
+    private Date endTime;
 
     private Long status;
 
@@ -81,6 +85,14 @@ public class Exam {
 
     public void setOpenFlag(Long openFlag) {
         this.openFlag = openFlag;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public Long getStatus() {

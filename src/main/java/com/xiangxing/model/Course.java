@@ -11,6 +11,8 @@ public class Course {
 
     private Date curriculumTime;
 
+    private Date finishTime;
+
     private String schoolTime;
 
     private String imageUrl;
@@ -18,6 +20,8 @@ public class Course {
     private String comment;
 
     private Integer status;
+
+    private Integer period;
 
     public Long getId() {
         return id;
@@ -51,6 +55,14 @@ public class Course {
         this.curriculumTime = curriculumTime;
     }
 
+    public Date getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(Date finishTime) {
+        this.finishTime = finishTime;
+    }
+
     public String getSchoolTime() {
         return schoolTime;
     }
@@ -81,5 +93,13 @@ public class Course {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Integer period) {
+        this.period = period;
     }
 }

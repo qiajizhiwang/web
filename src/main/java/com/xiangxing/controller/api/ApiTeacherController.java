@@ -136,8 +136,7 @@ public class ApiTeacherController {
 
 		// 过滤字段
 		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(Course.class, "id", "name", "schoolTime");
-		return new ApiPageResponse<Course>(total,
-				JSON.parseArray(JSONObject.toJSONString(courses, filter), Course.class));
+		return new ApiPageResponse<Course>(total, JSON.parseArray(JSONObject.toJSONString(courses, filter), Course.class));
 
 	}
 
@@ -164,12 +163,10 @@ public class ApiTeacherController {
 	 * @return
 	 */
 	@RequestMapping("/studentProducts")
-	public ApiPageResponse<ProductPo> studentProducts(TeacherRequest teacherRequest,
-			HttpServletRequest httpServletRequest) {
+	public ApiPageResponse<ProductPo> studentProducts(TeacherRequest teacherRequest, HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(teacherRequest.getPage(), teacherRequest.getRows(), true);
-		List<ProductPo> productPos = teacherPoMapper.studentProducts(info.getId(), teacherRequest.getCourseId(),
-				teacherRequest.getStudentId());
+		List<ProductPo> productPos = teacherPoMapper.studentProducts(info.getId(), teacherRequest.getCourseId(), teacherRequest.getStudentId());
 		for (ProductPo productPo : productPos) {
 			productPo.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + productPo.getPath());
 		}
@@ -182,8 +179,7 @@ public class ApiTeacherController {
 	public ApiResponse uploadProduct(ProductVo productVo) {
 		LoginInfo info = TokenManager.getNowUser();
 		StudentCourseExample example = new StudentCourseExample();
-		example.createCriteria().andCourseIdEqualTo(productVo.getCourseId())
-				.andStudentIdEqualTo(productVo.getStudentId());
+		example.createCriteria().andCourseIdEqualTo(productVo.getCourseId()).andStudentIdEqualTo(productVo.getStudentId());
 		Long studentCourseId = studentCourseMapper.selectByExample(example).get(0).getId();
 		Product product = new Product();
 		try {
@@ -303,8 +299,7 @@ public class ApiTeacherController {
 
 		// 过滤字段
 		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(HomeworkPo.class, "id", "name", "courseName");
-		return new ApiPageResponse<HomeworkPo>(total,
-				JSON.parseArray(JSONObject.toJSONString(homeworkPos, filter), HomeworkPo.class));
+		return new ApiPageResponse<HomeworkPo>(total, JSON.parseArray(JSONObject.toJSONString(homeworkPos, filter), HomeworkPo.class));
 	}
 	//
 	// /**
@@ -373,10 +368,18 @@ public class ApiTeacherController {
 					noticeDetail.setNoticeId(notice.getId());
 					noticeDetail.setStatus(1);
 					noticeDetail.setReceiver(studentCourse.getStudentId());
+					// 签到消息
 					noticeDetailMapper.insert(noticeDetail);
+
+					// 签到
+					record.setSignTime(DateUtil.stringToDate(DateUtil.dateToString(new Date(), DateUtil.patternA)));
+					courseSignMapper.insertSelective(record);
+					// 修改课时
+					StudentCourse updateStudentCourse = new StudentCourse();
+					updateStudentCourse.setId(studentCourse.getId());
+					updateStudentCourse.setPeriod(studentCourse.getPeriod() + 2);
+					studentCourseMapper.updateByPrimaryKeySelective(updateStudentCourse);
 				}
-				record.setSignTime(DateUtil.stringToDate(DateUtil.dateToString(new Date(), DateUtil.patternA)));
-				courseSignMapper.insertSelective(record);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -426,8 +429,7 @@ public class ApiTeacherController {
 	}
 
 	@RequestMapping("/getMessages")
-	public ApiPageResponse<Message> getMessages(PageRequest pageRequest, Long studentId,
-			HttpServletRequest httpServletRequest) {
+	public ApiPageResponse<Message> getMessages(PageRequest pageRequest, Long studentId, HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		MessageQueueExample messageQueueExample = new MessageQueueExample();

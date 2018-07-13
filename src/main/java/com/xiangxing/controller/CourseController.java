@@ -103,7 +103,7 @@ public class CourseController extends BaseController {
 			return;
 		}
 		course.setImageUrl(saveUrl + newFileName);
-		course.setCurriculumTime(DateUtil.stringToDate(course.getShowCurriculumTime()));
+//		course.setCurriculumTime(DateUtil.stringToDate(course.getShowCurriculumTime()));
 		courseMapper.insertSelective(course);
 		writeToOkResponse();
 	}
@@ -185,7 +185,7 @@ public class CourseController extends BaseController {
 			course.setImageUrl(saveUrl + newFileName);
 		}
 		course.setId(id);
-		course.setCurriculumTime(DateUtil.stringToDate(course.getShowCurriculumTime()));
+		course.setCurriculumTime(DateUtil.stringToDate(course.getShowCurriculumTime(),DateUtil.patternC));
 		courseMapper.updateByPrimaryKeySelective(course);
 		writeToOkResponse();
 	}

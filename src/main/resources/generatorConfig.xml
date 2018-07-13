@@ -31,9 +31,9 @@
 <!-- 		<table tableName="user" domainObjectName="User"></table> -->
 <!-- 		<table tableName="user_menu" domainObjectName="UserMenu"></table> -->
 <!-- 		<table tableName="t_advertising" domainObjectName="Advertising"></table> -->
-<!-- 		<table tableName="t_course" domainObjectName="Course"></table> -->
-		<table tableName="t_entry_form" domainObjectName="EntryForm"></table>
-<!-- 		<table tableName="t_exam" domainObjectName="Exam"></table> -->
+		<table tableName="t_course" domainObjectName="Course"></table>
+<!-- 		<table tableName="t_entry_form" domainObjectName="EntryForm"></table> -->
+		<table tableName="t_exam" domainObjectName="Exam"></table>
 <!-- 		<table tableName="t_order" domainObjectName="Order"></table> -->
 <!-- 		<table tableName="t_product" domainObjectName="Product">
 		<generatedKey column="id" sqlStatement="MySql" identity="true" />

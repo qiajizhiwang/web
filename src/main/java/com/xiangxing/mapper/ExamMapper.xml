@@ -10,6 +10,7 @@
     <result column="exam_time" property="examTime" jdbcType="VARCHAR" />
     <result column="exam_address" property="examAddress" jdbcType="VARCHAR" />
     <result column="open_flag" property="openFlag" jdbcType="BIGINT" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -71,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, school_id, subject_id, rank, money, exam_time, exam_address, open_flag, status
+    id, school_id, subject_id, rank, money, exam_time, exam_address, open_flag, end_time, 
+    status
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.ExamExample" >
     select
@@ -106,12 +108,12 @@
   <insert id="insert" parameterType="com.xiangxing.model.Exam" >
     insert into t_exam (id, school_id, subject_id, 
       rank, money, exam_time, 
-      exam_address, open_flag, status
-      )
+      exam_address, open_flag, end_time, 
+      status)
     values (#{id,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{subjectId,jdbcType=BIGINT}, 
       #{rank,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, #{examTime,jdbcType=VARCHAR}, 
-      #{examAddress,jdbcType=VARCHAR}, #{openFlag,jdbcType=BIGINT}, #{status,jdbcType=BIGINT}
-      )
+      #{examAddress,jdbcType=VARCHAR}, #{openFlag,jdbcType=BIGINT}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Exam" >
     insert into t_exam
@@ -139,6 +141,9 @@
       </if>
       <if test="openFlag != null" >
         open_flag,
+      </if>
+      <if test="endTime != null" >
+        end_time,
       </if>
       <if test="status != null" >
         status,
@@ -168,6 +173,9 @@
       </if>
       <if test="openFlag != null" >
         #{openFlag,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null" >
         #{status,jdbcType=BIGINT},
@@ -207,6 +215,9 @@
       <if test="record.openFlag != null" >
         open_flag = #{record.openFlag,jdbcType=BIGINT},
       </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=BIGINT},
       </if>
@@ -225,6 +236,7 @@
       exam_time = #{record.examTime,jdbcType=VARCHAR},
       exam_address = #{record.examAddress,jdbcType=VARCHAR},
       open_flag = #{record.openFlag,jdbcType=BIGINT},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
       status = #{record.status,jdbcType=BIGINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -254,6 +266,9 @@
       <if test="openFlag != null" >
         open_flag = #{openFlag,jdbcType=BIGINT},
       </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="status != null" >
         status = #{status,jdbcType=BIGINT},
       </if>
@@ -269,6 +284,7 @@
       exam_time = #{examTime,jdbcType=VARCHAR},
       exam_address = #{examAddress,jdbcType=VARCHAR},
       open_flag = #{openFlag,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
