@@ -42,11 +42,11 @@ AND t1.status=#{status}
   </update>
   
    <select id="courseListByStudentId" resultMap="BaseResultMap">
-    select t3.`name` AS teacherName,t2.period as period ,count(t4.id) as signPeriod, t1.* from t_course as t1 ,t_student_course as t2,  t_teacher as t3,t_course_sign as t4
-where t1.id = t2.course_id and    t1.teacher_id=t3.id and t4.student_Course_Id = t2.id
+    select t3.`name` AS teacherName,t2.period as signPeriod, t1.* from t_course as t1 ,t_student_course as t2,  t_teacher as t3
+where t1.id = t2.course_id and    t1.teacher_id=t3.id 
     <if test="studentId != null" >
 AND t2.student_id=#{studentId}
     </if>
-    order by t1.curriculumTime desc
+    order by t1.curriculum_time desc
   </select>
 </mapper>
