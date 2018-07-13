@@ -39,6 +39,7 @@
 				<th field="rank" width="50" editor="text">考试级别</th>
 				<th field="money" width="50" editor="text">考试费用</th>
 				<th field="examTime" width="50" editor="text">考试时间</th>
+				<th field="endTime" width="50" editor="text">报名结束时间</th>
 				<th field="examAddress" width="50" editor="text">考试地点</th>
 				<th field="openFlag" width="50" editor="text">是否开放报名</th>
 				<th field="status" width="50" editor="text">审核状态</th>
@@ -74,6 +75,10 @@
 			<tr>
 				<td>考试时间</td>
 				<td><input name="examTime" class="easyui-textbox" ></td>
+			</tr>
+			<tr>
+				<td>报名结束时间</td>
+				<td><input name="endTime" class="easyui-datebox"></td>
 			</tr>
 			<tr>
 				<td>考试地点</td>

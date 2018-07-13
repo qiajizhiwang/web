@@ -7,6 +7,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="teacher_id" property="teacherId" jdbcType="VARCHAR" />
     <result column="curriculum_time" property="curriculumTime" jdbcType="TIMESTAMP" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
     <result column="school_time" property="schoolTime" jdbcType="VARCHAR" />
     <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
     <result column="comment" property="comment" jdbcType="VARCHAR" />

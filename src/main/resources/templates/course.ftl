@@ -38,7 +38,7 @@
 				<th field="schoolName" width="50" editor="{type:'validatebox',options:{required:true}}">学校名称</th>
 				<th field="teacherName" width="50" editor="{type:'validatebox',options:{required:true}}">教师名称</th>
 				<th field="showCurriculumTime" width="50" editor="text">开课时间</th>
-				<th field="endTime" width="50" editor="text">结课时间</th>
+				<th field="showFinishTime" width="50" editor="text">结课时间</th>
 				<th field="period" width="50" editor="text">课时</th>
 				<th field="schoolTime" width="50" editor="text">上课时间</th>
 				<th data-options="field:'imageUrl',width:100, formatter:showImg">图片</th>

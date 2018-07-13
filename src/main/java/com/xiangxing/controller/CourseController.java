@@ -103,7 +103,8 @@ public class CourseController extends BaseController {
 			return;
 		}
 		course.setImageUrl(saveUrl + newFileName);
-//		course.setCurriculumTime(DateUtil.stringToDate(course.getShowCurriculumTime()));
+		course.setCurriculumTime(DateUtil.stringToDate(course.getShowCurriculumTime()));
+		course.setFinishTime(DateUtil.stringToDate(course.getShowFinishTime()));
 		courseMapper.insertSelective(course);
 		writeToOkResponse();
 	}
@@ -121,6 +122,7 @@ public class CourseController extends BaseController {
 		List<CourseEx> courseExs = courseMapperEx.courseList(name, searchrSchoolId, status);
 		for (CourseEx courseEx : courseExs) {
 			courseEx.setShowCurriculumTime(DateUtil.dateToString(courseEx.getCurriculumTime(), DateUtil.patternG));
+			courseEx.setShowFinishTime(DateUtil.dateToString(courseEx.getFinishTime(), DateUtil.patternG));
 			courseEx.setImageUrl(sys_url + "initImage?imageUrl=" + courseEx.getImageUrl());
 		}
 		long total = page.getTotal();
@@ -146,7 +148,7 @@ public class CourseController extends BaseController {
 
 	@RequestMapping("/editCourse")
 	public void editcourse(CourseEx course, Long id, MultipartFile file) {
-		if (null != file) {
+		if (!file.isEmpty()) {
 			// 定义允许上传的文件扩展名
 			HashMap<String, String> extMap = new HashMap<String, String>();
 			extMap.put("image", "gif,jpg,jpeg,png,bmp");
@@ -185,7 +187,8 @@ public class CourseController extends BaseController {
 			course.setImageUrl(saveUrl + newFileName);
 		}
 		course.setId(id);
-		course.setCurriculumTime(DateUtil.stringToDate(course.getShowCurriculumTime(),DateUtil.patternC));
+		course.setCurriculumTime(DateUtil.stringToDate(course.getShowCurriculumTime()));
+		course.setFinishTime(DateUtil.stringToDate(course.getShowFinishTime()));
 		courseMapper.updateByPrimaryKeySelective(course);
 		writeToOkResponse();
 	}
