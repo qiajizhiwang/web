@@ -11,9 +11,12 @@ spring:
 
     freemarker:
         request-context-attribute : request
+      
+logging.config:  classpath:log4j2.xml
 
 server:
     port : 80
+    tomcat.max-http-post-size : -1
 
 #文件上传路径
 #upload_file_path: d:/workspace/xiangxing/

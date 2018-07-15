@@ -6,14 +6,13 @@
                 <pattern>%d %p %C{1.} [%t] %m%n</pattern>  
             </PatternLayout>  
         </Console>  
-        <File name="File" fileName="/data/god/logs/god.log">  
+      <!--   <File name="File" fileName="/usr/local/xiangxing/xiangxing.log">  
             <PatternLayout>  
                 <pattern>%d %p %C{1.} [%t] %m%n</pattern>  
             </PatternLayout>  
-        </File>  
+        </File>   -->
     </Appenders>  
     <Loggers>  
-        <Logger name="cn.gocheck.god.mapper" level="TRACE" />  
         <Root level="info">  
             <AppenderRef ref="Console" />  
             <AppenderRef ref="File" />  

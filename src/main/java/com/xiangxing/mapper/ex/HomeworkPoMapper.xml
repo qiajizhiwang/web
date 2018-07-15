@@ -6,7 +6,7 @@
 
 	<select id="list" resultType="com.xiangxing.model.ex.HomeworkPo">
 		select t2.status as status,t2.id as id,t3.name as courseName ,t3.id as
-		courseid,t4.name as teacherName, t1.id as homeworkId,t1.*
+		courseid,t4.name as teacherName, t1.id as homeworkId,t1.create_time as publishDate,t1.*
 		from t_homework as
 		t1,t_student_homework as t2, t_course as t3, t_teacher
 		as t4
