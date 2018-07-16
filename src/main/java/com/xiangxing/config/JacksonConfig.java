@@ -1,5 +1,7 @@
 package com.xiangxing.config;
 
+import java.text.SimpleDateFormat;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,7 @@ public class JacksonConfig {
 		ObjectMapper objectMapper = builder.createXmlMapper(false).build();
 
 		objectMapper.setSerializationInclusion(Include.NON_NULL);
+		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 		return objectMapper;
 	}
 }
