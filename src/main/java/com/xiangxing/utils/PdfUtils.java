@@ -49,7 +49,7 @@ public class PdfUtils {
 			String html = loadFtlHtml(new File(templateBaseDir), templateFile, globalMap);
 			XMLWorkerHelper.getInstance().parseXHtml(mPdfWriter, document,
 					new ByteArrayInputStream(html.getBytes("UTF-8")), Charset.forName("UTF-8"),
-					new XMLWorkerFontProvider());
+					new ChinaFontProvide());
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

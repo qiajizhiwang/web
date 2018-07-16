@@ -123,10 +123,10 @@ public class EntryFormController extends BaseController {
 		String path = pdfPath + File.separator +"考生报名表"+ entryFormId + ".pdf";
 		File file = new File(path);
 		if (!file.exists()) {
-//			PdfUtils.createPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
-//					"apply.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
-			PdfUtils.createPdf(path, pdfPath+"templates/",
+			PdfUtils.createPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
 					"apply.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
+//			PdfUtils.createPdf(path, pdfPath+"templates/",
+//					"apply.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
 			file = new File(path);
 		}
 		response.addHeader("pragma", "NO-cache");
@@ -152,10 +152,10 @@ public class EntryFormController extends BaseController {
 		String path = pdfPath + File.separator +"准考证"+ entryFormId + ".pdf";
 		File file = new File(path);
 		if (!file.exists()) {
-//			PdfUtils.createMiniPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
-//					"exam.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
-			PdfUtils.createMiniPdf(path, pdfPath+"templates/",
+			PdfUtils.createMiniPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
 					"exam.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
+//			PdfUtils.createMiniPdf(path, pdfPath+"templates/",
+//					"exam.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
 			file = new File(path);
 		}
 		response.addHeader("pragma", "NO-cache");
