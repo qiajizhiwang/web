@@ -18,13 +18,6 @@ server:
     port : 80
     tomcat.max-http-post-size : -1
 
-#文件上传路径
-#upload_file_path: d:/workspace/xiangxing/
-upload_file_path: /data/xiangxing/uploadFile
-
-#系统地址
-sys_url: http://localhost:80/
-
 #支付宝
 #Alipay.APP_ID: 2018050960089142
 #Alipay.SERVER_URL: https://openapi.alipay.com/gateway.do
@@ -57,4 +50,13 @@ product_path:  /data/xiangxing/product/
 homework_path:  /data/xiangxing/homework/
 message_path:  /data/xiangxing/message/
 pdf_path:  /data/xiangxing/pdf/
+#pdf_path:  D:/pdf/
+
+#文件上传路径
+#upload_file_path: d:/workspace/xiangxing/
+upload_file_path: /data/xiangxing/uploadFile
+
+#系统地址
+#sys_url: http://localhost:80/
+sys_url: http://120.78.211.181:80/
 

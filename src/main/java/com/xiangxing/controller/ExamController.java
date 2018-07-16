@@ -35,8 +35,10 @@ import com.xiangxing.model.ExamExample.Criteria;
 import com.xiangxing.model.Subject;
 import com.xiangxing.model.SubjectExample;
 import com.xiangxing.model.User;
+import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.model.ex.ExamEx;
 import com.xiangxing.model.ex.ExamPo;
+import com.xiangxing.utils.DateUtil;
 import com.xiangxing.utils.HanyuPinyinHelper;
 import com.xiangxing.utils.PdfUtils;
 
@@ -55,7 +57,7 @@ public class ExamController extends BaseController {
 	}
 
 	@RequestMapping("/saveExam")
-	public void saveexam(Exam exam) {
+	public void saveexam(ExamEx exam) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		if (me.getType() == 1) {
 			exam.setSchoolId(me.getSchoolId());
@@ -63,6 +65,7 @@ public class ExamController extends BaseController {
 			JSONObject jsonObject = new JSONObject();
 			writeToErrorResponse(jsonObject);
 		}
+		exam.setEndTime(DateUtil.stringToDate(exam.getShowEndTime()));
 		examMapper.insertSelective(exam);
 		writeToOkResponse();
 	}
@@ -90,15 +93,28 @@ public class ExamController extends BaseController {
 		List<ExamEx> examExs = JSON.parseArray(JSON.toJSONString(exams), ExamEx.class);
 		for (ExamEx examEx : examExs) {
 			examEx.setSubjectName(maps.get(examEx.getSubjectId()));
+			examEx.setShowEndTime(DateUtil.dateToString(examEx.getEndTime(), DateUtil.patternA));
+			if (0==examEx.getOpenFlag()) {
+				examEx.setShowOpenFlag("开放");
+			}else {
+				examEx.setShowOpenFlag("关闭");
+			}
+			if (0==examEx.getStatus()) {
+				examEx.setShowStatus("待审核");
+			}else {
+				examEx.setShowStatus("已审核");
+			}
 		}
+		
 		long total = page.getTotal();
 		return new PageResponse<ExamEx>(total, examExs);
 
 	}
 
 	@RequestMapping("/editExam")
-	public void editexam(Exam exam, Long examId) {
+	public void editexam(ExamEx exam, Long examId) {
 		exam.setId(examId);
+		exam.setEndTime(DateUtil.stringToDate(exam.getShowEndTime()));
 		examMapper.updateByPrimaryKeySelective(exam);
 		writeToOkResponse();
 	}
@@ -110,67 +126,6 @@ public class ExamController extends BaseController {
 		record.setStatus(2l);
 		examMapper.updateByPrimaryKeySelective(record);
 		writeToOkResponse();
-	}
-
-	@Autowired
-	ExamPoMapper poMapper;
-
-	@Value(value = "${pdf_path}")
-	private String pdfPath;
-
-	@RequestMapping("/exportApplyTable")
-	public void exportApplyTable(Long examId, HttpServletResponse response) throws IOException {
-		ExamPo examPo = poMapper.get(examId);
-		examPo.setPinyin(HanyuPinyinHelper.toHanyuPinyin(examPo.getStudentName()));
-		String path = pdfPath + File.separator +"考生报名表"+ examId + ".pdf";
-		File file = new File(path);
-		if (!file.exists()) {
-			PdfUtils.createPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
-					"apply.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
-			file = new File(path);
-		}
-		response.addHeader("pragma", "NO-cache");
-		response.addHeader("Cache-Control", "no-cache");
-		response.addDateHeader("Expries", 0);
-		response.setContentType("application/pdf;charset=utf-8");
-		response.addHeader("Content-Disposition", "attachment;filename=table" + examId + ".pdf");
-		FileInputStream fileInputStream = new FileInputStream(file);
-		OutputStream out = response.getOutputStream();
-		int length = 0;
-		byte buffer[] = new byte[1024];
-		while ((length = fileInputStream.read(buffer)) != -1) {
-			out.write(buffer, 0, length);
-		}
-		fileInputStream.close();
-		out.flush();
-		out.close();
-	}
-	
-	@RequestMapping("/exportExamTicket")
-	public void exportExamTicket(Long examId, HttpServletResponse response) throws IOException {
-		ExamPo examPo = poMapper.get(examId);
-		String path = pdfPath + File.separator +"准考证"+ examId + ".pdf";
-		File file = new File(path);
-		if (!file.exists()) {
-			PdfUtils.createMiniPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
-					"exam.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
-			file = new File(path);
-		}
-		response.addHeader("pragma", "NO-cache");
-		response.addHeader("Cache-Control", "no-cache");
-		response.addDateHeader("Expries", 0);
-		response.setContentType("application/pdf;charset=utf-8");
-		response.addHeader("Content-Disposition", "attachment;filename=ticket" + examId + ".pdf");
-		FileInputStream fileInputStream = new FileInputStream(file);
-		OutputStream out = response.getOutputStream();
-		int length = 0;
-		byte buffer[] = new byte[1024];
-		while ((length = fileInputStream.read(buffer)) != -1) {
-			out.write(buffer, 0, length);
-		}
-		fileInputStream.close();
-		out.flush();
-		out.close();
 	}
 
 	@RequestMapping("/auditExam")

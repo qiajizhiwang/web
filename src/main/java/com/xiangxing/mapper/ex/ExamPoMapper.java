@@ -5,6 +5,6 @@ import org.apache.ibatis.annotations.Param;
 import com.xiangxing.model.ex.ExamPo;
 
 public interface ExamPoMapper {
-	ExamPo get(@Param("examId") Long examId);
+	ExamPo get(@Param("entryFormId") Long entryFormId);
 
 }

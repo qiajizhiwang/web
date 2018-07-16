@@ -30,18 +30,19 @@
 	
 		<thead>
 			<tr>
-				<th field="studentId" width="15" editor="{type:'validatebox',options:{required:true}}">学生id</th>
-				<th field="studentName" width="50" editor="{type:'validatebox',options:{required:true}}">学生姓名</th>
-				<th field="gender" width="20" editor="{type:'validatebox',options:{required:true}}">性别</th>
-				<th field="birthday" width="70" editor="{type:'validatebox',options:{required:true}}">出生日期</th>
-				<th field="nation" width="30" editor="{type:'validatebox',options:{required:true}}">民族</th>
-				<th field="state" width="30" editor="{type:'validatebox',options:{required:true}}">国家</th>
-				<th field="major" width="50" editor="{type:'validatebox',options:{required:true}}">专业</th>
-				<th field="subjectName" width="50" editor="{type:'validatebox',options:{required:true}}">科目</th>
-				<th field="rank" width="50" editor="text">考试级别</th>
-				<th field="entryTime" width="70" editor="text">报考时间</th>
-				<th field="payFlag" width="50" editor="text">缴费状态</th>
-				<th field="payTime" width="50" editor="text">缴费时间</th>
+				<th field="studentId" width="5%" editor="{type:'validatebox',options:{required:true}}">学生id</th>
+				<th field="studentName" width="5%" editor="{type:'validatebox',options:{required:true}}">学生姓名</th>
+				<th field="gender" width="5%" editor="{type:'validatebox',options:{required:true}}">性别</th>
+				<th field="birthday" width="10%" editor="{type:'validatebox',options:{required:true}}">出生日期</th>
+				<th field="nation" width="5%" editor="{type:'validatebox',options:{required:true}}">民族</th>
+				<th field="state" width="5%" editor="{type:'validatebox',options:{required:true}}">国家</th>
+				<th field="major" width="5%" editor="{type:'validatebox',options:{required:true}}">专业</th>
+				<th field="subjectName" width="5%" editor="{type:'validatebox',options:{required:true}}">科目</th>
+				<th field="rank" width="5%" editor="text">考试级别</th>
+				<th field="entryTime" width="10%" editor="text">报考时间</th>
+				<th field="payFlag" width="5%" editor="text">缴费状态</th>
+				<th field="payTime" width="10%" editor="text">缴费时间</th>
+				<th data-options="field:'_operate',width:'10%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
 	</table>
@@ -107,6 +108,35 @@
 		window.location.href="doExcle?examId="+$('#examId').val();
 	}
 
+	 $(document).ready(function(){  
+  $("#dg").datagrid({
+  
+       onLoadSuccess:function(data){  
+      $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
+      $('.myaudit').linkbutton({text:'审核',plain:true,iconCls:'icon-edit'});
+      $('.mydestroy').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});
+      $('.ExamTicket').linkbutton({text:'准考证',plain:true,iconCls:'icon-back'});
+      $('.ApplyTable').linkbutton({text:'报名表',plain:true,iconCls:'icon-back'});
+      }
+      
+  })
+  })
+  
+	function rowFormatter(value,row,index){  
+               return "<a class='ExamTicket' onclick='exportExamTicket("+index+")'>准考证</a>"
+               +"<a class='ApplyTable ' onclick='exportApplyTable("+index+")'>报名表</a>";  
+ 	}
+ 	
+function exportExamTicket(index){
+	 $('#dg').datagrid('selectRow',index);
+		var row = $('#dg').datagrid('getSelected');
+		window.location.href="exportExamTicket?entryFormId="+row.id;
+	}
+ 	function exportApplyTable(index){
+	 $('#dg').datagrid('selectRow',index);
+		var row = $('#dg').datagrid('getSelected');
+		window.location.href="exportApplyTable?entryFormId="+row.id;
+	}
 	
 </script>
 </html>

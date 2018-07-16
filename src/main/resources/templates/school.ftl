@@ -53,6 +53,7 @@
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newSchool()">新增</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="editSchool()">新增</a>
 	</div>
 	
 	<div id="dlg" class="easyui-dialog" style="width:1000px;height:600px;padding:10px 20px"

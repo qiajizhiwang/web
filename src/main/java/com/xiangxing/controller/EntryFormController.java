@@ -1,11 +1,18 @@
 package com.xiangxing.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,12 +25,15 @@ import com.xiangxing.controller.admin.PageRequest;
 import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.EntryFormMapper;
 import com.xiangxing.mapper.ex.EntryFormPoMapper;
+import com.xiangxing.mapper.ex.ExamPoMapper;
 import com.xiangxing.model.EntryForm;
 import com.xiangxing.model.User;
 import com.xiangxing.model.ex.EntryFormPo;
+import com.xiangxing.model.ex.ExamPo;
 import com.xiangxing.utils.DateUtil;
 import com.xiangxing.utils.ExcleUtil;
 import com.xiangxing.utils.HanyuPinyinHelper;
+import com.xiangxing.utils.PdfUtils;
 import com.xiangxing.utils.StringUtil;
 
 @Controller
@@ -94,11 +104,71 @@ public class EntryFormController extends BaseController {
 		String[] columnNames = { "考生姓名", "拼音", "性别", "出生日期", "民族", "国家", "专业", "级别" };
 		try {
 			ExcleUtil.doExcle(response, dataMaps, "学生检测报表", columnNames, valueKeys);
-			// 导出后清空session
-			request.getSession().removeAttribute("StudentDataExport");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Autowired
+	ExamPoMapper poMapper;
+
+	@Value(value = "${pdf_path}")
+	private String pdfPath;
+
+	
+	@RequestMapping("/exportApplyTable")
+	public void exportApplyTable(Long entryFormId, HttpServletResponse response) throws IOException {
+		ExamPo examPo = poMapper.get(entryFormId);
+		examPo.setPinyin(HanyuPinyinHelper.toHanyuPinyin(examPo.getStudentName()));
+		String path = pdfPath + File.separator +"考生报名表"+ entryFormId + ".pdf";
+		File file = new File(path);
+		if (!file.exists()) {
+			PdfUtils.createPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
+					"apply.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
+			file = new File(path);
+		}
+		response.addHeader("pragma", "NO-cache");
+		response.addHeader("Cache-Control", "no-cache");
+		response.addDateHeader("Expries", 0);
+		response.setContentType("application/pdf;charset=utf-8");
+		response.addHeader("Content-Disposition", "attachment;filename=table" + entryFormId + ".pdf");
+		FileInputStream fileInputStream = new FileInputStream(file);
+		OutputStream out = response.getOutputStream();
+		int length = 0;
+		byte buffer[] = new byte[1024];
+		while ((length = fileInputStream.read(buffer)) != -1) {
+			out.write(buffer, 0, length);
+		}
+		fileInputStream.close();
+		out.flush();
+		out.close();
+	}
+	
+	@RequestMapping("/exportExamTicket")
+	public void exportExamTicket(Long entryFormId, HttpServletResponse response) throws IOException {
+		ExamPo examPo = poMapper.get(entryFormId);
+		String path = pdfPath + File.separator +"准考证"+ entryFormId + ".pdf";
+		File file = new File(path);
+		if (!file.exists()) {
+			PdfUtils.createMiniPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
+					"exam.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
+			file = new File(path);
+		}
+		response.addHeader("pragma", "NO-cache");
+		response.addHeader("Cache-Control", "no-cache");
+		response.addDateHeader("Expries", 0);
+		response.setContentType("application/pdf;charset=utf-8");
+		response.addHeader("Content-Disposition", "attachment;filename=ticket" + entryFormId + ".pdf");
+		FileInputStream fileInputStream = new FileInputStream(file);
+		OutputStream out = response.getOutputStream();
+		int length = 0;
+		byte buffer[] = new byte[1024];
+		while ((length = fileInputStream.read(buffer)) != -1) {
+			out.write(buffer, 0, length);
+		}
+		fileInputStream.close();
+		out.flush();
+		out.close();
 	}
 
 }

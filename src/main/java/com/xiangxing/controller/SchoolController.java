@@ -115,6 +115,7 @@ public class SchoolController extends BaseController {
 	@RequestMapping("/editSchoolCode")
 	public void editSchoolCode(String code) {
 		request.getSession().setAttribute("schoolCode", code);
+		writeToOkResponse();
 
 	}
 

@@ -39,10 +39,10 @@
 				<th field="rank" width="50" editor="text">考试级别</th>
 				<th field="money" width="50" editor="text">考试费用</th>
 				<th field="examTime" width="50" editor="text">考试时间</th>
-				<th field="endTime" width="50" editor="text">报名结束时间</th>
+				<th field="showEndTime" width="50" editor="text">报名结束时间</th>
 				<th field="examAddress" width="50" editor="text">考试地点</th>
-				<th field="openFlag" width="50" editor="text">是否开放报名</th>
-				<th field="status" width="50" editor="text">审核状态</th>
+				<th field="showOpenFlag" width="50" editor="text">是否开放报名</th>
+				<th field="showStatus" width="50" editor="text">审核状态</th>
 				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
@@ -78,7 +78,7 @@
 			</tr>
 			<tr>
 				<td>报名结束时间</td>
-				<td><input name="endTime" class="easyui-datebox"></td>
+				<td><input name="showEndTime" class="easyui-datebox"></td>
 			</tr>
 			<tr>
 				<td>考试地点</td>
@@ -86,7 +86,10 @@
 			</tr>
 			<tr>
 				<td>是否开放报名</td>
-				<td><input name="openFlag" class="easyui-textbox" ></td>
+				<td>
+                   <input type="radio" name="openFlag" value="0"/>开放
+                   <input type="radio" name="openFlag" value="1"/>关闭
+                </td>
 			</tr>
 			</table>
 		</form>
@@ -113,7 +116,7 @@
 	function editExam(){
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
-			$('#dlg').dialog('open').dialog('setTitle','Edit User');
+			$('#dlg').dialog('open').dialog('setTitle','编辑');
 			$('#fm').form('load',row);
 			url = 'editExam?examId='+row.id;
 		}
@@ -205,7 +208,10 @@
   })
   
 	function rowFormatter(value,row,index){  
-               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a><a class='myaudit' onclick='auditRow("+index+")'>审核</a><a class='mydestroy' onclick='destroyRow("+index+")'>删除</a>";  
+               return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>"
+               +"<a class='myaudit' onclick='auditRow("+index+")'>审核</a>"
+               +"<a class='mydestroy' onclick='destroyRow("+index+")'>删除</a>";  
  	}
+ 	
 </script>
 </html>

@@ -121,8 +121,8 @@ public class CourseController extends BaseController {
 		}
 		List<CourseEx> courseExs = courseMapperEx.courseList(name, searchrSchoolId, status);
 		for (CourseEx courseEx : courseExs) {
-			courseEx.setShowCurriculumTime(DateUtil.dateToString(courseEx.getCurriculumTime(), DateUtil.patternG));
-			courseEx.setShowFinishTime(DateUtil.dateToString(courseEx.getFinishTime(), DateUtil.patternG));
+			courseEx.setShowCurriculumTime(DateUtil.dateToString(courseEx.getCurriculumTime(), DateUtil.patternA));
+			courseEx.setShowFinishTime(DateUtil.dateToString(courseEx.getFinishTime(), DateUtil.patternA));
 			courseEx.setImageUrl(sys_url + "initImage?imageUrl=" + courseEx.getImageUrl());
 		}
 		long total = page.getTotal();

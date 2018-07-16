@@ -13,8 +13,8 @@
 
 		where t1.exam_id = t2.id and t1.student_id = t4.id and t3.id =
 		t2.subject_id and t5.id = t2.school_id
-		<if test="examId != null">
-			AND t1.id =#{examId}
+		<if test="entryFormId != null">
+			AND t1.id =#{entryFormId}
 		</if>
 	</select>
 
