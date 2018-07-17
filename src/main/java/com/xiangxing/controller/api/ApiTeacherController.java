@@ -41,9 +41,11 @@ import com.xiangxing.mapper.ProductMapper;
 import com.xiangxing.mapper.StudentCourseMapper;
 import com.xiangxing.mapper.StudentHomeworkMapper;
 import com.xiangxing.mapper.TeacherMapper;
+import com.xiangxing.mapper.ex.CourseMapperEx;
 import com.xiangxing.mapper.ex.CourseSignPoMapper;
 import com.xiangxing.mapper.ex.HomeworkPoMapper;
 import com.xiangxing.mapper.ex.MessageQueuePoMapper;
+import com.xiangxing.mapper.ex.ProductPoMapper;
 import com.xiangxing.mapper.ex.TeacherPoMapper;
 import com.xiangxing.model.Course;
 import com.xiangxing.model.CourseExample;
@@ -60,6 +62,7 @@ import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentCourse;
 import com.xiangxing.model.StudentCourseExample;
 import com.xiangxing.model.StudentHomework;
+import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.model.ex.CourseSignPo;
 import com.xiangxing.model.ex.HomeworkPo;
 import com.xiangxing.model.ex.MessageQueuePo;
@@ -512,6 +515,48 @@ public class ApiTeacherController {
 		}
 		messageMapper.insert(message);
 		return new ApiResponse();
+
+	}
+
+	@RequestMapping("/homeworks")
+	public ApiResponse homeworks(PageRequest pageRequest, Long studentId) {
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+
+		List<HomeworkPo> homeworks = homeworkPoMapper.list(studentId, null, null);
+		long total = page.getTotal();
+		return new ApiPageResponse<HomeworkPo>(total, homeworks);
+
+	}
+
+	@Autowired
+	CourseMapperEx courseMapperEx;
+
+	@RequestMapping("/courses")
+	public ApiResponse myCourses(PageRequest pageRequest, HttpServletRequest httpServletRequest, Long studentId) {
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+
+		List<CourseEx> courses = courseMapperEx.courseListByStudentId(studentId);
+		for (CourseEx course : courses) {
+			course.setImageUrl(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + course.getImageUrl());
+		}
+		long total = page.getTotal();
+		return new ApiPageResponse<CourseEx>(total, courses);
+
+	}
+
+	@Autowired
+	ProductPoMapper productPoMapper;
+
+	@RequestMapping("/products")
+	public ApiResponse myProducts(PageRequest pageRequest, HttpServletRequest httpServletRequest, Long studentId) {
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+
+		List<ProductPo> products = productPoMapper.getListByStudentId(studentId);
+		for (ProductPo product : products) {
+			product.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + product.getPath());
+		}
+		long total = page.getTotal();
+		return new ApiPageResponse<ProductPo>(total, products);
 
 	}
 
