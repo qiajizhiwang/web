@@ -154,7 +154,7 @@ public class ApiTeacherController {
 	public ApiPageResponse<Student> myStudents(TeacherRequest teacherRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(teacherRequest.getPage(), teacherRequest.getRows(), true);
-		List<Student> students = teacherPoMapper.myStudents(info.getId(), teacherRequest.getCourseId());
+		List<Student> students = teacherPoMapper.myStudents(info.getId(), teacherRequest.getCourseId(),teacherRequest.getName());
 		long total = page.getTotal();
 		return new ApiPageResponse<Student>(total, students);
 

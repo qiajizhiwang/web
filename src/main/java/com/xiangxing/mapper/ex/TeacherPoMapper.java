@@ -9,7 +9,7 @@ import com.xiangxing.model.ex.ProductPo;
 
 public interface TeacherPoMapper {
 
-	List<Student> myStudents(@Param("teacherId") long teacherId, @Param("courseId") Long courseId);
+	List<Student> myStudents(@Param("teacherId") long teacherId, @Param("courseId") Long courseId, @Param("name") String name);
 
 	List<ProductPo> studentProducts(@Param("teacherId") long teacherId, @Param("courseId") Long courseId, @Param("studentId") Long studentId);
 

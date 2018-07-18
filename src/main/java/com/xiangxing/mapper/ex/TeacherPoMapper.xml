@@ -12,6 +12,9 @@ WHERE c.teacher_id=#{teacherId}
 <if test="courseId != null and courseId !=0" >
 AND course_id=#{courseId}
 </if>
+<if test="name != null and courseId !=0" >
+AND s.`name` like CONCAT('%',#{name},'%')
+</if>
   </select>
 
   <select id="studentProducts" resultType="com.xiangxing.model.ex.ProductPo">
