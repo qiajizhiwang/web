@@ -35,6 +35,7 @@ import com.xiangxing.mapper.StudentHomeworkMapper;
 import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.TeacherMapper;
 import com.xiangxing.mapper.ex.CourseMapperEx;
+import com.xiangxing.mapper.ex.CourseSignPoMapper;
 import com.xiangxing.mapper.ex.EntryFormPoMapper;
 import com.xiangxing.mapper.ex.HomeworkPoMapper;
 import com.xiangxing.mapper.ex.MessageQueuePoMapper;
@@ -50,13 +51,16 @@ import com.xiangxing.model.School;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentHomework;
 import com.xiangxing.model.ex.CourseEx;
+import com.xiangxing.model.ex.CourseSignPo;
 import com.xiangxing.model.ex.EntryFormPo;
 import com.xiangxing.model.ex.HomeworkPo;
 import com.xiangxing.model.ex.MessageQueuePo;
 import com.xiangxing.model.ex.NoticePo;
 import com.xiangxing.model.ex.ProductPo;
+import com.xiangxing.utils.DateUtil;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
+import com.xiangxing.vo.api.CourseSignResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.SchoolResponse;
 import com.xiangxing.vo.api.StudentVo;
@@ -92,6 +96,30 @@ public class ApiStudentController {
 	@Autowired
 	private EntryFormPoMapper entryFormPoMapper;
 
+	@Autowired
+	private CourseSignPoMapper courseSignPoMapper;
+	
+	/**
+	 * 获取学生签到信息
+	 * 
+	 * @param courseId
+	 * @param students
+	 * @return
+	 */
+	@RequestMapping("/getCourseSignInfo")
+	public ApiResponse getCourseSignInfo(Long courseId, Long singTime) {
+		LoginInfo info = TokenManager.getNowUser();
+		Date singDate = null;
+		if (null != singTime && 0 != singTime) {
+			singDate = DateUtil.stringToDate(DateUtil.dateToString(new Date(singTime), DateUtil.patternA));
+		}
+		List<CourseSignPo> courseSignPos = courseSignPoMapper.getCourseSignInfo(courseId, info.getId(), singDate);
+		CourseSignResponse courseSignResponse = new CourseSignResponse();
+		courseSignResponse.setCourseSignPos(courseSignPos);
+		return courseSignResponse;
+
+	}
+	
 	@RequestMapping("/myCourses")
 	public ApiResponse myCourses(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
