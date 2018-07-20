@@ -305,9 +305,9 @@ public class ApiTeacherController {
 		long total = page.getTotal();
 
 		// 过滤字段
-		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(HomeworkPo.class, "id", "name", "courseName");
+//		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(HomeworkPo.class, "id", "name", "courseName");
 		return new ApiPageResponse<HomeworkPo>(total,
-				JSON.parseArray(JSONObject.toJSONString(homeworkPos, filter), HomeworkPo.class));
+				JSON.parseArray(JSONObject.toJSONString(homeworkPos), HomeworkPo.class));
 	}
 	//
 	// /**

@@ -3,7 +3,7 @@ package com.xiangxing.model.ex;
 import java.util.Date;
 
 public class HomeworkPo {
-	
+
 	private Long id;
 
 	private String name;
@@ -21,6 +21,36 @@ public class HomeworkPo {
 	private Date publishDate;
 
 	private String teacherName;
+
+	private int studentNumber;
+
+	private int undoneNumber;
+
+	private int unreviewedNumber;
+
+	public int getStudentNumber() {
+		return studentNumber;
+	}
+
+	public void setStudentNumber(int studentNumber) {
+		this.studentNumber = studentNumber;
+	}
+
+	public int getUndoneNumber() {
+		return undoneNumber;
+	}
+
+	public void setUndoneNumber(int undoneNumber) {
+		this.undoneNumber = undoneNumber;
+	}
+
+	public int getUnreviewedNumber() {
+		return unreviewedNumber;
+	}
+
+	public void setUnreviewedNumber(int unreviewedNumber) {
+		this.unreviewedNumber = unreviewedNumber;
+	}
 
 	public String getName() {
 		return name;
