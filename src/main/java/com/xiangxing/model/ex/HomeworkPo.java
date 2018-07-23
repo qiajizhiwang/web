@@ -28,6 +28,8 @@ public class HomeworkPo {
 
 	private int unreviewedNumber;
 
+	private String path;
+
 	public int getStudentNumber() {
 		return studentNumber;
 	}
@@ -122,6 +124,14 @@ public class HomeworkPo {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }

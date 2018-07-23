@@ -210,6 +210,7 @@ public class ApiTeacherController {
 			product.setHeight(srcHeight);
 			product.setWidth(srcWidth);
 			product.setPath(path);
+			product.setCreateTime(new Date());
 			productMapper.insert(product);
 		} catch (IOException e) {
 			e.printStackTrace();

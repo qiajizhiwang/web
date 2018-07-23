@@ -20,9 +20,9 @@ AND t2.course_Id=#{courseId}
   </select>
   
    <select id="getListByStudentId" resultType="com.xiangxing.model.ex.ProductPo">
-  select t1.*
-   from t_product as t1,t_student_course as t2 
-where t1.student_course_id = t2.id 
+  select t3.name  as studentName,t3.id as studentId,t4.id as courseId ,t4.name as courseName, t1.create_time as createTime,t1.*
+   from t_product as t1,t_student_course as t2,t_student as t3,t_course as t4 
+where t1.student_course_id = t2.id and t2.course_id = t4.id and t2.student_id = t3.id
     <if test="studentId != null" >
 AND t2.`student_Id` =#{studentId}
     </if>
