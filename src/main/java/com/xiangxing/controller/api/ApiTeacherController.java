@@ -154,7 +154,8 @@ public class ApiTeacherController {
 	public ApiPageResponse<Student> myStudents(TeacherRequest teacherRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(teacherRequest.getPage(), teacherRequest.getRows(), true);
-		List<Student> students = teacherPoMapper.myStudents(info.getId(), teacherRequest.getCourseId(),teacherRequest.getName());
+		List<Student> students = teacherPoMapper.myStudents(info.getId(), teacherRequest.getCourseId(),
+				teacherRequest.getName());
 		long total = page.getTotal();
 		return new ApiPageResponse<Student>(total, students);
 
@@ -178,6 +179,20 @@ public class ApiTeacherController {
 		}
 		long total = page.getTotal();
 		return new ApiPageResponse<ProductPo>(total, productPos);
+
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param teacherRequest
+	 * @return
+	 */
+	@RequestMapping("/delProduct")
+	public ApiResponse delProduct(Long id) {
+		LoginInfo info = TokenManager.getNowUser();
+		productMapper.deleteByPrimaryKey(id);
+		return new ApiResponse();
 
 	}
 
@@ -306,7 +321,9 @@ public class ApiTeacherController {
 		long total = page.getTotal();
 
 		// 过滤字段
-//		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(HomeworkPo.class, "id", "name", "courseName");
+		// SimplePropertyPreFilter filter = new
+		// SimplePropertyPreFilter(HomeworkPo.class, "id", "name",
+		// "courseName");
 		return new ApiPageResponse<HomeworkPo>(total,
 				JSON.parseArray(JSONObject.toJSONString(homeworkPos), HomeworkPo.class));
 	}

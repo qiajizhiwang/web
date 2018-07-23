@@ -18,7 +18,7 @@ AND s.`name` like CONCAT('%',#{name},'%')
   </select>
 
   <select id="studentProducts" resultType="com.xiangxing.model.ex.ProductPo">
-  SELECT p.id,p.`name`,p.create_time,p.path,s.`name` AS studentName FROM t_course c
+  SELECT p.id,p.`name`,p.create_time as createTime,p.path,s.`name` AS studentName,p.height as height,p.width as width FROM t_course c
 JOIN t_student_course sc ON c.id=sc.course_id
 JOIN t_student s ON sc.student_id=s.id
 JOIN t_product p ON sc.id=p.student_course_id

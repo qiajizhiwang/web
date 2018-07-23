@@ -1,5 +1,7 @@
 package com.xiangxing.vo.api;
 
+import java.util.List;
+
 public class SchoolResponse extends ApiResponse {
 
 	private Long id;
@@ -13,6 +15,8 @@ public class SchoolResponse extends ApiResponse {
 	private String linkman;
 
 	private String comment;
+	
+	private List<String> paths;
 
 	public Long getId() {
 		return id;
@@ -60,6 +64,14 @@ public class SchoolResponse extends ApiResponse {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public List<String> getPaths() {
+		return paths;
+	}
+
+	public void setPaths(List<String> paths) {
+		this.paths = paths;
 	}
 	
 	

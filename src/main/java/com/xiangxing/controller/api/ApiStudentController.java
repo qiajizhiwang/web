@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +31,7 @@ import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.MessageMapper;
 import com.xiangxing.mapper.MessageQueueMapper;
 import com.xiangxing.mapper.NoticeDetailMapper;
+import com.xiangxing.mapper.SchoolImageMapper;
 import com.xiangxing.mapper.SchoolMapper;
 import com.xiangxing.mapper.StudentHomeworkMapper;
 import com.xiangxing.mapper.StudentMapper;
@@ -41,13 +43,14 @@ import com.xiangxing.mapper.ex.HomeworkPoMapper;
 import com.xiangxing.mapper.ex.MessageQueuePoMapper;
 import com.xiangxing.mapper.ex.NoticePoMapper;
 import com.xiangxing.mapper.ex.ProductPoMapper;
-import com.xiangxing.model.Course;
 import com.xiangxing.model.Message;
 import com.xiangxing.model.MessageExample;
 import com.xiangxing.model.MessageQueue;
 import com.xiangxing.model.MessageQueueExample;
 import com.xiangxing.model.NoticeDetail;
 import com.xiangxing.model.School;
+import com.xiangxing.model.SchoolImage;
+import com.xiangxing.model.SchoolImageExample;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentHomework;
 import com.xiangxing.model.ex.CourseEx;
@@ -98,7 +101,7 @@ public class ApiStudentController {
 
 	@Autowired
 	private CourseSignPoMapper courseSignPoMapper;
-	
+
 	/**
 	 * 获取学生签到信息
 	 * 
@@ -119,7 +122,7 @@ public class ApiStudentController {
 		return courseSignResponse;
 
 	}
-	
+
 	@RequestMapping("/myCourses")
 	public ApiResponse myCourses(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
@@ -151,14 +154,26 @@ public class ApiStudentController {
 	@Autowired
 	SchoolMapper schoolMapper;
 
+	@Autowired
+	SchoolImageMapper schoolImageMapper;
+
 	@RequestMapping("/mySchool")
-	public ApiResponse mySchool() {
+	public ApiResponse mySchool(HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 
 		School school = schoolMapper.selectByPrimaryKey(studentMapper.selectByPrimaryKey(info.getId()).getSchoolId());
 		SchoolResponse response = new SchoolResponse();
 		try {
 			BeanUtils.copyProperties(response, school);
+			SchoolImageExample schoolImageExample = new SchoolImageExample();
+			schoolImageExample.createCriteria().andSchoolIdEqualTo(response.getId());
+			schoolImageExample.setOrderByClause("sort");
+			List<SchoolImage> list = schoolImageMapper.selectByExample(schoolImageExample);
+			List<String> paths = new ArrayList<>();
+			for (SchoolImage schoolImage : list) {
+				paths.add(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + schoolImage.getPath());
+			}
+			response.setPaths(paths);
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -183,7 +198,8 @@ public class ApiStudentController {
 	}
 
 	@RequestMapping("/myHomeworks")
-	public ApiResponse myHomeworks(PageRequest pageRequest, Long courseId, Integer status, HttpServletRequest httpServletRequest) {
+	public ApiResponse myHomeworks(PageRequest pageRequest, Long courseId, Integer status,
+			HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
@@ -356,6 +372,7 @@ public class ApiStudentController {
 
 	/**
 	 * 获取学生报名信息
+	 * 
 	 * @param pageRequest
 	 * @return
 	 */
@@ -370,15 +387,15 @@ public class ApiStudentController {
 		return new ApiPageResponse<EntryFormPo>(total, entryFormPos);
 
 	}
-	
+
 	@Autowired
 	MessageQueuePoMapper messageQueuePoMapper;
-	
+
 	@RequestMapping("/getQueues")
 	public ApiPageResponse<MessageQueuePo> getQueues(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
-		List<MessageQueuePo> messages = messageQueuePoMapper.list(null,info.getId());
+		List<MessageQueuePo> messages = messageQueuePoMapper.list(null, info.getId());
 		long total = page.getTotal();
 		return new ApiPageResponse<MessageQueuePo>(total, messages);
 	}
