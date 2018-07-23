@@ -98,8 +98,7 @@ public class StudentController extends BaseController {
 		if (StringUtil.isNotEmpty(student.getPassword())) {
 			student.setPassword(MD5Util.MD5Encode(student.getPassword()));
 		}
-		student.setPassword(MD5Util.MD5Encode(student.getPassword()));
-		studentMapper.updateByPrimaryKeySelective(student);
+		studentMapper.updateByPrimaryKey(student);
 		return new ApiResponse();
 	}
 
