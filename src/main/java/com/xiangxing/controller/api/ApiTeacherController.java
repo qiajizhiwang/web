@@ -292,12 +292,14 @@ public class ApiTeacherController {
 	 * @return
 	 */
 	@RequestMapping("/getStudentHomework")
-	public ApiResponse getStudentHomework(PageRequest pageRequest, Long homeworkId) {
+	public ApiResponse getStudentHomework(PageRequest pageRequest, Long homeworkId,HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
 		List<StudentHomeworkPo> studentHomeworkPos = homeworkPoMapper.getStudentHomework(homeworkId);
-
+		for (StudentHomeworkPo homeworkPo : studentHomeworkPos) {
+			homeworkPo.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getPath());
+		}
 		long total = page.getTotal();
 
 		return new ApiPageResponse<StudentHomeworkPo>(total, studentHomeworkPos);
