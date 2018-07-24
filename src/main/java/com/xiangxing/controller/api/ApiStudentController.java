@@ -43,6 +43,7 @@ import com.xiangxing.mapper.ex.HomeworkPoMapper;
 import com.xiangxing.mapper.ex.MessageQueuePoMapper;
 import com.xiangxing.mapper.ex.NoticePoMapper;
 import com.xiangxing.mapper.ex.ProductPoMapper;
+import com.xiangxing.mapper.ex.StudentPoMapper;
 import com.xiangxing.model.Message;
 import com.xiangxing.model.MessageExample;
 import com.xiangxing.model.MessageQueue;
@@ -60,6 +61,7 @@ import com.xiangxing.model.ex.HomeworkPo;
 import com.xiangxing.model.ex.MessageQueuePo;
 import com.xiangxing.model.ex.NoticePo;
 import com.xiangxing.model.ex.ProductPo;
+import com.xiangxing.model.ex.StudentPo;
 import com.xiangxing.utils.DateUtil;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
@@ -156,6 +158,8 @@ public class ApiStudentController {
 
 	@Autowired
 	SchoolImageMapper schoolImageMapper;
+	@Autowired
+	private StudentPoMapper studentPoMapper;
 
 	@RequestMapping("/mySchool")
 	public ApiResponse mySchool(HttpServletRequest httpServletRequest) {
@@ -186,9 +190,12 @@ public class ApiStudentController {
 	public ApiResponse myInfo() {
 		LoginInfo info = TokenManager.getNowUser();
 		Student student = studentMapper.selectByPrimaryKey(info.getId());
+		
+		List<StudentPo> students = studentPoMapper.list(null, null,info.getId());
+		
 		StudentVo s = new StudentVo();
 		try {
-			BeanUtils.copyProperties(s, student);
+			BeanUtils.copyProperties(s, students.get(0));
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

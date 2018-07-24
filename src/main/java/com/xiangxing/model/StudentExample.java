@@ -855,6 +855,76 @@ public class StudentExample {
             return (Criteria) this;
         }
 
+        public Criteria andClassGradeIsNull() {
+            addCriterion("class_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeIsNotNull() {
+            addCriterion("class_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeEqualTo(String value) {
+            addCriterion("class_grade =", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeNotEqualTo(String value) {
+            addCriterion("class_grade <>", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeGreaterThan(String value) {
+            addCriterion("class_grade >", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeGreaterThanOrEqualTo(String value) {
+            addCriterion("class_grade >=", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeLessThan(String value) {
+            addCriterion("class_grade <", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeLessThanOrEqualTo(String value) {
+            addCriterion("class_grade <=", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeLike(String value) {
+            addCriterion("class_grade like", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeNotLike(String value) {
+            addCriterion("class_grade not like", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeIn(List<String> values) {
+            addCriterion("class_grade in", values, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeNotIn(List<String> values) {
+            addCriterion("class_grade not in", values, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeBetween(String value1, String value2) {
+            addCriterion("class_grade between", value1, value2, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeNotBetween(String value1, String value2) {
+            addCriterion("class_grade not between", value1, value2, "classGrade");
+            return (Criteria) this;
+        }
+
         public Criteria andHouseAddressIsNull() {
             addCriterion("house_address is null");
             return (Criteria) this;

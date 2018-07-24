@@ -8,6 +8,6 @@ import com.xiangxing.model.ex.StudentPo;
 
 public interface StudentPoMapper {
 
-	List<StudentPo> list(@Param("name")String name, @Param("schoolId")Long schoolId);
+	List<StudentPo> list(@Param("name")String name, @Param("schoolId")Long schoolId, @Param("studentId")Long studentId);
 
 }

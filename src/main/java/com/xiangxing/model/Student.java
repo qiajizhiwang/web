@@ -2,14 +2,11 @@ package com.xiangxing.model;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Student {
     private Long id;
 
     private String phone;
 
-    @JsonIgnore
     private String password;
 
     private String name;
@@ -27,6 +24,8 @@ public class Student {
     private String major;
 
     private String grade;
+
+    private String classGrade;
 
     private String houseAddress;
 
@@ -124,6 +123,14 @@ public class Student {
 
     public void setGrade(String grade) {
         this.grade = grade;
+    }
+
+    public String getClassGrade() {
+        return classGrade;
+    }
+
+    public void setClassGrade(String classGrade) {
+        this.classGrade = classGrade;
     }
 
     public String getHouseAddress() {
