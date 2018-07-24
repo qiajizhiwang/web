@@ -189,6 +189,7 @@ public class ApiStudentController {
 		StudentVo s = new StudentVo();
 		try {
 			BeanUtils.copyProperties(s, student);
+			s.setSchoolName(schoolMapper.selectByPrimaryKey(s.getSchoolId()).getName());
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

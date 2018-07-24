@@ -31,6 +31,8 @@ public class StudentVo extends ApiResponse {
 	private String idCard;
 
 	private Long schoolId;
+	
+	private String schoolName;
 
 	public Long getId() {
 		return id;
@@ -142,5 +144,13 @@ public class StudentVo extends ApiResponse {
 
 	public void setSchoolId(Long schoolId) {
 		this.schoolId = schoolId;
+	}
+
+	public String getSchoolName() {
+		return schoolName;
+	}
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
 }
