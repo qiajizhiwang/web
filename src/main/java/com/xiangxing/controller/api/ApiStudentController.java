@@ -189,13 +189,15 @@ public class ApiStudentController {
 	@RequestMapping("/myInfo")
 	public ApiResponse myInfo() {
 		LoginInfo info = TokenManager.getNowUser();
-		Student student = studentMapper.selectByPrimaryKey(info.getId());
+//		Student student = studentMapper.selectByPrimaryKey(info.getId());
 		
 		List<StudentPo> students = studentPoMapper.list(null, null,info.getId());
 		
 		StudentVo s = new StudentVo();
 		try {
 			BeanUtils.copyProperties(s, students.get(0));
+//			BeanUtils.copyProperties(s, student);
+//			s.setSchoolName(schoolMapper.selectByPrimaryKey(s.getSchoolId()).getName());
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

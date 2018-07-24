@@ -32,7 +32,7 @@ public class StudentVo extends ApiResponse {
 	private String idCard;
 
 	private Long schoolId;
-
+	
 	private String schoolName;
 
 	public String getClassGrade() {
@@ -41,14 +41,6 @@ public class StudentVo extends ApiResponse {
 
 	public void setClassGrade(String classGrade) {
 		this.classGrade = classGrade;
-	}
-
-	public String getSchoolName() {
-		return schoolName;
-	}
-
-	public void setSchoolName(String schoolName) {
-		this.schoolName = schoolName;
 	}
 
 	public Long getId() {
@@ -161,5 +153,13 @@ public class StudentVo extends ApiResponse {
 
 	public void setSchoolId(Long schoolId) {
 		this.schoolId = schoolId;
+	}
+
+	public String getSchoolName() {
+		return schoolName;
+	}
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
 }
