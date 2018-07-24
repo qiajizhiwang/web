@@ -23,6 +23,7 @@ public class StudentVo extends ApiResponse {
 	private String major;
 
 	private String grade;
+	private String classGrade;
 
 	private String houseAddress;
 
@@ -33,6 +34,14 @@ public class StudentVo extends ApiResponse {
 	private Long schoolId;
 	
 	private String schoolName;
+
+	public String getClassGrade() {
+		return classGrade;
+	}
+
+	public void setClassGrade(String classGrade) {
+		this.classGrade = classGrade;
+	}
 
 	public Long getId() {
 		return id;

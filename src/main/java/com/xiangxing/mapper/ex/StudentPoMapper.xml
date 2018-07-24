@@ -2,9 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xiangxing.mapper.ex.StudentPoMapper" >
   
+  <resultMap id="BaseResultMap" type="com.xiangxing.model.ex.StudentPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="nation" property="nation" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="VARCHAR" />
+    <result column="class_grade" property="classGrade" jdbcType="VARCHAR" />
+    <result column="house_address" property="houseAddress" jdbcType="VARCHAR" />
+    <result column="home_telephone" property="homeTelephone" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+  </resultMap>
  
   
-  <select id="list" resultType="com.xiangxing.model.ex.StudentPo">
+  <select id="list" resultMap="BaseResultMap">
   select t2.name  as schoolName,t2.id as schoolId, t1.*
    from t_student as t1,t_school as t2
 where t1.school_id = t2.id
@@ -13,6 +32,9 @@ AND t1.`name` LIKE CONCAT('%',#{name},'%')
     </if>
     <if test="schoolId != null" >
 AND t1.school_id=#{schoolId}
+    </if>
+    <if test="studentId != null" >
+AND t1.id=#{studentId}
     </if>
   </select>
  

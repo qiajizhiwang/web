@@ -13,6 +13,7 @@
     <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
     <result column="major" property="major" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="VARCHAR" />
+    <result column="class_grade" property="classGrade" jdbcType="VARCHAR" />
     <result column="house_address" property="houseAddress" jdbcType="VARCHAR" />
     <result column="home_telephone" property="homeTelephone" jdbcType="VARCHAR" />
     <result column="id_card" property="idCard" jdbcType="VARCHAR" />
@@ -78,8 +79,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, phone, password, name, icon, gender, nation, state, birthday, major, grade, house_address, 
-    home_telephone, id_card, status, school_id
+    id, phone, password, name, icon, gender, nation, state, birthday, major, grade, class_grade, 
+    house_address, home_telephone, id_card, status, school_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.StudentExample" >
     select
@@ -115,15 +116,15 @@
     insert into t_student (id, phone, password, 
       name, icon, gender, 
       nation, state, birthday, 
-      major, grade, house_address, 
-      home_telephone, id_card, status, 
-      school_id)
+      major, grade, class_grade, 
+      house_address, home_telephone, id_card, 
+      status, school_id)
     values (#{id,jdbcType=BIGINT}, #{phone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
       #{nation,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
-      #{major,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{houseAddress,jdbcType=VARCHAR}, 
-      #{homeTelephone,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{schoolId,jdbcType=BIGINT})
+      #{major,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{classGrade,jdbcType=VARCHAR}, 
+      #{houseAddress,jdbcType=VARCHAR}, #{homeTelephone,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{schoolId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Student" >
     insert into t_student
@@ -160,6 +161,9 @@
       </if>
       <if test="grade != null" >
         grade,
+      </if>
+      <if test="classGrade != null" >
+        class_grade,
       </if>
       <if test="houseAddress != null" >
         house_address,
@@ -210,6 +214,9 @@
       </if>
       <if test="grade != null" >
         #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="classGrade != null" >
+        #{classGrade,jdbcType=VARCHAR},
       </if>
       <if test="houseAddress != null" >
         #{houseAddress,jdbcType=VARCHAR},
@@ -270,6 +277,9 @@
       <if test="record.grade != null" >
         grade = #{record.grade,jdbcType=VARCHAR},
       </if>
+      <if test="record.classGrade != null" >
+        class_grade = #{record.classGrade,jdbcType=VARCHAR},
+      </if>
       <if test="record.houseAddress != null" >
         house_address = #{record.houseAddress,jdbcType=VARCHAR},
       </if>
@@ -303,6 +313,7 @@
       birthday = #{record.birthday,jdbcType=TIMESTAMP},
       major = #{record.major,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=VARCHAR},
+      class_grade = #{record.classGrade,jdbcType=VARCHAR},
       house_address = #{record.houseAddress,jdbcType=VARCHAR},
       home_telephone = #{record.homeTelephone,jdbcType=VARCHAR},
       id_card = #{record.idCard,jdbcType=VARCHAR},
@@ -345,6 +356,9 @@
       <if test="grade != null" >
         grade = #{grade,jdbcType=VARCHAR},
       </if>
+      <if test="classGrade != null" >
+        class_grade = #{classGrade,jdbcType=VARCHAR},
+      </if>
       <if test="houseAddress != null" >
         house_address = #{houseAddress,jdbcType=VARCHAR},
       </if>
@@ -375,6 +389,7 @@
       birthday = #{birthday,jdbcType=TIMESTAMP},
       major = #{major,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=VARCHAR},
+      class_grade = #{classGrade,jdbcType=VARCHAR},
       house_address = #{houseAddress,jdbcType=VARCHAR},
       home_telephone = #{homeTelephone,jdbcType=VARCHAR},
       id_card = #{idCard,jdbcType=VARCHAR},

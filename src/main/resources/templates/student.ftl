@@ -36,11 +36,13 @@
 				<th field="id" width="50" editor="{type:'validatebox',options:{required:true}}">学生ID</th>
 				<th field="phone" width="50" editor="{type:'validatebox',options:{required:true}}">手机号</th>
 				<th field="name" width="50" editor="text">姓名</th>
+				<th field="showBirthday" width="70" editor="text">生日</th>
 				<th field="gender" width="50" editor="text">性别</th>
 				<th field="nation" width="50" editor="text">民族</th>
 				<th field="state" width="50" editor="text">国家</th>
 				<th field="major" width="50" editor="text">专业</th>
-				<th field="grade" width="50" editor="text">级别</th>
+				<th field="grade" width="50" editor="text">年级</th>
+				<th field="classGrade" width="50" editor="text">班级</th>
 				<th field="houseAddress" width="50" editor="text">家庭地址</th>
 				<th field="homeTelephone" width="50" editor="text">父母电话</th>
 				<th field="idCard" width="50" editor="text">身份证号码</th>
@@ -80,6 +82,10 @@
 				<td><input name="name" class="easyui-textbox"></td>
 			</tr>
 			<tr>
+				<td>生日</td>
+				<td><input name="showBirthday" class="easyui-datebox"></td>
+			</tr
+			<tr>
 				<td>性别</td>
 				<td><input name="gender" class="easyui-textbox"></td>
 			</tr>
@@ -96,8 +102,12 @@
 				<td><input name="major" class="easyui-textbox"></td>
 			</tr>
 			<tr>
-				<td>级别</td>
+				<td>年级</td>
 				<td><input name="grade" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td>班级</td>
+				<td><input name="classGrade" class="easyui-textbox"></td>
 			</tr>
 			<tr>
 				<td>家庭地址</td>
