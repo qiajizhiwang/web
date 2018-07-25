@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,13 @@ import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.EntryFormMapper;
 import com.xiangxing.mapper.ExamMapper;
 import com.xiangxing.mapper.OrderMapper;
+import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.model.EntryForm;
 import com.xiangxing.model.Exam;
 import com.xiangxing.model.Order;
 import com.xiangxing.model.OrderExample;
+import com.xiangxing.model.Student;
+import com.xiangxing.model.ex.EntryFormPo;
 import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.PayResponse;
@@ -57,6 +61,9 @@ public class WeChatPayController extends BaseController {
 	private ExamMapper examMapper;
 
 	@Autowired
+	private StudentMapper studentMapper;
+
+	@Autowired
 	private OrderMapper orderMapper;
 
 	/**
@@ -67,8 +74,8 @@ public class WeChatPayController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/tradeCreate")
-	public ApiResponse tradeCreate() throws Exception {
-		String entryFormId = request.getParameter("entryFormId");
+	public ApiResponse tradeCreate(EntryFormPo entryFormPo) throws Exception {
+		Long entryFormId = entryFormPo.getEntryFormId();
 		LoginInfo info = TokenManager.getNowUser();
 		Long studentId = info.getId();
 
@@ -115,6 +122,17 @@ public class WeChatPayController extends BaseController {
 			order.setCreateTime(date);
 			order.setUpdateTime(date);
 			orderMapper.insertSelective(order);
+
+			// 修改学生信息
+			Student updateStudent = new Student();
+			updateStudent.setId(studentId);
+			updateStudent.setName(entryFormPo.getStudentName());
+			updateStudent.setPinyin(entryFormPo.getPinyin());
+			updateStudent.setGender(entryFormPo.getGender());
+			updateStudent.setBirthday(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(entryFormPo.getBirthday()));
+			updateStudent.setState(entryFormPo.getState());
+			updateStudent.setMajor(entryFormPo.getMajor());
+			studentMapper.updateByPrimaryKeySelective(updateStudent);
 
 			PayResponse payResponse = new PayResponse();
 			payResponse.setOrderInfo(resp.toString());

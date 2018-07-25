@@ -11,6 +11,8 @@ public class Student {
 
     private String name;
 
+    private String pinyin;
+
     private String icon;
 
     private String gender;
@@ -67,6 +69,14 @@ public class Student {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPinyin() {
+        return pinyin;
+    }
+
+    public void setPinyin(String pinyin) {
+        this.pinyin = pinyin;
     }
 
     public String getIcon() {

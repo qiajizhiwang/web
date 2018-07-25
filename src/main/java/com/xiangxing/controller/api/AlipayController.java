@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +33,13 @@ import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.EntryFormMapper;
 import com.xiangxing.mapper.ExamMapper;
 import com.xiangxing.mapper.OrderMapper;
+import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.model.EntryForm;
 import com.xiangxing.model.Exam;
 import com.xiangxing.model.Order;
 import com.xiangxing.model.OrderExample;
+import com.xiangxing.model.Student;
+import com.xiangxing.model.ex.EntryFormPo;
 import com.xiangxing.utils.StringUtil;
 import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.LoginInfo;
@@ -75,6 +80,9 @@ public class AlipayController extends BaseController {
 	@Autowired
 	private OrderMapper orderMapper;
 
+	@Autowired
+	private StudentMapper studentMapper;
+
 	private AlipayClient alipayClient;
 
 	/**
@@ -85,13 +93,13 @@ public class AlipayController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/tradeCreate")
-	public ApiResponse tradeCreate() throws Exception {
-		String entryFormId = request.getParameter("entryFormId");
+	public ApiResponse tradeCreate(EntryFormPo entryFormPo) throws Exception {
+		Long entryFormId = entryFormPo.getEntryFormId();
 		LoginInfo info = TokenManager.getNowUser();
 		Long studentId = info.getId();
 
 		// 确认报名信息
-		EntryForm entryForm = entryFormMapper.selectByPrimaryKey(Long.valueOf(entryFormId));
+		EntryForm entryForm = entryFormMapper.selectByPrimaryKey(entryFormId);
 		if (null == entryForm || entryForm.getStudentId() != studentId) {
 			// "不存在！");
 			return ApiResponse.getErrorResponse("生成支付订单失败，报名信息有误！");
@@ -105,8 +113,7 @@ public class AlipayController extends BaseController {
 
 		// 实例化客户端
 		if (null == alipayClient) {
-			alipayClient = new DefaultAlipayClient(SERVER_URL, APP_ID, APP_PRIVATE_KEY, "json", CHARSET,
-					ALIPAY_PUBLIC_KEY, "RSA2");
+			alipayClient = new DefaultAlipayClient(SERVER_URL, APP_ID, APP_PRIVATE_KEY, "json", CHARSET, ALIPAY_PUBLIC_KEY, "RSA2");
 		}
 		try {
 
@@ -123,7 +130,8 @@ public class AlipayController extends BaseController {
 			request.setNotifyUrl("http://120.78.211.181:80/api/alipay/alipayNotify");
 			// 这里和普通的接口调用不同，使用的是sdkExecute
 			AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
-			System.out.println(response.getBody());// 就是orderString 可以直接给客户端请求，无需再做处理。
+			System.out.println(response.getBody());// 就是orderString
+													// 可以直接给客户端请求，无需再做处理。
 
 			// 生成订单信息
 			Order order = new Order();
@@ -135,6 +143,19 @@ public class AlipayController extends BaseController {
 			order.setCreateTime(date);
 			order.setUpdateTime(date);
 			orderMapper.insertSelective(order);
+
+			// 修改学生信息
+			Student updateStudent = new Student();
+			updateStudent.setId(studentId);
+			updateStudent.setName(entryFormPo.getStudentName());
+			updateStudent.setPinyin(entryFormPo.getPinyin());
+			updateStudent.setGender(entryFormPo.getGender());
+			if (StringUtil.isNotEmpty(entryFormPo.getBirthday())) {
+				updateStudent.setBirthday(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(entryFormPo.getBirthday()));
+			}
+			updateStudent.setState(entryFormPo.getState());
+			updateStudent.setMajor(entryFormPo.getMajor());
+			studentMapper.updateByPrimaryKeySelective(updateStudent);
 
 			PayResponse payResponse = new PayResponse();
 			payResponse.setOrderInfo(response.getBody());
@@ -159,8 +180,7 @@ public class AlipayController extends BaseController {
 		String tradeNo = request.getParameter("tradeNo");
 		// 实例化客户端
 		if (null == alipayClient) {
-			alipayClient = new DefaultAlipayClient(SERVER_URL, APP_ID, APP_PRIVATE_KEY, "json", CHARSET,
-					ALIPAY_PUBLIC_KEY, "RSA2"); // 获得初始化的AlipayClient
+			alipayClient = new DefaultAlipayClient(SERVER_URL, APP_ID, APP_PRIVATE_KEY, "json", CHARSET, ALIPAY_PUBLIC_KEY, "RSA2"); // 获得初始化的AlipayClient
 		}
 		AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();// 创建API对应的request类
 		// request.setBizContent("{" +
@@ -181,8 +201,7 @@ public class AlipayController extends BaseController {
 		try {
 			JSONObject bodyJsonObject = JSON.parseObject(response.getBody());
 			JSONObject tradeJsonObject = JSON.parseObject(bodyJsonObject.getString("alipay_trade_query_response"));
-			if ("TRADE_FINISHED".equals(tradeJsonObject.getString("trade_status"))
-					|| "TRADE_SUCCESS".equals(tradeJsonObject.getString("trade_status"))) {
+			if ("TRADE_FINISHED".equals(tradeJsonObject.getString("trade_status")) || "TRADE_SUCCESS".equals(tradeJsonObject.getString("trade_status"))) {
 				OrderExample example = new OrderExample();
 				example.createCriteria().andOrderNoEqualTo(tradeJsonObject.getString("out_trade_no"));
 				List<Order> orders = orderMapper.selectByExample(example);
@@ -236,8 +255,7 @@ public class AlipayController extends BaseController {
 			logger.info("签名验证" + flag);
 
 			if (flag) {
-				if ("TRADE_FINISHED".equals(params.get("trade_status"))
-						|| "TRADE_SUCCESS".equals(params.get("trade_status"))) {
+				if ("TRADE_FINISHED".equals(params.get("trade_status")) || "TRADE_SUCCESS".equals(params.get("trade_status"))) {
 					logger.info("购买成功更新订单！");
 					OrderExample example = new OrderExample();
 					example.createCriteria().andOrderNoEqualTo(params.get("out_trade_no"));

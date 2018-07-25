@@ -375,6 +375,76 @@ public class StudentExample {
             return (Criteria) this;
         }
 
+        public Criteria andPinyinIsNull() {
+            addCriterion("pinyin is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinIsNotNull() {
+            addCriterion("pinyin is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinEqualTo(String value) {
+            addCriterion("pinyin =", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinNotEqualTo(String value) {
+            addCriterion("pinyin <>", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinGreaterThan(String value) {
+            addCriterion("pinyin >", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinGreaterThanOrEqualTo(String value) {
+            addCriterion("pinyin >=", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinLessThan(String value) {
+            addCriterion("pinyin <", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinLessThanOrEqualTo(String value) {
+            addCriterion("pinyin <=", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinLike(String value) {
+            addCriterion("pinyin like", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinNotLike(String value) {
+            addCriterion("pinyin not like", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinIn(List<String> values) {
+            addCriterion("pinyin in", values, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinNotIn(List<String> values) {
+            addCriterion("pinyin not in", values, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinBetween(String value1, String value2) {
+            addCriterion("pinyin between", value1, value2, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinNotBetween(String value1, String value2) {
+            addCriterion("pinyin not between", value1, value2, "pinyin");
+            return (Criteria) this;
+        }
+
         public Criteria andIconIsNull() {
             addCriterion("icon is null");
             return (Criteria) this;
