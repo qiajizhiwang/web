@@ -26,6 +26,7 @@ where t1.student_course_id = t2.id and t2.course_id = t4.id and t2.student_id = 
     <if test="studentId != null" >
 AND t2.`student_Id` =#{studentId}
     </if>
+    order by create_time desc
   </select>
  
 </mapper>
