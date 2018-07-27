@@ -215,6 +215,8 @@ public class ApiStudentController {
 		List<HomeworkPo> homeworks = homeworkPoMapper.list(info.getId(), courseId, status);
 		for (HomeworkPo homeworkPo : homeworks) {
 			homeworkPo.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getPath());
+			homeworkPo.setJobPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getJobPath());
+
 		}
 		long total = page.getTotal();
 		return new ApiPageResponse<HomeworkPo>(total, homeworks);

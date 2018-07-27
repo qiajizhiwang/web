@@ -29,6 +29,8 @@ public class HomeworkPo {
 	private int unreviewedNumber;
 
 	private String path;
+	
+	private String jobPath;
 
 	public int getStudentNumber() {
 		return studentNumber;
@@ -132,6 +134,14 @@ public class HomeworkPo {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getJobPath() {
+		return jobPath;
+	}
+
+	public void setJobPath(String jobPath) {
+		this.jobPath = jobPath;
 	}
 
 }

@@ -7,6 +7,7 @@
     <result column="course_id" property="courseId" jdbcType="BIGINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, course_id, create_time, memo
+    id, name, course_id, create_time, memo, path
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.HomeworkExample" >
     select
@@ -104,9 +105,9 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_homework (name, course_id, create_time, 
-      memo)
+      memo, path)
     values (#{name,jdbcType=VARCHAR}, #{courseId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{memo,jdbcType=VARCHAR})
+      #{memo,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Homework" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -126,6 +127,9 @@
       <if test="memo != null" >
         memo,
       </if>
+      <if test="path != null" >
+        path,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="name != null" >
@@ -139,6 +143,9 @@
       </if>
       <if test="memo != null" >
         #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -166,6 +173,9 @@
       <if test="record.memo != null" >
         memo = #{record.memo,jdbcType=VARCHAR},
       </if>
+      <if test="record.path != null" >
+        path = #{record.path,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -177,7 +187,8 @@
       name = #{record.name,jdbcType=VARCHAR},
       course_id = #{record.courseId,jdbcType=BIGINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      memo = #{record.memo,jdbcType=VARCHAR}
+      memo = #{record.memo,jdbcType=VARCHAR},
+      path = #{record.path,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -197,6 +208,9 @@
       <if test="memo != null" >
         memo = #{memo,jdbcType=VARCHAR},
       </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -205,7 +219,8 @@
     set name = #{name,jdbcType=VARCHAR},
       course_id = #{courseId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      memo = #{memo,jdbcType=VARCHAR}
+      memo = #{memo,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
