@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.LogManager;
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.wxpay.sdk.MyConfig;
 import com.github.wxpay.sdk.WXPay;
+import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.interceptor.TokenManager;
@@ -111,7 +114,19 @@ public class WeChatPayController extends BaseController {
 		try {
 			Map<String, String> resp = wxpay.unifiedOrder(data);
 			System.out.println(resp);
-
+			System.out.println(WXPayUtil.isSignatureValid(resp, appId, WXPayConstants.SignType.HMACSHA256));
+			Map<String, String> payMap = new HashMap<>();
+			payMap.put("appid", appId);
+			payMap.put("partnerid", mchID);
+			payMap.put("prepayid", resp.get("prepay_id"));
+			payMap.put("package", "Sign=WXPay");
+			UUID uuid = UUID.randomUUID();
+			payMap.put("noncestr", uuid.toString().replace("-", ""));
+			long timeStampSec = System.currentTimeMillis()/1000;
+	        String timestamp = String.format("%010d", timeStampSec);
+			payMap.put("timestamp",timestamp);
+			payMap.put("sign", WXPayUtil.generateSignature(payMap, key));
+			
 			// 生成订单信息
 			Order order = new Order();
 			order.setOrderNo(orderNo);
@@ -135,8 +150,11 @@ public class WeChatPayController extends BaseController {
 			updateStudent.setMajor(entryFormPo.getMajor());
 			studentMapper.updateByPrimaryKeySelective(updateStudent);
 
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("WxResultMap", resp);
+			jsonObject.put("payMap", payMap);
 			PayResponse payResponse = new PayResponse();
-			payResponse.setOrderInfo(JSON.parseObject(JSON.toJSONString(resp)));
+			payResponse.setOrderInfo(jsonObject);
 			return payResponse;
 		} catch (Exception e) {
 			return ApiResponse.getErrorResponse("生成支付订单失败，系统异常！");
