@@ -2,13 +2,13 @@ package com.xiangxing.vo.api;
 
 public class PayResponse extends ApiResponse {
 
-	private String orderInfo;
+	private Object orderInfo;
 
-	public String getOrderInfo() {
+	public Object getOrderInfo() {
 		return orderInfo;
 	}
 
-	public void setOrderInfo(String orderInfo) {
+	public void setOrderInfo(Object orderInfo) {
 		this.orderInfo = orderInfo;
 	}
 

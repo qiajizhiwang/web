@@ -136,7 +136,7 @@ public class WeChatPayController extends BaseController {
 			studentMapper.updateByPrimaryKeySelective(updateStudent);
 
 			PayResponse payResponse = new PayResponse();
-			payResponse.setOrderInfo(JSON.toJSONString(resp));
+			payResponse.setOrderInfo(JSON.parseObject(JSON.toJSONString(resp)));
 			return payResponse;
 		} catch (Exception e) {
 			return ApiResponse.getErrorResponse("生成支付订单失败，系统异常！");
