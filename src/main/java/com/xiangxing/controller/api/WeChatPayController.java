@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.github.wxpay.sdk.MyConfig;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayUtil;
@@ -135,7 +136,7 @@ public class WeChatPayController extends BaseController {
 			studentMapper.updateByPrimaryKeySelective(updateStudent);
 
 			PayResponse payResponse = new PayResponse();
-			payResponse.setOrderInfo(resp.toString());
+			payResponse.setOrderInfo(JSON.toJSONString(resp));
 			return payResponse;
 		} catch (Exception e) {
 			return ApiResponse.getErrorResponse("生成支付订单失败，系统异常！");
