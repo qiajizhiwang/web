@@ -8,7 +8,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +19,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.wxpay.sdk.MyConfig;
 import com.github.wxpay.sdk.WXPay;
+import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.EntryFormMapper;
 import com.xiangxing.mapper.ExamMapper;
 import com.xiangxing.mapper.OrderMapper;
+import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.model.EntryForm;
 import com.xiangxing.model.Exam;
 import com.xiangxing.model.Order;
 import com.xiangxing.model.OrderExample;
+import com.xiangxing.model.Student;
+import com.xiangxing.model.ex.EntryFormPo;
 import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.PayResponse;
@@ -57,6 +65,9 @@ public class WeChatPayController extends BaseController {
 	private ExamMapper examMapper;
 
 	@Autowired
+	private StudentMapper studentMapper;
+
+	@Autowired
 	private OrderMapper orderMapper;
 
 	/**
@@ -67,8 +78,8 @@ public class WeChatPayController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/tradeCreate")
-	public ApiResponse tradeCreate() throws Exception {
-		String entryFormId = request.getParameter("entryFormId");
+	public ApiResponse tradeCreate(EntryFormPo entryFormPo) throws Exception {
+		Long entryFormId = entryFormPo.getEntryFormId();
 		LoginInfo info = TokenManager.getNowUser();
 		Long studentId = info.getId();
 
@@ -103,7 +114,19 @@ public class WeChatPayController extends BaseController {
 		try {
 			Map<String, String> resp = wxpay.unifiedOrder(data);
 			System.out.println(resp);
-
+			System.out.println(WXPayUtil.isSignatureValid(resp, appId, WXPayConstants.SignType.HMACSHA256));
+			Map<String, String> payMap = new HashMap<>();
+			payMap.put("appid", appId);
+			payMap.put("partnerid", mchID);
+			payMap.put("prepayid", resp.get("prepay_id"));
+			payMap.put("package", "Sign=WXPay");
+			UUID uuid = UUID.randomUUID();
+			payMap.put("noncestr", uuid.toString().replace("-", ""));
+			long timeStampSec = System.currentTimeMillis()/1000;
+	        String timestamp = String.format("%010d", timeStampSec);
+			payMap.put("timestamp",timestamp);
+			payMap.put("sign", WXPayUtil.generateSignature(payMap, key));
+			
 			// 生成订单信息
 			Order order = new Order();
 			order.setOrderNo(orderNo);
@@ -116,10 +139,25 @@ public class WeChatPayController extends BaseController {
 			order.setUpdateTime(date);
 			orderMapper.insertSelective(order);
 
+			// 修改学生信息
+			Student updateStudent = new Student();
+			updateStudent.setId(studentId);
+			updateStudent.setName(entryFormPo.getStudentName());
+			updateStudent.setPinyin(entryFormPo.getPinyin());
+			updateStudent.setGender(entryFormPo.getGender());
+			updateStudent.setBirthday(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(entryFormPo.getBirthday()));
+			updateStudent.setState(entryFormPo.getState());
+			updateStudent.setMajor(entryFormPo.getMajor());
+			studentMapper.updateByPrimaryKeySelective(updateStudent);
+
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("WxResultMap", resp);
+			jsonObject.put("payMap", payMap);
 			PayResponse payResponse = new PayResponse();
-			payResponse.setOrderInfo(resp.toString());
+			payResponse.setOrderInfo(jsonObject);
 			return payResponse;
 		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
 			return ApiResponse.getErrorResponse("生成支付订单失败，系统异常！");
 		}
 

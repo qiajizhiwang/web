@@ -13,6 +13,8 @@ public class Homework {
 
     private String memo;
 
+    private String path;
+
     public Long getId() {
         return id;
     }
@@ -51,5 +53,13 @@ public class Homework {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

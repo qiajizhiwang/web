@@ -40,8 +40,8 @@
 				<th field="courseName" width="50" editor="text">课程</th>
 				<th field="studentName" width="50" editor="text">学生</th>
 				<th data-options="field:'path',width:100, formatter:showImg">图片</th>
-				<th field="createTime" width="50" editor="text">上传时间</th>
-			<!--	<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th> -->
+				<th field="createTime" width="50" >上传时间</th>
+				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
 	</table>
@@ -65,6 +65,7 @@
   
        onLoadSuccess:function(data){  
       $('.myedit').linkbutton({text:'查看作品',plain:true,iconCls:'icon-tip'});
+      $('.mydestroy').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});
       }
       
   })
@@ -79,49 +80,8 @@
 	
 	
 	
-	function destroyStudent(){
-		var row = $('#dg').datagrid('getSelected');
-		if (row){
-			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
-				if (r){
-					$.post('destroyStudent',{studentId:row.id},function(result){
-						if (result.code==10000){
-							$('#dg').datagrid('reload');	// reload the user data
-						} else {
-							$.messager.show({	// show error message
-								title: 'Error',
-								msg: result.errorMsg
-							});
-						}
-					},'json');
-				}
-			});
-		}
-	}
-	
-	function saveUser(){
-		$('#fm').form('submit',{
-			url: url,
-			onSubmit: function(){
-				return $(this).form('validate');
-			},
-			success: function(result){
-				var result = eval('('+result+')');
-				if (result.errorMsg){
-					$.messager.show({
-						title: 'Error',
-						msg: result.errorMsg
-					});
-				} else {
-					$('#dlg').dialog('close');		// close the dialog
-					$('#dg').datagrid('reload');	// reload the user data
-				}
-			}
-		});
-	}
-	
 	function rowFormatter(value,row,index){  
-               return "<a  class='myedit' onclick='showImage("+index+")' href='javascript:void(0)' >展示作品</a>";  
+               return "<a  class='mydestroy' onclick='destroyRow("+index+")' href='javascript:void(0)' >删除</a>";  
  } 
  
  
@@ -130,6 +90,28 @@
      return "停用"
  else if (value == 1 )   return "启用"
  } 
+  
+  
+  function destroyRow(index){
+		$('#dg').datagrid('selectRow',index);
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
+					if (r){
+						$.post('product/destroyProduct',{productId:row.id},function(result){
+							if (result.code==10000){
+								$('#dg').datagrid('reload');	// reload the user data
+							} else {
+								$.messager.show({	// show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
  
 function showImg(value, row, index){  
 	    if(row.path){  

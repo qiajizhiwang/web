@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.BaseController;
@@ -58,6 +59,12 @@ public class SchoolController extends BaseController {
 
 	@RequestMapping("/saveSchool")
 	public void saveSchool(School school) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		if (me.getType() == 1) {
+			logger.info("权限不足！");
+			writeToErrorResponse(new JSONObject());
+			return;
+		}
 		schoolService.addSchool(school);
 		writeToOkResponse();
 	}

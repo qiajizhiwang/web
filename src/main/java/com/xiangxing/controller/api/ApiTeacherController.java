@@ -86,6 +86,9 @@ public class ApiTeacherController {
 	@Value(value = "${message_path}")
 	private String messagePath;
 
+	@Value(value = "${homework_path}")
+	private String homeworkPath;
+
 	@Autowired
 	HomeworkMapper homeworkMapper;
 
@@ -214,12 +217,13 @@ public class ApiTeacherController {
 		product.setStudentCourseId(studentCourseId);
 		byte[] imageByte = Base64Utils.decodeFromString(productVo.getBase64Image());
 		BufferedImage image;
+		FileOutputStream fileOutputStream = null;
 		try {
 			String dir = imagePath + File.separator + studentCourseId;
 			if (!new File(dir).exists())
 				new File(dir).mkdirs();
 			String path = dir + File.separator + UUID.randomUUID().toString() + ".jpg";
-			FileOutputStream fileOutputStream = new FileOutputStream(path);
+			fileOutputStream = new FileOutputStream(path);
 			image = ImageIO.read(new ByteArrayInputStream(imageByte));
 			ImageIO.write(image, "jpg", fileOutputStream);
 			int srcWidth = image.getWidth(); // 源图宽度
@@ -231,6 +235,13 @@ public class ApiTeacherController {
 			productMapper.insert(product);
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				fileOutputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		return new ApiResponse();
@@ -238,11 +249,35 @@ public class ApiTeacherController {
 	}
 
 	@RequestMapping("/publishHomework")
-	public ApiResponse publishHomework(String name, long courseId, String studentIds) {
+	public ApiResponse publishHomework(String name, long courseId, String studentIds, String base64Image) {
 		if (StringUtils.isEmpty(studentIds))
 			return new ApiResponse();
 		LoginInfo info = TokenManager.getNowUser();
 		Homework homework = new Homework();
+		FileOutputStream fileOutputStream = null;
+		byte[] imageByte = Base64Utils.decodeFromString(base64Image);
+		BufferedImage image;
+		try {
+			String dir = homeworkPath + File.separator + "job" + File.separator + courseId;
+			if (!new File(dir).exists())
+				new File(dir).mkdirs();
+			String path = dir + File.separator + UUID.randomUUID().toString() + ".jpg";
+			fileOutputStream = new FileOutputStream(path);
+			image = ImageIO.read(new ByteArrayInputStream(imageByte));
+			ImageIO.write(image, "jpg", fileOutputStream);
+			homework.setPath(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				fileOutputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		homework.setCourseId(courseId);
 		homework.setCreateTime(new Date());
 		homework.setName(name);
@@ -294,7 +329,8 @@ public class ApiTeacherController {
 	 * @return
 	 */
 	@RequestMapping("/getStudentHomework")
-	public ApiResponse getStudentHomework(PageRequest pageRequest, Long homeworkId,HttpServletRequest httpServletRequest) {
+	public ApiResponse getStudentHomework(PageRequest pageRequest, Long homeworkId,
+			HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
@@ -315,7 +351,7 @@ public class ApiTeacherController {
 	 * @return
 	 */
 	@RequestMapping("/getHomework")
-	public ApiResponse getHomework(PageRequest pageRequest) {
+	public ApiResponse getHomework(PageRequest pageRequest,HttpServletRequest httpServletRequest) {
 
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
@@ -323,7 +359,11 @@ public class ApiTeacherController {
 		List<HomeworkPo> homeworkPos = homeworkPoMapper.getTeacherHomeWork(info.getId());
 
 		long total = page.getTotal();
+		for (HomeworkPo homeworkPo : homeworkPos) {
+			homeworkPo.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getPath());
+			homeworkPo.setJobPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getJobPath());
 
+		}
 		// 过滤字段
 		// SimplePropertyPreFilter filter = new
 		// SimplePropertyPreFilter(HomeworkPo.class, "id", "name",

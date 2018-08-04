@@ -375,6 +375,76 @@ public class StudentExample {
             return (Criteria) this;
         }
 
+        public Criteria andPinyinIsNull() {
+            addCriterion("pinyin is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinIsNotNull() {
+            addCriterion("pinyin is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinEqualTo(String value) {
+            addCriterion("pinyin =", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinNotEqualTo(String value) {
+            addCriterion("pinyin <>", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinGreaterThan(String value) {
+            addCriterion("pinyin >", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinGreaterThanOrEqualTo(String value) {
+            addCriterion("pinyin >=", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinLessThan(String value) {
+            addCriterion("pinyin <", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinLessThanOrEqualTo(String value) {
+            addCriterion("pinyin <=", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinLike(String value) {
+            addCriterion("pinyin like", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinNotLike(String value) {
+            addCriterion("pinyin not like", value, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinIn(List<String> values) {
+            addCriterion("pinyin in", values, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinNotIn(List<String> values) {
+            addCriterion("pinyin not in", values, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinBetween(String value1, String value2) {
+            addCriterion("pinyin between", value1, value2, "pinyin");
+            return (Criteria) this;
+        }
+
+        public Criteria andPinyinNotBetween(String value1, String value2) {
+            addCriterion("pinyin not between", value1, value2, "pinyin");
+            return (Criteria) this;
+        }
+
         public Criteria andIconIsNull() {
             addCriterion("icon is null");
             return (Criteria) this;
@@ -852,6 +922,76 @@ public class StudentExample {
 
         public Criteria andGradeNotBetween(String value1, String value2) {
             addCriterion("grade not between", value1, value2, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeIsNull() {
+            addCriterion("class_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeIsNotNull() {
+            addCriterion("class_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeEqualTo(String value) {
+            addCriterion("class_grade =", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeNotEqualTo(String value) {
+            addCriterion("class_grade <>", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeGreaterThan(String value) {
+            addCriterion("class_grade >", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeGreaterThanOrEqualTo(String value) {
+            addCriterion("class_grade >=", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeLessThan(String value) {
+            addCriterion("class_grade <", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeLessThanOrEqualTo(String value) {
+            addCriterion("class_grade <=", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeLike(String value) {
+            addCriterion("class_grade like", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeNotLike(String value) {
+            addCriterion("class_grade not like", value, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeIn(List<String> values) {
+            addCriterion("class_grade in", values, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeNotIn(List<String> values) {
+            addCriterion("class_grade not in", values, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeBetween(String value1, String value2) {
+            addCriterion("class_grade between", value1, value2, "classGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassGradeNotBetween(String value1, String value2) {
+            addCriterion("class_grade not between", value1, value2, "classGrade");
             return (Criteria) this;
         }
 

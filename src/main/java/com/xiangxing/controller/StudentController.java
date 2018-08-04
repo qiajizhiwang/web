@@ -27,6 +27,7 @@ import com.xiangxing.model.StudentCourse;
 import com.xiangxing.model.User;
 import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.model.ex.StudentPo;
+import com.xiangxing.utils.DateUtil;
 import com.xiangxing.utils.MD5Util;
 import com.xiangxing.utils.StringUtil;
 import com.xiangxing.vo.api.ApiResponse;
@@ -62,8 +63,9 @@ public class StudentController extends BaseController {
 
 	@RequestMapping("/saveStudent")
 	@ResponseBody
-	public ApiResponse savestudent(Student student) {
+	public ApiResponse savestudent(StudentPo student) {
 		student.setPassword(MD5Util.MD5Encode(student.getPassword()));
+		student.setBirthday(DateUtil.stringToDate(student.getShowBirthday()));
 		studentMapper.insertSelective(student);
 		return new ApiResponse();
 	}
@@ -74,7 +76,10 @@ public class StudentController extends BaseController {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
-		List<StudentPo> students = studentPoMapper.list(name, me.getSchoolId());
+		List<StudentPo> students = studentPoMapper.list(name, me.getSchoolId(),null);
+		for (StudentPo studentPo : students) {
+			studentPo.setShowBirthday(DateUtil.dateToString(studentPo.getBirthday(), DateUtil.patternA));
+		}
 		long total = page.getTotal();
 		return new PageResponse<StudentPo>(total, students);
 
@@ -93,11 +98,12 @@ public class StudentController extends BaseController {
 
 	@RequestMapping("/editStudent")
 	@ResponseBody
-	public ApiResponse editstudent(Student student, Long studentId) {
+	public ApiResponse editstudent(StudentPo student, Long studentId) {
 		student.setId(studentId);
 		if (StringUtil.isNotEmpty(student.getPassword())) {
 			student.setPassword(MD5Util.MD5Encode(student.getPassword()));
 		}
+		student.setBirthday(DateUtil.stringToDate(student.getShowBirthday()));
 		studentMapper.updateByPrimaryKey(student);
 		return new ApiResponse();
 	}

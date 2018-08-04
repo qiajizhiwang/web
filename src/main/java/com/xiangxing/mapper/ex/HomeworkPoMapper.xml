@@ -5,7 +5,7 @@
 
 
 	<select id="list" resultType="com.xiangxing.model.ex.HomeworkPo">
-		select t2.status as status,t2.id as id,t3.name as courseName ,t3.id as
+		select t1.path as jobPath,t2.status as status,t2.id as id,t3.name as courseName ,t3.id as
 		courseid,t4.name as teacherName, t1.id as homeworkId,t1.create_time as
 		publishDate,t2.path as path,t1.*
 		from t_homework as
@@ -28,7 +28,7 @@
 
 	<select id="getTeacherHomeWork" resultType="com.xiangxing.model.ex.HomeworkPo">
 		SELECT t1.`name` AS
-		courseName,t2.id,t2.`name`,t2.create_time publishDate,
+		courseName,t2.id,t2.`name`,t2.create_time publishDate,t2.path as jobPath,
 		(SELECT COUNT(1) FROM t_student_course c WHERE c.course_id=t1.id)
 		studentNumber,
 		(SELECT COUNT(1) FROM t_student_homework h WHERE h.homework_id=t2.id AND

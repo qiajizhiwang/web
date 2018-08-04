@@ -48,7 +48,7 @@ public class ApiSystemController {
 
 		if (loginRequest.getType() == 1) {
 			TeacherExample example = new TeacherExample();
-			example.createCriteria().andNameEqualTo(loginRequest.getName());
+			example.createCriteria().andPhoneEqualTo(loginRequest.getPhone());
 			List teachers = teacherMapper.selectByExample(example);
 			if (!CollectionUtils.isEmpty(teachers)) {
 				Teacher teacher = (Teacher) teachers.get(0);
@@ -62,7 +62,7 @@ public class ApiSystemController {
 			}
 		} else {
 			StudentExample example = new StudentExample();
-			example.createCriteria().andNameEqualTo(loginRequest.getName());
+			example.createCriteria().andPhoneEqualTo(loginRequest.getPhone());
 			List students = studentMapper.selectByExample(example);
 			if (!CollectionUtils.isEmpty(students)) {
 				Student student = (Student) students.get(0);

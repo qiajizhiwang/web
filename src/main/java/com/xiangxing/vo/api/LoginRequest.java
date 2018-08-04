@@ -2,20 +2,12 @@ package com.xiangxing.vo.api;
 
 public class LoginRequest {
 
-	private String name;
+	private String phone;
 
 	private String password;
 
-/*	1 老师 2学生*/
+	/* 1 老师 2学生 */
 	private int type;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public String getPassword() {
 		return password;
@@ -31,6 +23,14 @@ public class LoginRequest {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 }
