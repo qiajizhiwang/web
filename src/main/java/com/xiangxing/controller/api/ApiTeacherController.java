@@ -197,8 +197,10 @@ public class ApiTeacherController {
 	}
 
 	@RequestMapping("/uploadProduct")
-	public ApiResponse uploadProduct(ProductVo productVo) {
+	public ApiResponse uploadProduct(ProductVo productVo,Long courseId,Long studentId) {
 		LoginInfo info = TokenManager.getNowUser();
+		productVo.setCourseId(courseId);
+		productVo.setStudentId(studentId);
 		StudentCourseExample example = new StudentCourseExample();
 		example.createCriteria().andCourseIdEqualTo(productVo.getCourseId())
 				.andStudentIdEqualTo(productVo.getStudentId());
