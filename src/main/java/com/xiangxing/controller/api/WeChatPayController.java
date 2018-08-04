@@ -157,6 +157,7 @@ public class WeChatPayController extends BaseController {
 			payResponse.setOrderInfo(jsonObject);
 			return payResponse;
 		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
 			return ApiResponse.getErrorResponse("生成支付订单失败，系统异常！");
 		}
 
