@@ -1,5 +1,6 @@
 package com.xiangxing.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Exam {
@@ -11,7 +12,7 @@ public class Exam {
 
     private String rank;
 
-    private Long money;
+    private BigDecimal money;
 
     private String examTime;
 
@@ -55,11 +56,11 @@ public class Exam {
         this.rank = rank;
     }
 
-    public Long getMoney() {
+    public BigDecimal getMoney() {
         return money;
     }
 
-    public void setMoney(Long money) {
+    public void setMoney(BigDecimal money) {
         this.money = money;
     }
 

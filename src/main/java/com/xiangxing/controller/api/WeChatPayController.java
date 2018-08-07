@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.wxpay.sdk.MyConfig;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConstants;
+import com.github.wxpay.sdk.WXPayConstants.SignType;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.interceptor.TokenManager;
@@ -93,7 +94,7 @@ public class WeChatPayController extends BaseController {
 		Exam exam = examMapper.selectByPrimaryKey(entryForm.getExamId());
 
 		// 订单总金额
-		Long total_fee = exam.getMoney();
+		BigDecimal total_fee = exam.getMoney();
 
 		String orderNo = System.currentTimeMillis() + (System.nanoTime() + "").substring(7, 10);
 
@@ -105,7 +106,7 @@ public class WeChatPayController extends BaseController {
 		data.put("out_trade_no", orderNo);
 		data.put("device_info", "");
 		data.put("fee_type", "CNY");
-		data.put("total_fee", String.valueOf(total_fee * 100));
+		data.put("total_fee", String.valueOf(total_fee.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP)));
 		data.put("spbill_create_ip", "123.12.12.123");
 		data.put("notify_url", "http://120.78.211.181:80/api/weChatPay/weChatNotify");
 		data.put("trade_type", "APP"); // 支付类型
@@ -113,51 +114,56 @@ public class WeChatPayController extends BaseController {
 
 		try {
 			Map<String, String> resp = wxpay.unifiedOrder(data);
-			System.out.println(resp);
-			System.out.println(WXPayUtil.isSignatureValid(resp, appId, WXPayConstants.SignType.HMACSHA256));
-			Map<String, String> payMap = new HashMap<>();
-			payMap.put("appid", appId);
-			payMap.put("partnerid", mchID);
-			payMap.put("prepayid", resp.get("prepay_id"));
-			payMap.put("package", "Sign=WXPay");
-			UUID uuid = UUID.randomUUID();
-			payMap.put("noncestr", uuid.toString().replace("-", ""));
-			long timeStampSec = System.currentTimeMillis()/1000;
-	        String timestamp = String.format("%010d", timeStampSec);
-			payMap.put("timestamp",timestamp);
-			payMap.put("sign", WXPayUtil.generateSignature(payMap, key));
-			
-			// 生成订单信息
-			Order order = new Order();
-			order.setOrderNo(orderNo);
-			order.setStudentId(Long.valueOf(studentId));
-			order.setEntryFormId(Long.valueOf(entryFormId));
-			order.setMoney(total_fee);
-			order.setType(2);
-			Date date = new Date();
-			order.setCreateTime(date);
-			order.setUpdateTime(date);
-			orderMapper.insertSelective(order);
+			logger.info("微信支付生成订单：" + resp);
+			if (wxpay.isResponseSignatureValid(resp)) {
+				Map<String, String> payMap = new HashMap<>();
+				payMap.put("appid", appId);
+				payMap.put("partnerid", mchID);
+				payMap.put("prepayid", resp.get("prepay_id"));
+				payMap.put("package", "Sign=WXPay");
+				UUID uuid = UUID.randomUUID();
+				payMap.put("noncestr", uuid.toString().replace("-", ""));
+				long timeStampSec = System.currentTimeMillis() / 1000;
+				String timestamp = String.format("%010d", timeStampSec);
+				payMap.put("timestamp", timestamp);
+				payMap.put("sign", WXPayUtil.generateSignature(payMap, key, SignType.HMACSHA256));
 
-			// 修改学生信息
-			Student updateStudent = new Student();
-			updateStudent.setId(studentId);
-			updateStudent.setName(entryFormPo.getStudentName());
-			updateStudent.setPinyin(entryFormPo.getPinyin());
-			updateStudent.setGender(entryFormPo.getGender());
-			updateStudent.setBirthday(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(entryFormPo.getBirthday()));
-			updateStudent.setState(entryFormPo.getState());
-			updateStudent.setMajor(entryFormPo.getMajor());
-			studentMapper.updateByPrimaryKeySelective(updateStudent);
+				// 生成订单信息
+				Order order = new Order();
+				order.setOrderNo(orderNo);
+				order.setStudentId(Long.valueOf(studentId));
+				order.setEntryFormId(Long.valueOf(entryFormId));
+				order.setMoney(total_fee);
+				order.setType(2);
+				Date date = new Date();
+				order.setCreateTime(date);
+				order.setUpdateTime(date);
+				orderMapper.insertSelective(order);
 
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("WxResultMap", resp);
-			jsonObject.put("payMap", payMap);
-			PayResponse payResponse = new PayResponse();
-			payResponse.setOrderInfo(jsonObject);
-			return payResponse;
+				// 修改学生信息
+				Student updateStudent = new Student();
+				updateStudent.setId(studentId);
+				updateStudent.setName(entryFormPo.getStudentName());
+				updateStudent.setPinyin(entryFormPo.getPinyin());
+				updateStudent.setGender(entryFormPo.getGender());
+				updateStudent.setBirthday(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(entryFormPo.getBirthday()));
+				updateStudent.setState(entryFormPo.getState());
+				updateStudent.setMajor(entryFormPo.getMajor());
+				studentMapper.updateByPrimaryKeySelective(updateStudent);
+
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("WxResultMap", resp);
+
+				logger.info("微信支付生成订单payMap：" + payMap);
+				jsonObject.put("payMap", payMap);
+				PayResponse payResponse = new PayResponse();
+				payResponse.setOrderInfo(jsonObject);
+				return payResponse;
+			} else {
+				return ApiResponse.getErrorResponse("生成支付订单失败，签名错误！");
+			}
 		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 			return ApiResponse.getErrorResponse("生成支付订单失败，系统异常！");
 		}
 
@@ -194,7 +200,7 @@ public class WeChatPayController extends BaseController {
 					// 更新订单
 					Order updateOrder = new Order();
 					updateOrder.setId(orders.get(0).getId());
-					updateOrder.setTradeNo("");
+					updateOrder.setTradeNo(resp.get("transaction_id"));
 					updateOrder.setStatus(0);
 					updateOrder.setUpdateTime(new Date());
 					orderMapper.updateByPrimaryKeySelective(updateOrder);
@@ -229,14 +235,13 @@ public class WeChatPayController extends BaseController {
 		outSteam.close();
 		inStream.close();
 		String notifyData = new String(outSteam.toByteArray(), "utf-8");
-		System.out.println("微信支付通知结果：" + notifyData);// 支付结果通知的xml格式数据
+		logger.info("微信支付通知结果：" + notifyData);// 支付结果通知的xml格式数据
 
 		MyConfig config = new MyConfig(appId, mchID, key, domain);
-		WXPay wxpay = new WXPay(config);
+		WXPay wxpay = new WXPay(config, true);
 
 		Map<String, String> notifyMap = WXPayUtil.xmlToMap(notifyData); // 转换成map
-
-		if (wxpay.isPayResultNotifySignatureValid(notifyMap)) {
+		if (wxpay.isResponseSignatureValid(notifyMap)) {
 			// 签名正确
 			// 进行处理。
 			// 注意特殊情况：订单已经退款，但收到了支付结果成功的通知，不应把商户侧订单状态从退款改成支付成功
@@ -249,7 +254,7 @@ public class WeChatPayController extends BaseController {
 					// 更新订单
 					Order updateOrder = new Order();
 					updateOrder.setId(orders.get(0).getId());
-					updateOrder.setTradeNo(notifyMap.get("trade_no"));
+					updateOrder.setTradeNo(notifyMap.get("transaction_id"));
 					updateOrder.setStatus(0);
 					updateOrder.setUpdateTime(new Date());
 					orderMapper.updateByPrimaryKeySelective(updateOrder);
@@ -270,6 +275,7 @@ public class WeChatPayController extends BaseController {
 			}
 		} else {
 			// 签名错误，如果数据里没有sign字段，也认为是签名错误
+			logger.info("签名错误,订单号：" + notifyMap.get("out_trade_no"));
 		}
 
 	}

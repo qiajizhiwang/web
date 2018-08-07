@@ -1,5 +1,6 @@
 package com.xiangxing.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Order {
@@ -13,7 +14,7 @@ public class Order {
 
     private Long entryFormId;
 
-    private Long money;
+    private BigDecimal money;
 
     private Integer type;
 
@@ -63,11 +64,11 @@ public class Order {
         this.entryFormId = entryFormId;
     }
 
-    public Long getMoney() {
+    public BigDecimal getMoney() {
         return money;
     }
 
-    public void setMoney(Long money) {
+    public void setMoney(BigDecimal money) {
         this.money = money;
     }
 

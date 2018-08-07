@@ -2,6 +2,7 @@ package com.xiangxing.controller.api;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +107,7 @@ public class AlipayController extends BaseController {
 		Exam exam = examMapper.selectByPrimaryKey(entryForm.getExamId());
 
 		// 订单总金额
-		Long total_amount = exam.getMoney();
+		BigDecimal total_amount = exam.getMoney();
 
 		String orderNo = System.currentTimeMillis() + (System.nanoTime() + "").substring(7, 10);
 
@@ -130,7 +130,7 @@ public class AlipayController extends BaseController {
 			request.setNotifyUrl("http://120.78.211.181:80/api/alipay/alipayNotify");
 			// 这里和普通的接口调用不同，使用的是sdkExecute
 			AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
-			System.out.println(response.getBody());// 就是orderString
+			logger.info("支付宝订单生成结果："+response.getBody());// 就是orderString
 													// 可以直接给客户端请求，无需再做处理。
 
 			// 生成订单信息
@@ -250,6 +250,7 @@ public class AlipayController extends BaseController {
 		// 切记alipaypublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
 		// boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String
 		// publicKey, String charset, String sign_type)
+		logger.info("支付宝支付通知结果：" + JSON.toJSONString(params));
 		try {
 			boolean flag = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, "RSA2");
 			logger.info("签名验证" + flag);
