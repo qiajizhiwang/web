@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.github.wxpay.sdk.MyConfig;
 import com.github.wxpay.sdk.WXPay;
-import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayConstants.SignType;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.xiangxing.controller.admin.BaseController;
@@ -152,12 +151,13 @@ public class WeChatPayController extends BaseController {
 				studentMapper.updateByPrimaryKeySelective(updateStudent);
 
 				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("WxResultMap", resp);
+//				jsonObject.put("WxResultMap", resp);
 
 				logger.info("微信支付生成订单payMap：" + payMap);
 				jsonObject.put("payMap", payMap);
 				PayResponse payResponse = new PayResponse();
 				payResponse.setOrderInfo(jsonObject);
+				payResponse.setOrderNo(orderNo);
 				return payResponse;
 			} else {
 				return ApiResponse.getErrorResponse("生成支付订单失败，签名错误！");

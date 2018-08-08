@@ -159,6 +159,7 @@ public class AlipayController extends BaseController {
 
 			PayResponse payResponse = new PayResponse();
 			payResponse.setOrderInfo(response.getBody());
+			payResponse.setOrderNo(orderNo);
 			return payResponse;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
