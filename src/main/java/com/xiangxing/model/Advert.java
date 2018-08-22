@@ -9,6 +9,10 @@ public class Advert {
 
     private String path;
 
+    private Integer type;
+
+    private Long schoolId;
+
     public Long getId() {
         return id;
     }
@@ -39,5 +43,21 @@ public class Advert {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
     }
 }

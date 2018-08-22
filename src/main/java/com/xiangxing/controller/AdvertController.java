@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,8 @@ import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.AdvertMapper;
 import com.xiangxing.model.Advert;
 import com.xiangxing.model.AdvertExample;
+import com.xiangxing.model.AdvertExample.Criteria;
+import com.xiangxing.model.User;
 import com.xiangxing.utils.FileUtil;
 import com.xiangxing.vo.api.ApiResponse;
 
@@ -61,8 +64,14 @@ public class AdvertController {
 
 	@RequestMapping("/saveAdvert")
 	@ResponseBody
-	public ApiResponse saveadvert(HttpServletRequest request, Advert advert, MultipartFile file) {
-
+	public ApiResponse saveAdvert(HttpServletRequest request, Advert advert, MultipartFile file) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		if (me.getType() == 0) {
+			advert.setType(1);
+		} else {
+			advert.setType(2);
+			advert.setSchoolId(me.getSchoolId());
+		}
 		// 定义允许上传的文件扩展名
 		HashMap<String, String> extMap = new HashMap<String, String>();
 		extMap.put("image", "gif,jpg,jpeg,png,bmp");
@@ -107,10 +116,16 @@ public class AdvertController {
 	@RequestMapping("/advertList")
 	@ResponseBody
 	public PageResponse<Advert> advertList(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
-
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		Long schoolId = null;
+		if (me.getType() == 1) {
+			schoolId = me.getSchoolId();
+		}
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		AdvertExample advertExample = new AdvertExample();
-		advertExample.createCriteria().andIdIsNotNull();
+		Criteria criteria = advertExample.createCriteria();
+		if (null != schoolId)
+			criteria.andSchoolIdEqualTo(schoolId);
 		List<Advert> advertExs = advertMapper.selectByExample(advertExample);
 		for (Advert advertEx : advertExs) {
 			advertEx.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + advertEx.getPath());
@@ -122,7 +137,23 @@ public class AdvertController {
 
 	@RequestMapping("/editAdvert")
 	@ResponseBody
-	public ApiResponse editadvert(HttpServletRequest request, Advert advert, Long id, MultipartFile file) {
+	public ApiResponse editAdvert(HttpServletRequest request, Advert advert, Long id, MultipartFile file) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		Advert advert1 = advertMapper.selectByPrimaryKey(id);
+		if (me.getType() == 0) {
+			if (advert1.getType() == 2) {
+				return ApiResponse.getErrorResponse("异常");
+			}
+			advert.setType(1);
+
+		} else {
+			if (advert1.getType() == 1) {
+				return ApiResponse.getErrorResponse("异常");
+			}
+			advert.setType(2);
+			advert.setSchoolId(me.getSchoolId());
+		}
+		advert.setId(advert1.getId());
 		if (null != file) {
 			// 定义允许上传的文件扩展名
 			HashMap<String, String> extMap = new HashMap<String, String>();
@@ -130,7 +161,7 @@ public class AdvertController {
 
 			if (!ServletFileUpload.isMultipartContent(request)) {
 				System.out.println("请选择文件。");
-				ApiResponse.getErrorResponse("文件不存在");
+				return ApiResponse.getErrorResponse("文件不存在");
 			}
 
 			// 创建文件夹
@@ -146,7 +177,7 @@ public class AdvertController {
 
 			if (file.getSize() > maxSize) {
 				logger.error("上传文件大小超过限制。");
-				ApiResponse.getErrorResponse("文件不存在");
+				return ApiResponse.getErrorResponse("文件不存在");
 			}
 			// 检查扩展名
 			String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1)
@@ -158,7 +189,7 @@ public class AdvertController {
 				FileUtil.uploadFile(file.getBytes(), saveUrl, newFileName);
 			} catch (Exception e) {
 				System.out.println("上传文件失败。");
-				ApiResponse.getErrorResponse("文件不存在");
+				return ApiResponse.getErrorResponse("文件不存在");
 			}
 			advert.setPath(saveUrl + newFileName);
 		}

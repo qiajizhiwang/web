@@ -6,6 +6,8 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="num" property="num" jdbcType="INTEGER" />
     <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, num, path
+    id, name, num, path, type, school_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.AdvertExample" >
     select
@@ -102,10 +104,10 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_advert (name, num, path
-      )
-    values (#{name,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}
-      )
+    insert into t_advert (name, num, path, 
+      type, school_id)
+    values (#{name,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{schoolId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Advert" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -122,6 +124,12 @@
       <if test="path != null" >
         path,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="name != null" >
@@ -132,6 +140,12 @@
       </if>
       <if test="path != null" >
         #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -156,6 +170,12 @@
       <if test="record.path != null" >
         path = #{record.path,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.schoolId != null" >
+        school_id = #{record.schoolId,jdbcType=BIGINT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,7 +186,9 @@
     set id = #{record.id,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       num = #{record.num,jdbcType=INTEGER},
-      path = #{record.path,jdbcType=VARCHAR}
+      path = #{record.path,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      school_id = #{record.schoolId,jdbcType=BIGINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +205,12 @@
       <if test="path != null" >
         path = #{path,jdbcType=VARCHAR},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -190,7 +218,9 @@
     update t_advert
     set name = #{name,jdbcType=VARCHAR},
       num = #{num,jdbcType=INTEGER},
-      path = #{path,jdbcType=VARCHAR}
+      path = #{path,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      school_id = #{schoolId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

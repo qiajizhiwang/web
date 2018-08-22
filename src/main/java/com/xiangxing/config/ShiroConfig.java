@@ -54,7 +54,7 @@ public class ShiroConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new TokenInterceptor()).addPathPatterns("/api/**").excludePathPatterns("/api/login","/api/advert","/api/contactMe","/api/alipay/alipayNotify","/api/weChatPay/weChatNotify");
+		registry.addInterceptor(new TokenInterceptor()).addPathPatterns("/api/**").excludePathPatterns("/api/login","/api/contactMe","/api/alipay/alipayNotify","/api/weChatPay/weChatNotify");
 	}
 
 }

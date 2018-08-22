@@ -31,6 +31,7 @@
 	
 		<thead>
 			<tr>
+				<th field="schoolId" width="50" editor="{type:'validatebox',options:{required:true}}">学校id</th>
 				<th field="name" width="50" editor="{type:'validatebox',options:{required:true}}">广告名</th>
 				<th field="num" width="50" editor="{type:'validatebox',options:{required:true}}">排序</th>
 				<th data-options="field:'path',width:100, formatter:showImg">图片</th>
@@ -108,7 +109,7 @@
 	
 	function editAdvert(){
 		var row = $('#dg').datagrid('getSelected');
-		if (row){
+		if (row  ){
 			$('#dlg').dialog('open').dialog('setTitle','编辑');
 			$('#fm').form('load',row);
 			url = 'advert/editAdvert?id='+row.id;
@@ -185,7 +186,7 @@
 		if (row){
 			$('#dlgedit').dialog('open').dialog('setTitle','编辑');
 			$('#fmedit').form('load',row);
-			url = 'editAdvert?id='+row.id;
+			url = 'advert/editAdvert?id='+row.id;
 		}
 	}
 	

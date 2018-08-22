@@ -113,15 +113,32 @@ public class ApiSystemController {
 
 	@RequestMapping("/advert")
 	public ApiPageResponse<Advert> advert(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
-		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+		LoginInfo info = TokenManager.getNowUser();
+		Long shoolId  ;
+		if (info.getType() == 1) {
+			Teacher teacher = teacherMapper.selectByPrimaryKey(info.getId());
+			shoolId = teacher.getSchoolId();
+		} else {
+			Student student = studentMapper.selectByPrimaryKey(info.getId());
+			shoolId = student.getSchoolId();
+		}
+		Page<?> page = PageHelper.startPage(1, 2, true);
 		AdvertExample advertExample = new AdvertExample();
-		advertExample.createCriteria().andIdIsNotNull();
+		advertExample.createCriteria().andSchoolIdIsNull();
 		List<Advert> advertExs = advertMapper.selectByExample(advertExample);
 		for (Advert advertEx : advertExs) {
 			advertEx.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + advertEx.getPath());
 		}
-		long total = page.getTotal();
-		return new ApiPageResponse<Advert>(total, advertExs);
+		 page = PageHelper.startPage(1, 1, true);
+		 advertExample = new AdvertExample();
+		advertExample.createCriteria().andSchoolIdEqualTo(shoolId);
+		List<Advert> advertExs2 = advertMapper.selectByExample(advertExample);
+		for (Advert advertEx : advertExs2) {
+			advertEx.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + advertEx.getPath());
+		}
+		advertExs.addAll(advertExs2);
+//		long total = page.getTotal();
+		return new ApiPageResponse<Advert>(3,advertExs );
 	}
 
 	@Autowired
