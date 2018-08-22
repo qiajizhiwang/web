@@ -419,13 +419,7 @@ public class ApiTeacherController {
 		List<StudentCourse> studentCourses = studentCourseMapper.selectByExample(example);
 		Course course = courseMapper.selectByPrimaryKey(courseId);
 		CourseSign record = null;
-		Notice notice = new Notice();
-		notice.setType(2);
-		notice.setText("您的孩子已签到");
-		notice.setSender(info.getId());
-		notice.setCreateTime(new Date());
-		notice.setSenderName(teacherMapper.selectByPrimaryKey(info.getId()).getName());
-		noticeMapper.insertSelective(notice);
+
 
 		for (StudentCourse studentCourse : studentCourses) {
 			// 重复签到忽略
@@ -437,6 +431,13 @@ public class ApiTeacherController {
 						return ApiResponse.getErrorResponse("有学生已超课时");
 					}
 					record.setSignFlag(1l);
+					Notice notice = new Notice();
+					notice.setType(2);
+					notice.setText("您的孩子已经开始上课了，本学期还剩"+(course.getPeriod()-studentCourse.getPeriod()-2)+"课时");
+					notice.setSender(info.getId());
+					notice.setCreateTime(new Date());
+					notice.setSenderName(teacherMapper.selectByPrimaryKey(info.getId()).getName());
+					noticeMapper.insertSelective(notice);
 					NoticeDetail noticeDetail = new NoticeDetail();
 					noticeDetail.setNoticeId(notice.getId());
 					noticeDetail.setStatus(1);
@@ -491,10 +492,10 @@ public class ApiTeacherController {
 	MessageQueuePoMapper messageQueuePoMapper;
 
 	@RequestMapping("/getQueues")
-	public ApiPageResponse<MessageQueuePo> getQueues(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
+	public ApiPageResponse<MessageQueuePo> getQueues(PageRequest pageRequest, HttpServletRequest httpServletRequest,Long courseId) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
-		List<MessageQueuePo> messages = messageQueuePoMapper.list(info.getId(), null);
+		List<MessageQueuePo> messages = messageQueuePoMapper.list(info.getId(), null,courseId);
 		long total = page.getTotal();
 		return new ApiPageResponse<MessageQueuePo>(total, messages);
 	}

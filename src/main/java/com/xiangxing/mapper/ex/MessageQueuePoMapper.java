@@ -8,5 +8,5 @@ import com.xiangxing.model.ex.MessageQueuePo;
 
 public interface MessageQueuePoMapper {
 
-	List<MessageQueuePo> list(@Param("teacherId") Long teacherId, @Param("studentId") Long studentId);
+	List<MessageQueuePo> list(@Param("teacherId") Long teacherId, @Param("studentId") Long studentId, @Param("courseId") Long courseId);
 }

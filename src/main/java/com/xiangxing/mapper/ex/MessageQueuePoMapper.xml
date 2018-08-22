@@ -8,13 +8,16 @@
 		resultType="com.xiangxing.model.ex.MessageQueuePo">
 	select t3.id as id ,t1.name as studentName,t2.name as teacherName, t3.teacher as
 		teacherId,t3.student as studentId,t4.create_Time as time,t4.text as message,t4.type as type ,t4.origin as origin
-		from t_student as t1,t_teacher as t2,t_message_queue as t3,t_message as t4
-		where t1.id = t3.student and t2.id = t3.teacher and t3.id = t4.queue_id and t4.id in  (select max(id) as id from  t_message   group by queue_id)   
+		from t_student as t1,t_teacher as t2,t_message_queue as t3,t_message as t4 , t_student_course as t6
+		where t1.id = t3.student and t2.id = t3.teacher and t3.id = t4.queue_id and t6.student_id = t1.id  and t4.id in  (select max(id) as id from  t_message   group by queue_id)   
 		<if test="studentId != null">
 			AND t3.student=#{studentId}
 		</if>
 		<if test="teacherId != null">
 			AND t3.teacher=#{teacherId}
+		</if>
+		<if test="courseId != null">
+			AND t6.course_id=#{courseId}
 		</if>
 	order by t4.create_Time desc
 	</select>

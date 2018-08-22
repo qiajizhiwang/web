@@ -406,7 +406,7 @@ public class ApiStudentController {
 	public ApiPageResponse<MessageQueuePo> getQueues(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
-		List<MessageQueuePo> messages = messageQueuePoMapper.list(null, info.getId());
+		List<MessageQueuePo> messages = messageQueuePoMapper.list(null, info.getId(),null);
 		long total = page.getTotal();
 		return new ApiPageResponse<MessageQueuePo>(total, messages);
 	}
