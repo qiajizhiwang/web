@@ -123,7 +123,7 @@
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
 				if (r){
 					$.post('advert/destroyAdvert',{id:row.id},function(result){
-						var result = eval('('+result+')');
+						//var result = eval('('+result+')');
 						if (result.status==1){
 							$('#dg').datagrid('reload');	// reload the user data
 						} else {
