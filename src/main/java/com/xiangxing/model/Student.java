@@ -39,6 +39,8 @@ public class Student {
 
     private Long schoolId;
 
+    private Date createTime;
+
     public Long getId() {
         return id;
     }
@@ -181,5 +183,13 @@ public class Student {
 
     public void setSchoolId(Long schoolId) {
         this.schoolId = schoolId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

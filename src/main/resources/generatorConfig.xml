@@ -35,13 +35,13 @@
 <!-- 		<table tableName="t_entry_form" domainObjectName="EntryForm"></table> -->
 <!-- 		<table tableName="t_exam" domainObjectName="Exam"></table> -->
 <!-- 		<table tableName="t_school_image" domainObjectName="SchoolImage"></table> -->
-		<table tableName="t_order" domainObjectName="Order"></table>
+<!-- 		<table tableName="t_order" domainObjectName="Order"></table> -->
 <!-- 		<table tableName="t_product" domainObjectName="Product">
 		<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		
 		</table>  -->
 <!-- 		<table tableName="t_school" domainObjectName="School"></table> -->
-<!-- 		<table tableName="t_student" domainObjectName="Student"></table> -->
+		<table tableName="t_student" domainObjectName="Student"></table>
 <!-- 		<table tableName="t_student_course" domainObjectName="StudentCourse"></table> -->
 <!-- 		<table tableName="t_subject" domainObjectName="Subject"></table> -->
 <!-- 		<table tableName="t_teacher" domainObjectName="Teacher"></table> -->

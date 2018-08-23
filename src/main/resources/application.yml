@@ -45,10 +45,12 @@ product_path:  /data/xiangxing/product/
 homework_path:  /data/xiangxing/homework/
 message_path:  /data/xiangxing/message/
 pdf_path:  /data/xiangxing/pdf/
+xlsTemplates_path:  /data/xiangxing/xlsTemplates/
+#xlsTemplates_path:  D:/xiangxing/xlsTemplates/
 #pdf_path:  D:/pdf/
 
 #文件上传路径
-#upload_file_path: d:/workspace/xiangxing/
+#upload_file_path: d:/xiangxing/
 upload_file_path: /data/xiangxing/uploadFile
 
 #系统地址
