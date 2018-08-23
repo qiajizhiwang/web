@@ -82,6 +82,9 @@ public class SystemController {
 	public ApiResponse addUser(User user, String menus) {
 		user.setPassword(
 				new SimpleHash("MD5", user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());
+		if(user.getSchoolId()==null){
+			return  ApiResponse.getErrorResponse("学校必填");
+		}
 		userMapper.insert(user);
 		for (String menu : menus.split(",")) {
 			UserMenu userMenu = new UserMenu();
@@ -105,7 +108,7 @@ public class SystemController {
 	public ApiResponse editUser(User user, String menus) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		if (me.getType() == 1) {
-			if (user.getSchoolId() != me.getSchoolId()) {
+			if (!user.getSchoolId().equals(me.getSchoolId())) {
 				return ApiResponse.getDenyErrorResponse();
 			}
 		}
