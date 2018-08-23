@@ -82,6 +82,7 @@
         $('#tt').tree({
 			onClick: function(node){
 	 var url=node.attributes.url;
+	 if(url != null)
 	 addTab(node.text,url)
 	}
 });
