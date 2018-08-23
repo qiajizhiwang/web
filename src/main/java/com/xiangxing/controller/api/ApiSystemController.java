@@ -112,7 +112,7 @@ public class ApiSystemController {
 	AdvertMapper advertMapper;
 
 	@RequestMapping("/advert")
-	public ApiPageResponse<Advert> advert(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
+	public ApiPageResponse<Advert> advert(HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Long shoolId  ;
 		if (info.getType() == 1) {

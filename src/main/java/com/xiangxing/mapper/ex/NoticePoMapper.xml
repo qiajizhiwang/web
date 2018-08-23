@@ -13,6 +13,9 @@
 		<if test="studentId != null">
 			AND t1.receiver =#{studentId}
 		</if>
+			<if test="type != null">
+			AND t2.type =#{type}
+		</if>
 		order by create_time desc
 	</select>
 

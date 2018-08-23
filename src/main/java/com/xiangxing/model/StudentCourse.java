@@ -1,5 +1,7 @@
 package com.xiangxing.model;
 
+import java.util.Date;
+
 public class StudentCourse {
     private Long id;
 
@@ -8,6 +10,8 @@ public class StudentCourse {
     private Long courseId;
 
     private Integer period;
+
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -39,5 +43,13 @@ public class StudentCourse {
 
     public void setPeriod(Integer period) {
         this.period = period;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

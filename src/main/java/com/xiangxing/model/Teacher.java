@@ -1,5 +1,7 @@
 package com.xiangxing.model;
 
+import java.util.Date;
+
 public class Teacher {
     private Long id;
 
@@ -12,6 +14,8 @@ public class Teacher {
     private String password;
 
     private Integer status;
+
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -59,5 +63,13 @@ public class Teacher {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

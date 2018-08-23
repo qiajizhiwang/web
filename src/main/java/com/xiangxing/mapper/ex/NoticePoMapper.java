@@ -8,6 +8,6 @@ import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.model.ex.NoticePo;
 
 public interface NoticePoMapper {
-	List<NoticePo> list(@Param("studentId") Long studentId);
+	List<NoticePo> list(@Param("studentId") Long studentId,@Param("type") Integer type);
 
 }

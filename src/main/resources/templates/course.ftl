@@ -40,6 +40,7 @@
 				<th field="showCurriculumTime" width="50" editor="text">开课时间</th>
 				<th field="showFinishTime" width="50" editor="text">结课时间</th>
 				<th field="period" width="50" editor="text">课时</th>
+				<th field="fee" width="50" editor="text">学费</th>
 				<th field="schoolTime" width="50" editor="text">上课时间</th>
 				<th data-options="field:'imageUrl',width:100, formatter:showImg">图片</th>
 				<th field="comment" width="50" editor="text">课程介绍</th>
@@ -100,6 +101,10 @@
 				<td><input name="period" class="easyui-numberbox"></td>
 			</tr>
 			<tr>
+				<td>学费</td>
+				<td><input name="fee" class="easyui-numberbox"></td>
+			</tr>
+			<tr>
 				<td>上课时间</td>
 				<td><input name="schoolTime" class="easyui-textbox"></td>
 			</tr>
@@ -139,6 +144,10 @@
 			<tr>
 				<td>课时</td>
 				<td><input name="period" class="easyui-numberbox"></td>
+			</tr>
+			<tr>
+				<td>学费</td>
+				<td><input name="fee" class="easyui-numberbox"></td>
 			</tr>
 			<tr>
 				<td>上课时间</td>

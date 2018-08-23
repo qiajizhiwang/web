@@ -105,6 +105,7 @@ public class CourseController extends BaseController {
 		course.setImageUrl(saveUrl + newFileName);
 		course.setCurriculumTime(DateUtil.stringToDate(course.getShowCurriculumTime()));
 		course.setFinishTime(DateUtil.stringToDate(course.getShowFinishTime()));
+		course.setCreateTime(new Date());
 		courseMapper.insertSelective(course);
 		writeToOkResponse();
 	}

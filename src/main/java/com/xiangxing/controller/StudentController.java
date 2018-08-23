@@ -94,6 +94,7 @@ public class StudentController extends BaseController {
 	public ApiResponse savestudent(StudentPo student) {
 		student.setPassword(MD5Util.MD5Encode(student.getPassword()));
 		student.setBirthday(DateUtil.stringToDate(student.getShowBirthday()));
+		student.setCreateTime(new Date());
 		studentMapper.insertSelective(student);
 		return new ApiResponse();
 	}
@@ -147,10 +148,11 @@ public class StudentController extends BaseController {
 	@ResponseBody
 	public ApiResponse saveApply(StudentCourse studentCourse) {
 		try {
+			studentCourse.setCreateTime(new Date());
 			studentCourseMapper.insert(studentCourse);
 			return new ApiResponse();
 		} catch (Exception e) {
-			return ApiResponse.getErrorResponse("异常");
+			return ApiResponse.getErrorResponse("学生可能已经报过这门课");
 		}
 
 	}
