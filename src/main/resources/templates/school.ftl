@@ -55,7 +55,7 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newSchool()">新增</a>
 	</div>
 	
-	<div id="dlg" class="easyui-dialog" style="width:1000px;height:600px;padding:10px 20px"
+	<div id="dlg" class="easyui-dialog" style="width:400px;height:300px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post">
 			<table cellpadding="5">
@@ -80,7 +80,7 @@
 			<tr>
 				<td><label>学校介绍</label></td>
 				<td>
-				<textarea rows="3" style="width:800px;height:400px;" id="comment" name="comment" class="easyui-validatebox"></textarea>
+				<textarea rows="3" style="width:200px;height:100px;" id="comment" name="comment" class="easyui-validatebox"></textarea>
 				</td>
 			</tr>
 			</table>

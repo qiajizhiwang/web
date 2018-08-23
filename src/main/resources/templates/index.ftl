@@ -47,7 +47,7 @@
             <div>
                 <ul>
                     <li>
-                        <div style="margin-right: 16px;display: inline-block;font-size: 14px;"><label class="UserName" style="display:inline-block!important;">admin</label>，正在使用系统...</div>
+                        <div style="margin-right: 16px;display: inline-block;font-size: 14px;"><label class="UserName" style="display:inline-block!important;">${username}</label>，正在使用系统...</div>
                         <a href="logout">退出</a>
                     </li>
                 </ul>
