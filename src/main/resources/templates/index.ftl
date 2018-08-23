@@ -21,12 +21,12 @@
     
     <style>
         .top-content {
-        align-items: center;
+        align-items: baseline;
         box-sizing: border-box;
         justify-content: space-between;
         box-sizing: border-box;
         padding: 0 15px;
-        height:AUTO;
+        height: 100%;
         border-bottom: 1px solid #eee;
         box-shadow: 0 0 8px #eee;
     }
@@ -40,7 +40,7 @@
 
 <body>
 <div class="easyui-layout" >
-      <div id="north" region="north"  style="height:5%">
+      <div id="north" region="north"  style="height:10%">
    <div class="flex-wrap top-content">
       <h3>管理系统</h3>
    

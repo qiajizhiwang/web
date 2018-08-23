@@ -79,15 +79,15 @@
 			</tr>
 			<tr>
 				<td>姓名</td>
-				<td><input name="name" class="easyui-textbox"></td>
+				<td><input name="name" class="easyui-textbox" required="true"></td>
 			</tr>
 			<tr>
 				<td>生日</td>
-				<td><input name="showBirthday" class="easyui-datebox"></td>
+				<td><input name="showBirthday" class="easyui-datebox" required="true"></td>
 			</tr
 			<tr>
 				<td>性别</td>
-				<td><input name="gender" class="easyui-textbox"></td>
+				<td><input name="gender" class="easyui-textbox" required="true"></td>
 			</tr>
 			<tr>
 				<td>民族</td>

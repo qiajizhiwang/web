@@ -65,6 +65,7 @@ public class SchoolController extends BaseController {
 			writeToErrorResponse(new JSONObject());
 			return;
 		}
+		school.setCreateTime(new Date());
 		schoolService.addSchool(school);
 		writeToOkResponse();
 	}

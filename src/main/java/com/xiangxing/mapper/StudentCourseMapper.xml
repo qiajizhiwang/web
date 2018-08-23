@@ -6,6 +6,7 @@
     <result column="student_id" property="studentId" jdbcType="BIGINT" />
     <result column="course_id" property="courseId" jdbcType="BIGINT" />
     <result column="period" property="period" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, student_id, course_id, period
+    id, student_id, course_id, period, create_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.StudentCourseExample" >
     select
@@ -99,17 +100,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xiangxing.model.StudentCourse" >
-    insert into t_student_course (id, student_id, course_id, 
-      period)
-    values (#{id,jdbcType=BIGINT}, #{studentId,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, 
-      #{period,jdbcType=INTEGER})
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_student_course (student_id, course_id, period, 
+      create_time)
+    values (#{studentId,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{period,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.StudentCourse" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into t_student_course
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="studentId != null" >
         student_id,
       </if>
@@ -119,11 +123,11 @@
       <if test="period != null" >
         period,
       </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="studentId != null" >
         #{studentId,jdbcType=BIGINT},
       </if>
@@ -132,6 +136,9 @@
       </if>
       <if test="period != null" >
         #{period,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -156,6 +163,9 @@
       <if test="record.period != null" >
         period = #{record.period,jdbcType=INTEGER},
       </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,7 +176,8 @@
     set id = #{record.id,jdbcType=BIGINT},
       student_id = #{record.studentId,jdbcType=BIGINT},
       course_id = #{record.courseId,jdbcType=BIGINT},
-      period = #{record.period,jdbcType=INTEGER}
+      period = #{record.period,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +194,9 @@
       <if test="period != null" >
         period = #{period,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -190,7 +204,8 @@
     update t_student_course
     set student_id = #{studentId,jdbcType=BIGINT},
       course_id = #{courseId,jdbcType=BIGINT},
-      period = #{period,jdbcType=INTEGER}
+      period = #{period,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

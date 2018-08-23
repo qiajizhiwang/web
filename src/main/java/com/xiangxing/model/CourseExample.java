@@ -744,6 +744,126 @@ public class CourseExample {
             addCriterion("period not between", value1, value2, "period");
             return (Criteria) this;
         }
+
+        public Criteria andCreateTimeIsNull() {
+            addCriterion("create_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNotNull() {
+            addCriterion("create_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeEqualTo(Date value) {
+            addCriterion("create_time =", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotEqualTo(Date value) {
+            addCriterion("create_time <>", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThan(Date value) {
+            addCriterion("create_time >", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("create_time >=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThan(Date value) {
+            addCriterion("create_time <", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            addCriterion("create_time <=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIn(List<Date> values) {
+            addCriterion("create_time in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotIn(List<Date> values) {
+            addCriterion("create_time not in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
+            addCriterion("create_time between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            addCriterion("create_time not between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeIsNull() {
+            addCriterion("fee is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeIsNotNull() {
+            addCriterion("fee is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeEqualTo(Integer value) {
+            addCriterion("fee =", value, "fee");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeNotEqualTo(Integer value) {
+            addCriterion("fee <>", value, "fee");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeGreaterThan(Integer value) {
+            addCriterion("fee >", value, "fee");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("fee >=", value, "fee");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeLessThan(Integer value) {
+            addCriterion("fee <", value, "fee");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeLessThanOrEqualTo(Integer value) {
+            addCriterion("fee <=", value, "fee");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeIn(List<Integer> values) {
+            addCriterion("fee in", values, "fee");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeNotIn(List<Integer> values) {
+            addCriterion("fee not in", values, "fee");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeBetween(Integer value1, Integer value2) {
+            addCriterion("fee between", value1, value2, "fee");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeNotBetween(Integer value1, Integer value2) {
+            addCriterion("fee not between", value1, value2, "fee");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

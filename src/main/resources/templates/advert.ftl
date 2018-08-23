@@ -31,7 +31,7 @@
 	
 		<thead>
 			<tr>
-				<th field="schoolId" width="50" editor="{type:'validatebox',options:{required:true}}">学校id</th>
+				<th field="schoolId" width="50">学校id</th>
 				<th field="name" width="50" editor="{type:'validatebox',options:{required:true}}">广告名</th>
 				<th field="num" width="50" editor="{type:'validatebox',options:{required:true}}">排序</th>
 				<th data-options="field:'path',width:100, formatter:showImg">图片</th>
@@ -109,7 +109,7 @@
 	
 	function editAdvert(){
 		var row = $('#dg').datagrid('getSelected');
-		if (row  ){
+		if (row){
 			$('#dlg').dialog('open').dialog('setTitle','编辑');
 			$('#fm').form('load',row);
 			url = 'advert/editAdvert?id='+row.id;
@@ -146,10 +146,10 @@
 			},
 			success: function(result){
 				var result = eval('('+result+')');
-				if (result.errorMsg){
+				if (result.memo){
 					$.messager.show({
 						title: 'Error',
-						msg: result.errorMsg
+						msg: result.memo
 					});
 				} else {
 					$('#dlg').dialog('close');		// close the dialog
@@ -167,10 +167,10 @@
 			},
 			success: function(result){
 				var result = eval('('+result+')');
-				if (result.errorMsg){
+				if (result.memo){
 					$.messager.show({
 						title: 'Error',
-						msg: result.errorMsg
+						msg: result.memo
 					});
 				} else {
 					$('#dlgedit').dialog('close');		// close the dialog

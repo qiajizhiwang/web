@@ -1,5 +1,7 @@
 package com.xiangxing.model;
 
+import java.util.Date;
+
 public class School {
     private Long id;
 
@@ -12,6 +14,8 @@ public class School {
     private String linkman;
 
     private String comment;
+
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -59,5 +63,13 @@ public class School {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

@@ -1,5 +1,6 @@
 package com.xiangxing.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -67,6 +68,7 @@ public class TeacherController extends BaseController {
 	@RequestMapping("/saveTeacher")
 	public void saveteacher(Teacher teacher) {
 		teacher.setPassword(MD5Util.MD5Encode(teacher.getPassword()));
+		teacher.setCreateTime(new Date());
 		teacherMapper.insertSelective(teacher);
 		writeToOkResponse();
 	}

@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.Page;
@@ -67,8 +66,18 @@ public class AdvertController {
 	public ApiResponse saveAdvert(HttpServletRequest request, Advert advert, MultipartFile file) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		if (me.getType() == 0) {
+			AdvertExample advertExample = new AdvertExample();
+			advertExample.createCriteria().andTypeEqualTo(1);
+			if (advertMapper.countByExample(advertExample) >1 ){
+				return ApiResponse.getErrorResponse("广告数超出");
+			}
 			advert.setType(1);
 		} else {
+			AdvertExample advertExample = new AdvertExample();
+			advertExample.createCriteria().andTypeEqualTo(2).andSchoolIdEqualTo(me.getSchoolId());
+			if (advertMapper.countByExample(advertExample) >0 ){
+				return ApiResponse.getErrorResponse("广告数超出");
+			}
 			advert.setType(2);
 			advert.setSchoolId(me.getSchoolId());
 		}
@@ -140,15 +149,16 @@ public class AdvertController {
 	public ApiResponse editAdvert(HttpServletRequest request, Advert advert, Long id, MultipartFile file) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		Advert advert1 = advertMapper.selectByPrimaryKey(id);
+		
 		if (me.getType() == 0) {
 			if (advert1.getType() == 2) {
-				return ApiResponse.getErrorResponse("异常");
+				return ApiResponse.getErrorResponse("权限不足");
 			}
 			advert.setType(1);
 
 		} else {
 			if (advert1.getType() == 1) {
-				return ApiResponse.getErrorResponse("异常");
+				return ApiResponse.getErrorResponse("权限不足");
 			}
 			advert.setType(2);
 			advert.setSchoolId(me.getSchoolId());
