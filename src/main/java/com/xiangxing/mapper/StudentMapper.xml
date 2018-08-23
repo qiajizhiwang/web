@@ -115,30 +115,27 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xiangxing.model.Student" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_student (phone, password, name, 
-      pinyin, icon, gender, 
-      nation, state, birthday, 
-      major, grade, class_grade, 
-      house_address, home_telephone, id_card, 
-      status, school_id, create_time
-      )
-    values (#{phone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{pinyin,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
-      #{nation,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
-      #{major,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{classGrade,jdbcType=VARCHAR}, 
-      #{houseAddress,jdbcType=VARCHAR}, #{homeTelephone,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{schoolId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}
-      )
+    insert into t_student (id, phone, password, 
+      name, pinyin, icon, 
+      gender, nation, state, 
+      birthday, major, grade, 
+      class_grade, house_address, home_telephone, 
+      id_card, status, school_id, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{phone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{pinyin,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=VARCHAR}, #{nation,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=TIMESTAMP}, #{major,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
+      #{classGrade,jdbcType=VARCHAR}, #{houseAddress,jdbcType=VARCHAR}, #{homeTelephone,jdbcType=VARCHAR}, 
+      #{idCard,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{schoolId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Student" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into t_student
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
       <if test="phone != null" >
         phone,
       </if>
@@ -195,6 +192,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>

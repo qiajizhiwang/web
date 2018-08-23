@@ -52,12 +52,20 @@
 		</thead>
 	</table>
 	<div id="toolbar">
-		<span>学生姓名</span>
+		<span>学生姓名：</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newStudent()">新增</a>
-	
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newStudent()">新增</a><br/>
+	<div>
+		<form id="fmExcel" method="post" enctype="multipart/form-data">
+		<span>批量导入学生：</span>
+			<input id="excelFile" name="file" class="easyui-filebox" data-options="prompt:'Choose a file...'" style="width:15%">
+			<a href="#" class="easyui-linkbutton" iconCls="icon-redo" plain="true" onclick="uploadExcel()">导入</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="downloadExcel()">下载导入模板</a>
+		</form>
 	</div>
+	</div>
+	
 	
 	<div id="dlg" class="easyui-dialog" modal="true" style="width:400px;height:500px;padding:10px 20px" data-options="closed: true"
 		 buttons="#dlg-buttons">
@@ -195,10 +203,6 @@
 		</div>
 		
 		
-	
-	
-	
-
 </body>
 <script type="text/javascript">
 
@@ -404,6 +408,41 @@
      return "停用"
  else if (value == 1 )   return "启用"
  } 
+ 
+ 
+ 
+	
+	function uploadExcel(){
+		$('#fmExcel').form('submit',{
+			url: "uploadExcel",
+			onSubmit: function(){
+				return $(this).form('validate');
+			},
+			success: function(result){
+				var result = eval('('+result+')');
+				if (result.code == 10000){
+					$.messager.show({
+						title: '导入成功！',
+						msg: '批量导入学生成功！'
+					});
+				$('#dg').datagrid('reload');
+				} else {
+					$.messager.show({
+						title: 'Error',
+						msg: result.msg
+					});
+				}
+				
+				$('#excelFile').filebox({
+			        prompt:'Choose a file...'
+			    });
+			}
+		});
+	}
+	
+	function downloadExcel(){
+		window.location.href="downloadExcel";
+	}
  
 </script>
 
