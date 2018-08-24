@@ -133,7 +133,8 @@ public class EntryFormController extends BaseController {
 		response.addHeader("Cache-Control", "no-cache");
 		response.addDateHeader("Expries", 0);
 		response.setContentType("application/pdf;charset=utf-8");
-		response.addHeader("Content-Disposition", "attachment;filename=" + examPo.getStudentName() + "考生报名表.pdf");
+		String fileName = examPo.getStudentName() + "考生报名表.pdf";
+		response.addHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("utf-8"), "ISO_8859_1"));
 		FileInputStream fileInputStream = new FileInputStream(file);
 		OutputStream out = response.getOutputStream();
 		int length = 0;
@@ -162,7 +163,8 @@ public class EntryFormController extends BaseController {
 		response.addHeader("Cache-Control", "no-cache");
 		response.addDateHeader("Expries", 0);
 		response.setContentType("application/pdf;charset=utf-8");
-		response.addHeader("Content-Disposition", "attachment;filename=" + examPo.getStudentName() + "准考证.pdf");
+		String fileName = examPo.getStudentName() + "准考证.pdf";
+		response.addHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("utf-8"), "ISO_8859_1"));
 		FileInputStream fileInputStream = new FileInputStream(file);
 		OutputStream out = response.getOutputStream();
 		int length = 0;
