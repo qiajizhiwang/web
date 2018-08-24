@@ -108,6 +108,7 @@ public class StudentController extends BaseController {
 		List<StudentPo> students = studentPoMapper.list(name, me.getSchoolId(), null);
 		for (StudentPo studentPo : students) {
 			studentPo.setShowBirthday(DateUtil.dateToString(studentPo.getBirthday(), DateUtil.patternA));
+			studentPo.setPassword(null);
 		}
 		long total = page.getTotal();
 		return new PageResponse<StudentPo>(total, students);
@@ -132,8 +133,11 @@ public class StudentController extends BaseController {
 		if (StringUtil.isNotEmpty(student.getPassword())) {
 			student.setPassword(MD5Util.MD5Encode(student.getPassword()));
 		}
+		else{
+			student.setPassword(null);
+		}
 		student.setBirthday(DateUtil.stringToDate(student.getShowBirthday()));
-		studentMapper.updateByPrimaryKey(student);
+		studentMapper.updateByPrimaryKeySelective(student);
 		return new ApiResponse();
 	}
 
