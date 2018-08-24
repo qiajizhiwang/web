@@ -95,7 +95,8 @@ public class PdfUtils {
 
 		Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
 		try {
-			cfg.setDirectoryForTemplateLoading(baseDir);
+//			cfg.setDirectoryForTemplateLoading(baseDir);
+			cfg.setClassForTemplateLoading(PdfUtils.class, "/templates/pdf");
 			cfg.setDefaultEncoding("UTF-8");
 			cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);// .RETHROW
 			cfg.setClassicCompatible(true);
