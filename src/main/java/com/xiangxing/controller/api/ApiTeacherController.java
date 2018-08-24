@@ -431,6 +431,15 @@ public class ApiTeacherController {
 						return ApiResponse.getErrorResponse("有学生已超课时");
 					}
 					record.setSignFlag(1l);
+					
+
+					// 签到
+					record.setSignTime(new Date());
+					courseSignMapper.insertSelective(record);
+					// 修改课时
+					studentCourse.setPeriod(studentCourse.getPeriod() + 2);
+					studentCourseMapper.updateByPrimaryKey(studentCourse);
+					
 					Notice notice = new Notice();
 					notice.setType(2);
 					notice.setText("您的孩子已经开始上课了，本学期还剩"+(course.getPeriod()-studentCourse.getPeriod()-2)+"课时");
@@ -444,13 +453,6 @@ public class ApiTeacherController {
 					noticeDetail.setReceiver(studentCourse.getStudentId());
 					// 签到消息
 					noticeDetailMapper.insert(noticeDetail);
-
-					// 签到
-					record.setSignTime(DateUtil.stringToDate(DateUtil.dateToString(new Date(), DateUtil.patternA)));
-					courseSignMapper.insertSelective(record);
-					// 修改课时
-					studentCourse.setPeriod(studentCourse.getPeriod() + 2);
-					studentCourseMapper.updateByPrimaryKey(studentCourse);
 				}
 
 			} catch (Exception e) {
