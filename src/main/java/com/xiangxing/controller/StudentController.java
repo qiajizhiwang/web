@@ -232,6 +232,11 @@ public class StudentController extends BaseController {
 					writeToErrorResponse(jsonObject);
 					return;
 				}
+				if (phone.length()>11) {
+					jsonObject.put("msg", String.format("账号%s格式错误！", phone));
+					writeToErrorResponse(jsonObject);
+					return;
+				}
 				phones.add(phone);
 				if (StringUtil.isEmpty(phone)) {
 					break;
@@ -280,22 +285,22 @@ public class StudentController extends BaseController {
 				String state = sheet.getCell(6, i).getContents().replace(" ", "");
 				student.setState(state);
 				// 专业
-				String major = sheet.getCell(6, i).getContents().replace(" ", "");
+				String major = sheet.getCell(7, i).getContents().replace(" ", "");
 				student.setMajor(major);
 				// 年级
-				String grade = sheet.getCell(6, i).getContents().replace(" ", "");
+				String grade = sheet.getCell(8, i).getContents().replace(" ", "");
 				student.setGrade(grade);
 				// 班级
-				String class_grade = sheet.getCell(6, i).getContents().replace(" ", "");
+				String class_grade = sheet.getCell(9, i).getContents().replace(" ", "");
 				student.setClassGrade(class_grade);
 				// 家庭地址
-				String house_address = sheet.getCell(6, i).getContents().replace(" ", "");
+				String house_address = sheet.getCell(10, i).getContents().replace(" ", "");
 				student.setHouseAddress(house_address);
 				// 父母电话
-				String home_telephone = sheet.getCell(6, i).getContents().replace(" ", "");
+				String home_telephone = sheet.getCell(11, i).getContents().replace(" ", "");
 				student.setHomeTelephone(home_telephone);
 				// 身份证号码
-				String id_card = sheet.getCell(6, i).getContents().replace(" ", "");
+				String id_card = sheet.getCell(12, i).getContents().replace(" ", "");
 				student.setIdCard(id_card);
 				student.setSchoolId(me.getSchoolId());
 				student.setStatus(1);
