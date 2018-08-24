@@ -98,7 +98,7 @@
 						} else {
 							$.messager.show({	// show error message
 								title: 'Error',
-								msg: result.errorMsg
+								msg: result.msg
 							});
 						}
 					},'json');
@@ -115,14 +115,14 @@
 			},
 			success: function(result){
 				var result = eval('('+result+')');
-				if (result.errorMsg){
-					$.messager.show({
-						title: 'Error',
-						msg: result.errorMsg
-					});
-				} else {
+				if (result.code == 10000){
 					$('#dlg').dialog('close');		// close the dialog
 					$('#dg').datagrid('reload');	// reload the user data
+				} else {
+					$.messager.show({
+						title: 'Error',
+						msg: result.msg
+					});
 				}
 			}
 		});

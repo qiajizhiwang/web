@@ -97,15 +97,15 @@
 			<table cellpadding="5">
 			<tr>
 				<td>图片1</td>
-				<td><input name="file1" class="easyui-filebox" data-options="prompt:'Choose a file...'" style="width:100%"></td>
+				<td><input name="file1" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
 			</tr>
 			<tr>
 				<td>图片2</td>
-				<td><input name="file2" class="easyui-filebox" data-options="prompt:'Choose a file...'" style="width:100%"></td>
+				<td><input name="file2" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
 			</tr>
 			<tr>
 				<td>图片3</td>
-				<td><input name="file3" class="easyui-filebox" data-options="prompt:'Choose a file...'" style="width:100%"></td>
+				<td><input name="file3" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
 			</tr>
 			</table>
 		</form>

@@ -58,7 +58,7 @@
 			
 			<tr>
 				<td>图片</td>
-				<td><input name="file" class="easyui-filebox" required="true" data-options="prompt:'Choose a file...'" style="width:100%"></td>
+				<td><input name="file" class="easyui-filebox" required="true" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
 			</tr>
 			</table>
 		</form>
@@ -84,7 +84,7 @@
 			
 			<tr>
 				<td>图片</td>
-				<td><input name="file" class="easyui-filebox" required="true" data-options="prompt:'Choose a file...'" style="width:100%"></td>
+				<td><input name="file" class="easyui-filebox" required="true" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
 			</tr>
 			</table>
 		</form>

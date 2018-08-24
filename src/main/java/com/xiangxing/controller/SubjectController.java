@@ -3,12 +3,14 @@ package com.xiangxing.controller;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.BaseController;
@@ -17,6 +19,7 @@ import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.SubjectMapper;
 import com.xiangxing.model.Subject;
 import com.xiangxing.model.SubjectExample;
+import com.xiangxing.model.User;
 import com.xiangxing.model.SubjectExample.Criteria;
 
 @Controller
@@ -33,6 +36,13 @@ public class SubjectController extends BaseController {
 
 	@RequestMapping("/saveSubject")
 	public void savesubject(Subject subject) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		JSONObject jsonObject = new JSONObject();
+		if (me.getType() == 1) {
+			jsonObject.put("msg", "无权限！");
+			writeToErrorResponse(jsonObject);
+			return;
+		}
 		subjectMapper.insertSelective(subject);
 		writeToOkResponse();
 	}
@@ -59,6 +69,13 @@ public class SubjectController extends BaseController {
 
 	@RequestMapping("/editSubject")
 	public void editsubject(Subject subject, Long subjectId) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		JSONObject jsonObject = new JSONObject();
+		if (me.getType() == 1) {
+			jsonObject.put("msg", "无权限！");
+			writeToErrorResponse(jsonObject);
+			return;
+		}
 		subject.setId(subjectId);
 		subjectMapper.updateByPrimaryKeySelective(subject);
 		writeToOkResponse();
@@ -66,6 +83,13 @@ public class SubjectController extends BaseController {
 
 	@RequestMapping("/destroySubject")
 	public void destroysubject(Long subjectId) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		JSONObject jsonObject = new JSONObject();
+		if (me.getType() == 1) {
+			jsonObject.put("msg", "无权限！");
+			writeToErrorResponse(jsonObject);
+			return;
+		}
 		Subject record = new Subject();
 		record.setId(subjectId);
 		record.setDelFlag(1l);

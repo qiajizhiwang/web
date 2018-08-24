@@ -61,16 +61,16 @@
 			<tr>
 				<td>科目</td>
 				<td>
-				<input id="subjectId" class="easyui-combobox" name="subjectId" data-options="valueField:'id',textField:'name',url:'../subject/comboboxData'">
+				<input id="subjectId" class="easyui-combobox" name="subjectId" data-options="valueField:'id',textField:'name',url:'../subject/comboboxData'" required="true">
 				</td>
 			</tr>
 			<tr>
 				<td>考试级别</td>
-				<td><input name="rank" class="easyui-textbox" required="true"></td>
+				<td><input id="rank" name="rank" class="easyui-combobox" data-options="valueField:'rank',textField:'rank',url:'../examRank/comboboxData'" required="true"></td>
 			</tr>
 			<tr>
 				<td>考试费用</td>
-				<td><input name="money" class="easyui-textbox" ></td>
+				<td><input id="money" name="money" class="easyui-textbox" readonly="readonly"></td>
 			</tr>
 			<tr>
 				<td>考试时间</td>
@@ -100,6 +100,25 @@
 	</div>
 </body>
 <script type="text/javascript">
+	
+	$(function(){ 
+		$('#rank').combobox({  
+		    onChange : function(){  
+		        var rank = $("#rank").combobox('getText');
+		        
+				 $.ajax({
+			        method : 'post',
+			        url : '../examRank/comboboxData',
+			        async : false,
+			        data: "rank="+rank,
+			        dataType : 'json',
+			        success : function(data) {
+			        	$("#money").textbox("setValue",data[0].money);
+			        }
+			    });
+		    }  
+		});  
+	});
 	
 	 function doSearch(){
 		$('#dg').datagrid('load',{
