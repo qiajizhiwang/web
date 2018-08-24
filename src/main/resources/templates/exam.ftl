@@ -42,14 +42,15 @@
 				<th field="showEndTime" width="50" editor="text">报名结束时间</th>
 				<th field="examAddress" width="50" editor="text">考试地点</th>
 				<th field="showOpenFlag" width="50" editor="text">是否开放报名</th>
-				<th field="showStatus" width="50" editor="text">审核状态</th>
 				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
 	</table>
 	<div id="toolbar">
+		<span>学校</span>
+		<input id="schoolId" class="easyui-combobox" name="schoolId" data-options="valueField:'id',textField:'name',url:'../school/comboboxData'">
 		<span>科目</span>
-		<input id="name" style="line-height:26px;border:1px solid #ccc">
+		<input id="subjectId" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'../subject/comboboxData'">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newExam()">新增</a>
 	</div>
@@ -122,7 +123,8 @@
 	
 	 function doSearch(){
 		$('#dg').datagrid('load',{
-			name: $('#name').val()
+			schoolId: $('#schoolId').val(),
+			subjectId: $('#subjectId').val()
 		});
 	}
 
@@ -219,7 +221,7 @@
   
        onLoadSuccess:function(data){  
       $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
-      $('.myaudit').linkbutton({text:'审核',plain:true,iconCls:'icon-edit'});
+     // $('.myaudit').linkbutton({text:'审核',plain:true,iconCls:'icon-edit'});
       $('.mydestroy').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});
       }
       
@@ -228,7 +230,7 @@
   
 	function rowFormatter(value,row,index){  
                return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>"
-               +"<a class='myaudit' onclick='auditRow("+index+")'>审核</a>"
+            //   +"<a class='myaudit' onclick='auditRow("+index+")'>审核</a>"
                +"<a class='mydestroy' onclick='destroyRow("+index+")'>删除</a>";  
  	}
  	

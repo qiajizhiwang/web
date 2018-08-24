@@ -66,13 +66,14 @@ public class ExamController extends BaseController {
 			writeToErrorResponse(jsonObject);
 		}
 		exam.setEndTime(DateUtil.stringToDate(exam.getShowEndTime()));
+		exam.setStatus(1l);
 		examMapper.insertSelective(exam);
 		writeToOkResponse();
 	}
 
 	@RequestMapping("/examList")
 	@ResponseBody
-	public PageResponse<ExamEx> examList(PageRequest pageRequest, String name) {
+	public PageResponse<ExamEx> examList(PageRequest pageRequest,Long schoolId, Long subjectId) {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		ExamExample examExample = new ExamExample();
@@ -80,7 +81,13 @@ public class ExamController extends BaseController {
 		criteria.andStatusNotEqualTo(2l);
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		if (me.getType() == 1) {
-			criteria.andSchoolIdEqualTo(me.getSchoolId());
+			schoolId=me.getSchoolId();
+		}
+		if (null!=schoolId&&0!=schoolId) {
+			criteria.andSchoolIdEqualTo(schoolId);
+		}
+		if (null!=subjectId&&0!=subjectId) {
+			criteria.andSubjectIdEqualTo(subjectId);
 		}
 		List<Exam> exams = examMapper.selectByExample(examExample);
 

@@ -47,6 +47,8 @@
 		</thead>
 	</table>
 	<div id="toolbar">
+		<span>学校</span>
+		<input id="schoolId" class="easyui-combobox" name="schoolId" data-options="valueField:'id',textField:'name',url:'../school/comboboxData'">
 		<span>学生姓名</span>
 		<input id="studentName" style="line-height:26px;border:1px solid #ccc">
 		<span>考试科目</span>
@@ -97,6 +99,7 @@
 	
 	 function doSearch(){
 		$('#dg').datagrid('load',{
+			schoolId: $('#schoolId').val(),
 			studentName: $('#studentName').val(),
 			examId: $('#examId').val()
 		});
