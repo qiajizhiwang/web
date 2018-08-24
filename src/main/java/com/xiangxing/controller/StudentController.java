@@ -149,6 +149,7 @@ public class StudentController extends BaseController {
 	public ApiResponse saveApply(StudentCourse studentCourse) {
 		try {
 			studentCourse.setCreateTime(new Date());
+			studentCourse.setPeriod(0);
 			studentCourseMapper.insert(studentCourse);
 			return new ApiResponse();
 		} catch (Exception e) {

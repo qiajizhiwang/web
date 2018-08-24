@@ -100,6 +100,9 @@ public class SystemController {
 	@ResponseBody
 	public ApiResponse destroyUser(Long id) {
 	    userMapper.deleteByPrimaryKey(id);
+	    UserMenuExample example = new UserMenuExample();
+	    example.createCriteria().andUserIdEqualTo(id);
+	    userMenuMapper.deleteByExample(example);
 		return new ApiResponse();
 	}
 	
@@ -115,10 +118,10 @@ public class SystemController {
 		if (StringUtils.isNotBlank(user.getPassword())) {
 			user.setPassword(
 					new SimpleHash("MD5", user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());
-		} else {
-			user.setPassword(me.getPassword());
+		}else{
+			user.setPassword(null);
 		}
-		userMapper.updateByPrimaryKey(user);
+		userMapper.updateByPrimaryKeySelective(user);
 
 		if (user.getType() == 1) {
 			UserMenuExample example = new UserMenuExample();
