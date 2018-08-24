@@ -49,7 +49,7 @@ public class PdfUtils {
 			String html = loadFtlHtml(new File(templateBaseDir), templateFile, globalMap);
 			XMLWorkerHelper.getInstance().parseXHtml(mPdfWriter, document,
 					new ByteArrayInputStream(html.getBytes("UTF-8")), Charset.forName("UTF-8"),
-					new ChinaFontProvide());
+					new ChinaFontProvider());
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -77,7 +77,7 @@ public class PdfUtils {
 			String html = loadFtlHtml(new File(templateBaseDir), templateFile, globalMap);
 			XMLWorkerHelper.getInstance().parseXHtml(mPdfWriter, document,
 					new ByteArrayInputStream(html.getBytes("UTF-8")), Charset.forName("UTF-8"),
-					new XMLWorkerFontProvider());
+					new ChinaFontProvider());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (DocumentException e) {
@@ -117,7 +117,7 @@ public class PdfUtils {
 	 * 提供中文
 	 * 
 	 */
-	public static final class ChinaFontProvide implements FontProvider {
+	public static final class ChinaFontProvider implements FontProvider {
 
 		@Override
 		public Font getFont(String arg0, String arg1, boolean arg2, float arg3, int arg4, BaseColor arg5) {
@@ -127,7 +127,7 @@ public class PdfUtils {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Font FontChinese = new Font(bfChinese, 12, Font.NORMAL);
+			Font FontChinese = new Font(bfChinese, arg3, arg4);
 			return FontChinese;
 		}
 
