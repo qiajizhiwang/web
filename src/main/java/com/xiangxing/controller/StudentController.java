@@ -132,8 +132,7 @@ public class StudentController extends BaseController {
 		student.setId(studentId);
 		if (StringUtil.isNotEmpty(student.getPassword())) {
 			student.setPassword(MD5Util.MD5Encode(student.getPassword()));
-		}
-		else{
+		} else {
 			student.setPassword(null);
 		}
 		student.setBirthday(DateUtil.stringToDate(student.getShowBirthday()));
@@ -228,11 +227,11 @@ public class StudentController extends BaseController {
 				// 手机号
 				String phone = sheet.getCell(1, i).getContents().replace(" ", "");
 				if (phones.contains(phone)) {
-					jsonObject.put("msg", String.format("账号%s重复！", phone));
+					jsonObject.put("msg", String.format("导入的文件存在账号%s重复！", phone));
 					writeToErrorResponse(jsonObject);
 					return;
 				}
-				if (phone.length()>11) {
+				if (phone.length() > 11) {
 					jsonObject.put("msg", String.format("账号%s格式错误！", phone));
 					writeToErrorResponse(jsonObject);
 					return;
@@ -245,7 +244,7 @@ public class StudentController extends BaseController {
 				example.createCriteria().andPhoneEqualTo(phone);
 				List<Student> studentList = studentMapper.selectByExample(example);
 				if (studentList.size() > 0) {
-					jsonObject.put("msg", String.format("账号%s已存在！", phone));
+					jsonObject.put("msg", String.format("账号%s已存在系统，删除该账号再导入！", phone));
 					writeToErrorResponse(jsonObject);
 					return;
 				}
@@ -298,6 +297,11 @@ public class StudentController extends BaseController {
 				student.setHouseAddress(house_address);
 				// 父母电话
 				String home_telephone = sheet.getCell(11, i).getContents().replace(" ", "");
+				if (StringUtil.isNotEmpty(home_telephone) && home_telephone.length() > 11) {
+					jsonObject.put("msg", String.format("父母电话%s格式错误！", home_telephone));
+					writeToErrorResponse(jsonObject);
+					return;
+				}
 				student.setHomeTelephone(home_telephone);
 				// 身份证号码
 				String id_card = sheet.getCell(12, i).getContents().replace(" ", "");

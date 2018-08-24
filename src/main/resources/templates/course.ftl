@@ -110,7 +110,7 @@
 			</tr>
 			<tr>
 				<td>照片</td>
-				<td><input name="file" class="easyui-filebox" data-options="prompt:'Choose a file...'" style="width:100%"></td>
+				<td><input name="file" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
 			</tr>
 			<tr>
 				<td>课程介绍</td>
@@ -155,7 +155,7 @@
 			</tr>
 			<tr>
 				<td>照片</td>
-				<td><input name="file" class="easyui-filebox" data-options="prompt:'Choose a file...'" style="width:100%"></td>
+				<td><input name="file" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
 			</tr>
 			<tr>
 				<td>课程介绍</td>

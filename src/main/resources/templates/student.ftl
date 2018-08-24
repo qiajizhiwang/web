@@ -34,7 +34,7 @@
 		<thead>
 			<tr>
 				<th field="id" width="50" editor="{type:'validatebox',options:{required:true}}">学生ID</th>
-				<th field="phone" width="50" editor="{type:'validatebox',options:{required:true}}">手机号</th>
+				<th field="phone" width="70" editor="{type:'validatebox',options:{required:true}}">手机号</th>
 				<th field="name" width="50" editor="text">姓名</th>
 				<th field="showBirthday" width="70" editor="text">生日</th>
 				<th field="gender" width="50" editor="text">性别</th>
@@ -44,7 +44,7 @@
 				<th field="grade" width="50" editor="text">年级</th>
 				<th field="classGrade" width="50" editor="text">班级</th>
 				<th field="houseAddress" width="50" editor="text">家庭地址</th>
-				<th field="homeTelephone" width="50" editor="text">父母电话</th>
+				<th field="homeTelephone" width="70" editor="text">父母电话</th>
 				<th field="idCard" width="50" editor="text">身份证号码</th>
 				<th field="status" width="50" editor="text" data-options="formatter:statusFormatter">审核状态</th>
 				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
@@ -59,7 +59,7 @@
 	<div>
 		<form id="fmExcel" method="post" enctype="multipart/form-data">
 		<span>批量导入学生：</span>
-			<input id="excelFile" name="file" class="easyui-filebox" data-options="prompt:'Choose a file...'" style="width:15%">
+			<input id="excelFile" name="file" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:15%">
 			<a href="#" class="easyui-linkbutton" iconCls="icon-redo" plain="true" onclick="uploadExcel()">导入</a>
 			<a href="#" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="downloadExcel()">下载导入模板</a>
 		</form>
@@ -434,7 +434,8 @@
 				}
 				
 				$('#excelFile').filebox({
-			        prompt:'Choose a file...'
+					buttonText:'选择',
+			        prompt:'选择文件...'
 			    });
 			}
 		});
