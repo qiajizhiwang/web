@@ -13,5 +13,7 @@ public interface ProductPoMapper {
 			@Param("schoolId") Long schoolId);
 
 	List<ProductPo> getListByStudentId(@Param("studentId") Long studentId);
+	
+	List<ProductPo> getListByTeacherId(@Param("teacherId") Long teacherId);
 
 }

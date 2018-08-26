@@ -267,11 +267,11 @@ public class ApiStudentController {
 	NoticePoMapper noticePoMapper;
 
 	@RequestMapping("/myNotices")
-	public ApiResponse myNotices(PageRequest pageRequest) {
+	public ApiResponse myNotices(PageRequest pageRequest,Integer type) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
-		List notices = noticePoMapper.list(info.getId());
+		List notices = noticePoMapper.list(info.getId(),type);
 		long total = page.getTotal();
 		return new ApiPageResponse<NoticePo>(total, notices);
 

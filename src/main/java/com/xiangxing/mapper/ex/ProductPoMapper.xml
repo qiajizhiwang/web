@@ -29,5 +29,16 @@ AND t2.`student_Id` =#{studentId}
     </if>
     order by t1.create_time desc
   </select>
+  
+    <select id="getListByTeacherId" resultType="com.xiangxing.model.ex.ProductPo">
+  select t3.name  as studentName,t3.id as studentId,t4.id as courseId ,t4.name as courseName, t1.create_time as createTime,t1.*
+   from t_product as t1,t_student_course as t2,t_student as t3,t_course as t4  ,t_teacher as t5
+where t1.student_course_id = t2.id and t2.course_id = t4.id and t2.student_id = t3.id and t5.id = t4.teacher_id
+    <if test="teacherId != null" >
+AND t4.`teacher_id` =#{teacherId}
+    </if>
+    order by t1.create_time desc
+  </select>
+ 
  
 </mapper>

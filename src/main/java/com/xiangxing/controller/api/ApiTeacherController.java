@@ -164,26 +164,6 @@ public class ApiTeacherController {
 
 	}
 
-	/**
-	 * 获取学生作品
-	 * 
-	 * @param teacherRequest
-	 * @return
-	 */
-	@RequestMapping("/studentProducts")
-	public ApiPageResponse<ProductPo> studentProducts(TeacherRequest teacherRequest,
-			HttpServletRequest httpServletRequest) {
-		LoginInfo info = TokenManager.getNowUser();
-		Page<?> page = PageHelper.startPage(teacherRequest.getPage(), teacherRequest.getRows(), true);
-		List<ProductPo> productPos = teacherPoMapper.studentProducts(info.getId(), teacherRequest.getCourseId(),
-				teacherRequest.getStudentId());
-		for (ProductPo productPo : productPos) {
-			productPo.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + productPo.getPath());
-		}
-		long total = page.getTotal();
-		return new ApiPageResponse<ProductPo>(total, productPos);
-
-	}
 
 	/**
 	 * 
@@ -612,11 +592,25 @@ public class ApiTeacherController {
 	@Autowired
 	ProductPoMapper productPoMapper;
 
-	@RequestMapping("/products")
-	public ApiResponse myProducts(PageRequest pageRequest, HttpServletRequest httpServletRequest, Long studentId) {
+	@RequestMapping("/studentProducts")
+	public ApiResponse studentProducts(PageRequest pageRequest, HttpServletRequest httpServletRequest, Long studentId) {
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
 		List<ProductPo> products = productPoMapper.getListByStudentId(studentId);
+		for (ProductPo product : products) {
+			product.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + product.getPath());
+		}
+		long total = page.getTotal();
+		return new ApiPageResponse<ProductPo>(total, products);
+
+	}
+	
+	@RequestMapping("/products")
+	public ApiResponse products(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
+		LoginInfo info = TokenManager.getNowUser();
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+
+		List<ProductPo> products = productPoMapper.getListByTeacherId(info.getId());
 		for (ProductPo product : products) {
 			product.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + product.getPath());
 		}
