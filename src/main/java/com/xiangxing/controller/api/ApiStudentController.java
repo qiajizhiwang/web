@@ -267,11 +267,11 @@ public class ApiStudentController {
 	NoticePoMapper noticePoMapper;
 
 	@RequestMapping("/myNotices")
-	public ApiResponse myNotices(PageRequest pageRequest,Integer type) {
+	public ApiResponse myNotices(PageRequest pageRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
-		List notices = noticePoMapper.list(info.getId(),type);
+		List notices = noticePoMapper.list(info.getId());
 		long total = page.getTotal();
 		return new ApiPageResponse<NoticePo>(total, notices);
 
@@ -320,6 +320,7 @@ public class ApiStudentController {
 		messageExample.setOrderByClause("id desc");
 		List<Message> messages = messageMapper.selectByExample(messageExample);
 		for (Message message : messages) {
+			if(message.getType() ==2 )
 			message.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + message.getPath());
 		}
 		long total = page.getTotal();
