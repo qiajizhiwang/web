@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,6 +36,8 @@ import com.xiangxing.model.NoticeDetailExample;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentExample;
 import com.xiangxing.model.User;
+import com.xiangxing.model.ex.CourseEx;
+import com.xiangxing.utils.DateUtil;
 import com.xiangxing.utils.FileUtil;
 import com.xiangxing.vo.api.ApiResponse;
 
@@ -61,16 +64,55 @@ public class NoticeController {
 
 	@Autowired
 	NoticeDetailMapper noticeDetailMapper;
+	
+	@Value("${upload_file_path}")
+	private String upload_file_path;
 
 	@RequestMapping
 	public String notice() {
 		return "notice";
+		
+		
 	}
 
+	// 最大文件大小 30MB
+		long maxSize = 31457280;
 	@RequestMapping("/saveNotice")
 	@ResponseBody
-	public ApiResponse saveNotice(Notice notice) {
+	public ApiResponse saveNotice(String text, MultipartFile file,HttpServletRequest request) {
+		// 定义允许上传的文件扩展名
+				HashMap<String, String> extMap = new HashMap<String, String>();
+				extMap.put("image", "gif,jpg,jpeg,png,bmp");
+
+				if (!ServletFileUpload.isMultipartContent(request)) {
+					System.out.println("请选择文件。");
+					return ApiResponse.getErrorResponse("文件类型不支持");
+				}
+		
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		String saveUrl = upload_file_path + "/notice/";
+		
+		File dirFile = new File(saveUrl);
+		if (!dirFile.exists()) {
+			dirFile.mkdirs();
+		}
+		if (file.getSize() > maxSize) {
+			logger.error("上传文件大小超过限制。");
+			return ApiResponse.getErrorResponse("上传文件大小超过限制");
+		}
+		String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
+
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		String newFileName = df.format(new Date()) + "_" + new Random().nextInt(1000) + "." + fileExt;
+		try {
+			FileUtil.uploadFile(file.getBytes(), saveUrl, newFileName);
+		} catch (Exception e) {
+			System.out.println("上传文件失败。");
+			return  ApiResponse.getErrorResponse("上传文件失败。");
+		}
+		Notice notice = new Notice();
+		notice.setText(text);
+		notice.setImageUrl(saveUrl + newFileName);
 		notice.setType(1);
 		notice.setSender(me.getSchoolId());
 		notice.setCreateTime(new Date());
@@ -94,10 +136,14 @@ public class NoticeController {
 	public PageResponse<Notice> NoticeList(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
-		NoticeExample NoticeExample = new NoticeExample();
-		NoticeExample.createCriteria().andIdIsNotNull();
-		List<Notice> notices = noticeMapper.selectByExample(NoticeExample);
+		NoticeExample noticeExample = new NoticeExample();
+		noticeExample.createCriteria().andIdIsNotNull();
+		noticeExample.setOrderByClause("create_time desc");
+		List<Notice> notices = noticeMapper.selectByExample(noticeExample);
+		for (Notice notice : notices) {
 
+			notice.setImageUrl(httpServletRequest.getContextPath()  + "/initImage?imageUrl=" + notice.getImageUrl());
+		}
 		long total = page.getTotal();
 		return new PageResponse<Notice>(total, notices);
 

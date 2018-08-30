@@ -36,6 +36,7 @@
 				<th field="createTime" width="50" >时间</th>
 				<th field="type" width="50" ,formatter:typeFormatter">类型</th>
 				<th field="senderName" width="50" >发送者</th>
+				<th data-options="field:'imageUrl',width:100, formatter:showImg">图片</th>
 				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
@@ -46,10 +47,20 @@
 	
 	<div id="dlg" class="easyui-dialog" style="width:400px;height:500px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
+		
 		<form id="fm" method="post" enctype="multipart/form-data">
-				<span>内容</span>
-				<input name="text" data-options="multiline:true" style="width:300px;height:100px"  class="easyui-textbox" required="true">
+		<table cellpadding="5">
+				<tr>
+				<td>内容</td>
+				<td><input name="text" data-options="multiline:true" style="width:300px;height:100px"  class="easyui-textbox" ></td>
+				</tr>
+				<tr>
+				<td>照片</td>
+				<td><input name="file" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
+			</tr>
+			</table>
 		</form>
+		
 	</div>
 	<div id="dlg-buttons">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveNotice()">保存</a>
@@ -128,6 +139,12 @@
       
   })
   })
+  
+  function showImg(value, row, index){  
+	    if(row.imageUrl){  
+	        return "<img style='width:100px;height:100px;' border='1' src='"+row.imageUrl+"'/>";  
+	    }  
+	}
   
 	function rowFormatter(value,row,index){  
                return "<a class='mydestroy' onclick='destroyRow("+index+")'>删除</a>";  

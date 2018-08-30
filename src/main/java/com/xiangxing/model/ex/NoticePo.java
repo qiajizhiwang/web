@@ -15,6 +15,8 @@ public class NoticePo {
 	private String senderName;
 
 	private Integer status;
+	
+	private String imageUrl;
 
 	public Long getId() {
 		return id;
@@ -62,6 +64,14 @@ public class NoticePo {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }

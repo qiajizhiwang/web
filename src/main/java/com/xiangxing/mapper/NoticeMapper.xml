@@ -8,6 +8,7 @@
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="sender" property="sender" jdbcType="BIGINT" />
     <result column="sender_name" property="senderName" jdbcType="VARCHAR" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, text, create_time, type, sender, sender_name
+    id, text, create_time, type, sender, sender_name, image_url
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.NoticeExample" >
     select
@@ -105,9 +106,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_notice (text, create_time, type, 
-      sender, sender_name)
+      sender, sender_name, image_url
+      )
     values (#{text,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, 
-      #{sender,jdbcType=BIGINT}, #{senderName,jdbcType=VARCHAR})
+      #{sender,jdbcType=BIGINT}, #{senderName,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Notice" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -130,6 +133,9 @@
       <if test="senderName != null" >
         sender_name,
       </if>
+      <if test="imageUrl != null" >
+        image_url,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="text != null" >
@@ -146,6 +152,9 @@
       </if>
       <if test="senderName != null" >
         #{senderName,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null" >
+        #{imageUrl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -176,6 +185,9 @@
       <if test="record.senderName != null" >
         sender_name = #{record.senderName,jdbcType=VARCHAR},
       </if>
+      <if test="record.imageUrl != null" >
+        image_url = #{record.imageUrl,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -188,7 +200,8 @@
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       type = #{record.type,jdbcType=INTEGER},
       sender = #{record.sender,jdbcType=BIGINT},
-      sender_name = #{record.senderName,jdbcType=VARCHAR}
+      sender_name = #{record.senderName,jdbcType=VARCHAR},
+      image_url = #{record.imageUrl,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -211,6 +224,9 @@
       <if test="senderName != null" >
         sender_name = #{senderName,jdbcType=VARCHAR},
       </if>
+      <if test="imageUrl != null" >
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -220,7 +236,8 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       type = #{type,jdbcType=INTEGER},
       sender = #{sender,jdbcType=BIGINT},
-      sender_name = #{senderName,jdbcType=VARCHAR}
+      sender_name = #{senderName,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

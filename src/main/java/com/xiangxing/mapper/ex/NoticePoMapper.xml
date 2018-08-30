@@ -7,7 +7,7 @@
 	<select id="list" resultType="com.xiangxing.model.ex.NoticePo">
 		select t1.id as id ,t1.`status` as status , t2.text as text,
 		t2.create_time as createTime,t2.sender_name as senderName ,t2.type
-		as type
+		as type,t2.image_url as imageUrl
 		from t_notice_detail t1,t_notice t2
 		where t1.notice_id = t2.id
 		<if test="studentId != null">

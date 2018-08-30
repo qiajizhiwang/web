@@ -15,6 +15,8 @@ public class Notice {
 
     private String senderName;
 
+    private String imageUrl;
+
     public Long getId() {
         return id;
     }
@@ -61,5 +63,13 @@ public class Notice {
 
     public void setSenderName(String senderName) {
         this.senderName = senderName;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

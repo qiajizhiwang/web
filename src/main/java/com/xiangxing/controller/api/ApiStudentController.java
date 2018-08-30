@@ -48,6 +48,7 @@ import com.xiangxing.model.Message;
 import com.xiangxing.model.MessageExample;
 import com.xiangxing.model.MessageQueue;
 import com.xiangxing.model.MessageQueueExample;
+import com.xiangxing.model.Notice;
 import com.xiangxing.model.NoticeDetail;
 import com.xiangxing.model.School;
 import com.xiangxing.model.SchoolImage;
@@ -267,11 +268,14 @@ public class ApiStudentController {
 	NoticePoMapper noticePoMapper;
 
 	@RequestMapping("/myNotices")
-	public ApiResponse myNotices(PageRequest pageRequest,Integer type) {
+	public ApiResponse myNotices(PageRequest pageRequest,Integer type,HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
-		List notices = noticePoMapper.list(info.getId(),type);
+		List<NoticePo> notices = noticePoMapper.list(info.getId(),type);
+		for (NoticePo notice : notices) {
+			notice.setImageUrl(httpServletRequest.getContextPath()  + "/initImage?imageUrl=" + notice.getImageUrl());
+		}
 		long total = page.getTotal();
 		return new ApiPageResponse<NoticePo>(total, notices);
 
