@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -164,7 +165,6 @@ public class ApiTeacherController {
 
 	}
 
-
 	/**
 	 * 
 	 * 
@@ -180,7 +180,7 @@ public class ApiTeacherController {
 	}
 
 	@RequestMapping("/uploadProduct")
-	public ApiResponse uploadProduct(ProductVo productVo,Long courseId,Long studentId) {
+	public ApiResponse uploadProduct(ProductVo productVo, Long courseId, Long studentId) {
 		LoginInfo info = TokenManager.getNowUser();
 		productVo.setCourseId(courseId);
 		productVo.setStudentId(studentId);
@@ -257,7 +257,7 @@ public class ApiTeacherController {
 				e.printStackTrace();
 			}
 		}
-		
+
 		homework.setCourseId(courseId);
 		homework.setCreateTime(new Date());
 		homework.setName(name);
@@ -331,7 +331,7 @@ public class ApiTeacherController {
 	 * @return
 	 */
 	@RequestMapping("/getHomework")
-	public ApiResponse getHomework(PageRequest pageRequest,HttpServletRequest httpServletRequest) {
+	public ApiResponse getHomework(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
 
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
@@ -341,7 +341,8 @@ public class ApiTeacherController {
 		long total = page.getTotal();
 		for (HomeworkPo homeworkPo : homeworkPos) {
 			homeworkPo.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getPath());
-			homeworkPo.setJobPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getJobPath());
+			homeworkPo
+					.setJobPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getJobPath());
 
 		}
 		// 过滤字段
@@ -399,19 +400,27 @@ public class ApiTeacherController {
 		List<StudentCourse> studentCourses = studentCourseMapper.selectByExample(example);
 		Course course = courseMapper.selectByPrimaryKey(courseId);
 		CourseSign record = null;
-
-
+        List errList = new ArrayList();
+		for (StudentCourse studentCourse1 : studentCourses) {
+			if (asList.contains(studentCourse1.getStudentId())) {
+				if (studentCourse1.getPeriod() + 2 > course.getPeriod()) {
+					errList.add(studentCourse1.getStudentId());
+				}
+			
+		}
+		}
+		if(org.apache.commons.collections.CollectionUtils.isNotEmpty(errList)){
+				return ApiResponse.getErrorResponse(""+ Arrays.toString(errList.toArray()));
+		}
+		
+		
 		for (StudentCourse studentCourse : studentCourses) {
 			// 重复签到忽略
 			try {
 				record = new CourseSign();
 				record.setStudentCourseId(studentCourse.getId());
 				if (asList.contains(studentCourse.getStudentId())) {
-					if (studentCourse.getPeriod() + 2 > course.getPeriod()) {
-						return ApiResponse.getErrorResponse("有学生已超课时");
-					}
-					record.setSignFlag(1l);
-					
+					record.setSignFlag(1l);				
 
 					// 签到
 					record.setSignTime(new Date());
@@ -441,7 +450,7 @@ public class ApiTeacherController {
 		}
 
 		return new ApiResponse();
-
+		
 	}
 
 	/**
@@ -474,10 +483,11 @@ public class ApiTeacherController {
 	MessageQueuePoMapper messageQueuePoMapper;
 
 	@RequestMapping("/getQueues")
-	public ApiPageResponse<MessageQueuePo> getQueues(PageRequest pageRequest, HttpServletRequest httpServletRequest,Long courseId) {
+	public ApiPageResponse<MessageQueuePo> getQueues(PageRequest pageRequest, HttpServletRequest httpServletRequest,
+			Long courseId) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
-		List<MessageQueuePo> messages = messageQueuePoMapper.list(info.getId(), null,courseId);
+		List<MessageQueuePo> messages = messageQueuePoMapper.list(info.getId(), null, courseId);
 		long total = page.getTotal();
 		return new ApiPageResponse<MessageQueuePo>(total, messages);
 	}
@@ -604,7 +614,7 @@ public class ApiTeacherController {
 		return new ApiPageResponse<ProductPo>(total, products);
 
 	}
-	
+
 	@RequestMapping("/products")
 	public ApiResponse products(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
 		LoginInfo info = TokenManager.getNowUser();
