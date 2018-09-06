@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Base64Utils;
@@ -331,12 +332,12 @@ public class ApiTeacherController {
 	 * @return
 	 */
 	@RequestMapping("/getHomework")
-	public ApiResponse getHomework(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
+	public ApiResponse getHomework(PageRequest pageRequest, HttpServletRequest httpServletRequest, Long courseId) {
 
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
-		List<HomeworkPo> homeworkPos = homeworkPoMapper.getTeacherHomeWork(info.getId());
+		List<HomeworkPo> homeworkPos = homeworkPoMapper.getTeacherHomeWork(info.getId(),courseId);
 
 		long total = page.getTotal();
 		for (HomeworkPo homeworkPo : homeworkPos) {
