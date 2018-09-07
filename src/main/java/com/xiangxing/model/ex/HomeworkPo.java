@@ -29,8 +29,48 @@ public class HomeworkPo {
 	private int unreviewedNumber;
 
 	private String path;
-	
+
 	private String jobPath;
+
+	private Integer layout;
+
+	private Integer color;
+
+	private Integer subject;
+
+	private String remark;
+
+	public Integer getLayout() {
+		return layout;
+	}
+
+	public void setLayout(Integer layout) {
+		this.layout = layout;
+	}
+
+	public Integer getColor() {
+		return color;
+	}
+
+	public void setColor(Integer color) {
+		this.color = color;
+	}
+
+	public Integer getSubject() {
+		return subject;
+	}
+
+	public void setSubject(Integer subject) {
+		this.subject = subject;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
 	public int getStudentNumber() {
 		return studentNumber;
