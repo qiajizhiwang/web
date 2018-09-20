@@ -22,15 +22,16 @@ import com.xiangxing.mapper.MenuMapper;
 import com.xiangxing.mapper.SchoolMapper;
 import com.xiangxing.mapper.UserMapper;
 import com.xiangxing.mapper.UserMenuMapper;
+import com.xiangxing.mapper.VersionMapper;
 import com.xiangxing.model.Menu;
 import com.xiangxing.model.MenuExample;
-import com.xiangxing.model.School;
-import com.xiangxing.model.SchoolExample;
 import com.xiangxing.model.User;
 import com.xiangxing.model.UserExample;
 import com.xiangxing.model.UserExample.Criteria;
 import com.xiangxing.model.UserMenu;
 import com.xiangxing.model.UserMenuExample;
+import com.xiangxing.model.Version;
+import com.xiangxing.model.VersionExample;
 import com.xiangxing.vo.MenuVo;
 import com.xiangxing.vo.MyMenuVo;
 import com.xiangxing.vo.api.ApiResponse;
@@ -262,6 +263,30 @@ public class SystemController {
 
 		}
 		return allMenus;
+	}
+	
+	@Autowired
+	VersionMapper versionMapper;
+
+	@RequestMapping("/version")
+	public String version(Model model) {
+		VersionExample example = new VersionExample();
+		example.createCriteria().andVersionIsNotNull();
+		List<Version> list = versionMapper.selectByExample(example);
+		model.addAttribute("version",list.get(0).getVersion());
+		return "version";
+	}
+	
+	@RequestMapping("/saveVersion")
+	public String saveVersion(String version,Model model) {
+		VersionExample example = new VersionExample();
+		example.createCriteria().andVersionIsNotNull();
+		List<Version> list = versionMapper.selectByExample(example);
+		Version version1 = list.get(0);
+		version1.setVersion(version);
+		versionMapper.updateByExample(version1, example);
+		model.addAttribute("version",version);
+		return "version";
 	}
 
 }

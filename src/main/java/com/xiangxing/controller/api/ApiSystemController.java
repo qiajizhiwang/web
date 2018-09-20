@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiangxing.controller.admin.PageRequest;
 import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.AdvertMapper;
 import com.xiangxing.mapper.ContactMapper;
 import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.TeacherMapper;
+import com.xiangxing.mapper.VersionMapper;
 import com.xiangxing.model.Advert;
 import com.xiangxing.model.AdvertExample;
 import com.xiangxing.model.Contact;
@@ -26,12 +26,15 @@ import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentExample;
 import com.xiangxing.model.Teacher;
 import com.xiangxing.model.TeacherExample;
+import com.xiangxing.model.Version;
+import com.xiangxing.model.VersionExample;
 import com.xiangxing.utils.MD5Util;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.LoginInfo;
 import com.xiangxing.vo.api.LoginRequest;
 import com.xiangxing.vo.api.LoginResponse;
+import com.xiangxing.vo.api.VersionVo;
 
 @RequestMapping("/api")
 @RestController
@@ -153,6 +156,19 @@ public class ApiSystemController {
 		contact.setText(text);
 		contactMapper.insert(contact);
 		return new ApiResponse();
+	}
+	
+	@Autowired
+	VersionMapper versionMapper;
+	
+	@RequestMapping("/getVersion")
+	public VersionVo getVersion() {
+		VersionExample example = new VersionExample();
+		example.createCriteria().andVersionIsNotNull();
+		List<Version> list = versionMapper.selectByExample(example);
+		VersionVo versionVo = new VersionVo();
+		versionVo.setVersion(list.get(0).getVersion());
+		return versionVo;
 	}
 	
 	

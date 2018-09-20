@@ -42,7 +42,7 @@
 		</table>  -->
 <!-- 		<table tableName="t_school" domainObjectName="School"></table> -->
 <!-- 		<table tableName="t_student" domainObjectName="Student"></table> -->
-		<table tableName="t_exam_rank" domainObjectName="ExamRank"></table>
+	<!-- 	<table tableName="t_exam_rank" domainObjectName="ExamRank"></table> -->
 <!-- 		<table tableName="t_student_course" domainObjectName="StudentCourse"></table> -->
 <!-- 		<table tableName="t_subject" domainObjectName="Subject"></table> -->
 <!-- 		<table tableName="t_teacher" domainObjectName="Teacher"></table> -->
@@ -57,6 +57,7 @@
 		<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		
 		</table>  -->
+		<table tableName="t_version" domainObjectName="Version"></table> 
 		
 <!-- <table tableName="t_notice" domainObjectName="Notice">
 <generatedKey column="id" sqlStatement="MySql" identity="true" /></table>  -->
