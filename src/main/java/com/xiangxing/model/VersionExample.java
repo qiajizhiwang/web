@@ -233,6 +233,136 @@ public class VersionExample {
             addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
+
+        public Criteria andMustIsNull() {
+            addCriterion("must is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustIsNotNull() {
+            addCriterion("must is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustEqualTo(Integer value) {
+            addCriterion("must =", value, "must");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustNotEqualTo(Integer value) {
+            addCriterion("must <>", value, "must");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustGreaterThan(Integer value) {
+            addCriterion("must >", value, "must");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustGreaterThanOrEqualTo(Integer value) {
+            addCriterion("must >=", value, "must");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustLessThan(Integer value) {
+            addCriterion("must <", value, "must");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustLessThanOrEqualTo(Integer value) {
+            addCriterion("must <=", value, "must");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustIn(List<Integer> values) {
+            addCriterion("must in", values, "must");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustNotIn(List<Integer> values) {
+            addCriterion("must not in", values, "must");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustBetween(Integer value1, Integer value2) {
+            addCriterion("must between", value1, value2, "must");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustNotBetween(Integer value1, Integer value2) {
+            addCriterion("must not between", value1, value2, "must");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressIsNull() {
+            addCriterion("address is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressIsNotNull() {
+            addCriterion("address is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressEqualTo(String value) {
+            addCriterion("address =", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressNotEqualTo(String value) {
+            addCriterion("address <>", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressGreaterThan(String value) {
+            addCriterion("address >", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressGreaterThanOrEqualTo(String value) {
+            addCriterion("address >=", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressLessThan(String value) {
+            addCriterion("address <", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressLessThanOrEqualTo(String value) {
+            addCriterion("address <=", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressLike(String value) {
+            addCriterion("address like", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressNotLike(String value) {
+            addCriterion("address not like", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressIn(List<String> values) {
+            addCriterion("address in", values, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressNotIn(List<String> values) {
+            addCriterion("address not in", values, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressBetween(String value1, String value2) {
+            addCriterion("address between", value1, value2, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressNotBetween(String value1, String value2) {
+            addCriterion("address not between", value1, value2, "address");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

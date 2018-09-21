@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="com.xiangxing.model.Version" >
     <result column="version" property="version" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="must" property="must" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -64,7 +66,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    version, type
+    version, type, must, address
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.VersionExample" >
     select
@@ -87,8 +89,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xiangxing.model.Version" >
-    insert into t_version (version, type)
-    values (#{version,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER})
+    insert into t_version (version, type, must, 
+      address)
+    values (#{version,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{must,jdbcType=INTEGER}, 
+      #{address,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Version" >
     insert into t_version
@@ -99,6 +103,12 @@
       <if test="type != null" >
         type,
       </if>
+      <if test="must != null" >
+        must,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="version != null" >
@@ -106,6 +116,12 @@
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
+      </if>
+      <if test="must != null" >
+        #{must,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -124,6 +140,12 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
+      <if test="record.must != null" >
+        must = #{record.must,jdbcType=INTEGER},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -132,7 +154,9 @@
   <update id="updateByExample" parameterType="map" >
     update t_version
     set version = #{record.version,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=INTEGER}
+      type = #{record.type,jdbcType=INTEGER},
+      must = #{record.must,jdbcType=INTEGER},
+      address = #{record.address,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

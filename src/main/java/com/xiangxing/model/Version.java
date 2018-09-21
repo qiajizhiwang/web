@@ -5,6 +5,10 @@ public class Version {
 
     private Integer type;
 
+    private Integer must;
+
+    private String address;
+
     public String getVersion() {
         return version;
     }
@@ -19,5 +23,21 @@ public class Version {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getMust() {
+        return must;
+    }
+
+    public void setMust(Integer must) {
+        this.must = must;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

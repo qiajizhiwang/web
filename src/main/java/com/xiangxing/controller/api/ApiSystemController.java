@@ -168,6 +168,8 @@ public class ApiSystemController {
 		List<Version> list = versionMapper.selectByExample(example);
 		VersionVo versionVo = new VersionVo();
 		versionVo.setVersion(list.get(0).getVersion());
+		versionVo.setMust(list.get(0).getMust());
+		versionVo.setAddress(list.get(0).getAddress());
 		return versionVo;
 	}
 	

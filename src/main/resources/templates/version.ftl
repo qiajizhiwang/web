@@ -38,10 +38,19 @@
 	    		<tr>
 	    			<td>安卓版本:</td>
 	    			<td><input value="${version1}" ="easyui-textbox" type="number" name="version1" data-options="required:true"></input></td>
+	    			<td>地址:</td>
+	    			<td><input value="${add1}" ="easyui-textbox" type="text" name="add1" data-options="required:true"></input></td>
+
+	    				
+	    			</tr>
+	    			<tr>
 	    				<td>IOS版本:</td>
 	    			<td><input value="${version2}" ="easyui-textbox" type="number" name="version2" data-options="required:true"></input></td>
-	    			<td>	<input type="submit" class="easyui-linkbutton"></td>
+	    			<td>地址:</td>
+	    			<td><input value="${add2}" ="easyui-textbox" type="text" name="add2" data-options="required:true"></input></td>
+<td>	<input type="submit" class="easyui-linkbutton" value="保存"></td>
 	    		</tr>
+	 
 	    		
 	    	</table>
 	    
