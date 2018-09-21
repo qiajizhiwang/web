@@ -3,6 +3,7 @@
 <mapper namespace="com.xiangxing.mapper.VersionMapper" >
   <resultMap id="BaseResultMap" type="com.xiangxing.model.Version" >
     <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -63,7 +64,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    version
+    version, type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.VersionExample" >
     select
@@ -86,8 +87,8 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xiangxing.model.Version" >
-    insert into t_version (version)
-    values (#{version,jdbcType=VARCHAR})
+    insert into t_version (version, type)
+    values (#{version,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.xiangxing.model.Version" >
     insert into t_version
@@ -95,10 +96,16 @@
       <if test="version != null" >
         version,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="version != null" >
         #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -114,6 +121,9 @@
       <if test="record.version != null" >
         version = #{record.version,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -121,7 +131,8 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update t_version
-    set version = #{record.version,jdbcType=VARCHAR}
+    set version = #{record.version,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

@@ -162,9 +162,9 @@ public class ApiSystemController {
 	VersionMapper versionMapper;
 	
 	@RequestMapping("/getVersion")
-	public VersionVo getVersion() {
+	public VersionVo getVersion(int type) {
 		VersionExample example = new VersionExample();
-		example.createCriteria().andVersionIsNotNull();
+		example.createCriteria().andTypeEqualTo(type);
 		List<Version> list = versionMapper.selectByExample(example);
 		VersionVo versionVo = new VersionVo();
 		versionVo.setVersion(list.get(0).getVersion());

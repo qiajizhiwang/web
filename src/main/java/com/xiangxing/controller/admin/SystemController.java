@@ -271,21 +271,32 @@ public class SystemController {
 	@RequestMapping("/version")
 	public String version(Model model) {
 		VersionExample example = new VersionExample();
-		example.createCriteria().andVersionIsNotNull();
+		example.createCriteria().andTypeEqualTo(1);
 		List<Version> list = versionMapper.selectByExample(example);
-		model.addAttribute("version",list.get(0).getVersion());
+		model.addAttribute("version1",list.get(0).getVersion());
+		 example = new VersionExample();
+		example.createCriteria().andTypeEqualTo(2);
+		list = versionMapper.selectByExample(example);
+		model.addAttribute("version2",list.get(0).getVersion());
 		return "version";
 	}
 	
 	@RequestMapping("/saveVersion")
-	public String saveVersion(String version,Model model) {
+	public String saveVersion(String version1,String version2,Model model) {
 		VersionExample example = new VersionExample();
-		example.createCriteria().andVersionIsNotNull();
+		example.createCriteria().andTypeEqualTo(1);
 		List<Version> list = versionMapper.selectByExample(example);
-		Version version1 = list.get(0);
-		version1.setVersion(version);
-		versionMapper.updateByExample(version1, example);
-		model.addAttribute("version",version);
+		Version version = list.get(0);
+		version.setVersion(version1);
+		versionMapper.updateByExample(version, example);
+		model.addAttribute("version1",version1);
+	  example = new VersionExample();
+		example.createCriteria().andTypeEqualTo(2);
+		 list = versionMapper.selectByExample(example);
+		 version = list.get(0);
+		version.setVersion(version2);
+		versionMapper.updateByExample(version, example);
+		model.addAttribute("version2",version2);
 		return "version";
 	}
 

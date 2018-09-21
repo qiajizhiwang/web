@@ -36,8 +36,10 @@
     <form id="ff" method="post" action="/system/saveVersion">
 	    	<table cellpadding="5">
 	    		<tr>
-	    			<td>版本:</td>
-	    			<td><input value="${version}" ="easyui-textbox" type="number" name="version" data-options="required:true"></input></td>
+	    			<td>安卓版本:</td>
+	    			<td><input value="${version1}" ="easyui-textbox" type="number" name="version1" data-options="required:true"></input></td>
+	    				<td>IOS版本:</td>
+	    			<td><input value="${version2}" ="easyui-textbox" type="number" name="version2" data-options="required:true"></input></td>
 	    			<td>	<input type="submit" class="easyui-linkbutton"></td>
 	    		</tr>
 	    		
