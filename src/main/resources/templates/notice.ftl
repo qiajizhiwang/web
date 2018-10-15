@@ -34,7 +34,7 @@
 			<th field="id" width="50" >id</th>
 				<th field="text" width="50" >内容</th>
 				<th field="createTime" width="50" >时间</th>
-				<th field="type" width="50" ,formatter:typeFormatter">类型</th>
+				<th field="type" width="50" data-options="formatter:typeFormatter">类型</th>
 				<th field="senderName" width="50" >发送者</th>
 				<th data-options="field:'imageUrl',width:100, formatter:showImg">图片</th>
 				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>

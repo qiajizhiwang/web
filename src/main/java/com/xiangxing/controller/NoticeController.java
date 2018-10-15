@@ -136,8 +136,9 @@ public class NoticeController {
 	public PageResponse<Notice> NoticeList(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		NoticeExample noticeExample = new NoticeExample();
-		noticeExample.createCriteria().andIdIsNotNull();
+		noticeExample.createCriteria().andSenderEqualTo(me.getSchoolId()).andTypeEqualTo(1);
 		noticeExample.setOrderByClause("create_time desc");
 		List<Notice> notices = noticeMapper.selectByExample(noticeExample);
 		for (Notice notice : notices) {
