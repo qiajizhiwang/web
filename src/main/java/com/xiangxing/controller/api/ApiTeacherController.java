@@ -617,11 +617,11 @@ public class ApiTeacherController {
 	}
 
 	@RequestMapping("/products")
-	public ApiResponse products(PageRequest pageRequest, HttpServletRequest httpServletRequest) {
+	public ApiResponse products(PageRequest pageRequest, HttpServletRequest httpServletRequest,Long courseId,String studentName) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
-		List<ProductPo> products = productPoMapper.getListByTeacherId(info.getId());
+		List<ProductPo> products = productPoMapper.getListByTeacherId(info.getId(),courseId,studentName);
 		for (ProductPo product : products) {
 			product.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + product.getPath());
 		}

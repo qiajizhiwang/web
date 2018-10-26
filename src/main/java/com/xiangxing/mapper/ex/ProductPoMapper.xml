@@ -37,6 +37,12 @@ where t1.student_course_id = t2.id and t2.course_id = t4.id and t2.student_id = 
     <if test="teacherId != null" >
 AND t4.`teacher_id` =#{teacherId}
     </if>
+     <if test="courseId != null" >
+AND t4.`id` =#{courseId}
+    </if>
+     <if test="studentName != null" >
+AND t3.`name` like CONCAT('%',#{studentName},'%')
+    </if>
     order by t1.create_time desc
   </select>
  
