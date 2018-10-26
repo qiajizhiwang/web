@@ -44,6 +44,9 @@
 				<th field="schoolTime" width="50" editor="text">上课时间</th>
 				<th data-options="field:'imageUrl',width:100, formatter:showImg">图片</th>
 				<th field="comment" width="50" editor="text">课程介绍</th>
+				<th field="firstName" width="50" editor="text">评价维度1</th>
+				<th field="secondName" width="50" editor="text">评价维度2</th>
+				<th field="thirdName" width="50" editor="text">评价维度3</th>
 				<th field="status" width="50" editor="text" data-options="formatter:statusFormatter">课程状态</th>
 				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
@@ -116,6 +119,18 @@
 				<td>课程介绍</td>
 				<td><input name="comment" class="easyui-textbox" data-options="multiline:true" style="width:100%;height:100px"></td>
 			</tr>
+			<tr>
+				<td>评价维度1</td>
+				<td><input name="firstName" class="easyui-textbox" required="true"  style="width:100%;"></td>
+			</tr>
+			<tr>
+				<td>评价维度2</td>
+				<td><input name="secondName" class="easyui-textbox" required="true"  style="width:100%;"></td>
+			</tr>
+			<tr>
+				<td>评价维度3</td>
+				<td><input name="thirdName" class="easyui-textbox" required="true"  style="width:100%;"></td>
+			</tr>
 			</table>
 		</form>
 	</div>
@@ -160,6 +175,18 @@
 			<tr>
 				<td>课程介绍</td>
 				<td><input name="comment" class="easyui-textbox" data-options="multiline:true" style="width:100%;height:100px"></td>
+			</tr>
+			<tr>
+				<td>评价维度1</td>
+				<td><input name="firstName" class="easyui-textbox" required="true"  style="width:100%"></td>
+			</tr>
+			<tr>
+				<td>评价维度2</td>
+				<td><input name="secondName" class="easyui-textbox" required="true"  style="width:100%"></td>
+			</tr>
+			<tr>
+				<td>评价维度3</td>
+				<td><input name="thirdName" class="easyui-textbox" required="true"  style="width:100%"></td>
 			</tr>
 			<tr>
     			<td>审核状态:</td>
@@ -300,6 +327,7 @@ $('#teacherCombox').combobox({
 	$('#dg').datagrid('selectRow',index);
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
+				$('#fmedit').form('clear');
 			$('#dlgedit').dialog('open').dialog('setTitle','编辑');
 			$('#fmedit').form('load',row);
 			url = 'editCourse?id='+row.id;

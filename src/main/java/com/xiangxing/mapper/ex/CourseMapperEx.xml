@@ -13,6 +13,9 @@
     <result column="comment" property="comment" jdbcType="VARCHAR" />
     <result column="teacherName" property="teacherName" jdbcType="VARCHAR" />
     <result column="schoolName" property="schoolName" jdbcType="VARCHAR" />
+    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+    <result column="second_name" property="secondName" jdbcType="VARCHAR" />
+    <result column="third_name" property="thirdName" jdbcType="VARCHAR" />
   </resultMap>
   
   <select id="courseList" resultMap="BaseResultMap">

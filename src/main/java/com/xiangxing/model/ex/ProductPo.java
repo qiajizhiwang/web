@@ -39,6 +39,12 @@ public class ProductPo implements Serializable {
 	private String studentName;
 
 	private String courseName;
+	
+	private String firstName;
+
+	private String secondName;
+
+	private String thirdName;
 
 	public Long getId() {
 		return id;
@@ -158,6 +164,30 @@ public class ProductPo implements Serializable {
 
 	public void setHeight(Integer height) {
 		this.height = height;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getSecondName() {
+		return secondName;
+	}
+
+	public void setSecondName(String secondName) {
+		this.secondName = secondName;
+	}
+
+	public String getThirdName() {
+		return thirdName;
+	}
+
+	public void setThirdName(String thirdName) {
+		this.thirdName = thirdName;
 	}
 
 }

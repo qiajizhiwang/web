@@ -39,6 +39,12 @@ public class HomeworkPo {
 	private Integer subject;
 
 	private String remark;
+	
+	private String firstName;
+
+	private String secondName;
+
+	private String thirdName;
 
 	public Integer getLayout() {
 		return layout;
@@ -182,6 +188,30 @@ public class HomeworkPo {
 
 	public void setJobPath(String jobPath) {
 		this.jobPath = jobPath;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getSecondName() {
+		return secondName;
+	}
+
+	public void setSecondName(String secondName) {
+		this.secondName = secondName;
+	}
+
+	public String getThirdName() {
+		return thirdName;
+	}
+
+	public void setThirdName(String thirdName) {
+		this.thirdName = thirdName;
 	}
 
 }
