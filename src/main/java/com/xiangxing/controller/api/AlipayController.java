@@ -214,6 +214,12 @@ public class AlipayController extends BaseController {
 					updateOrder.setStatus(0);
 					updateOrder.setUpdateTime(new Date());
 					orderMapper.updateByPrimaryKeySelective(updateOrder);
+					
+					//更新缴费状态
+					EntryForm entryForm = new EntryForm();
+					entryForm.setId(orders.get(0).getEntryFormId());
+					entryForm.setPayStatus(1);
+					entryFormMapper.updateByPrimaryKeySelective(entryForm);
 				}
 			} else {
 				return ApiResponse.getErrorResponse("该订单未支付，如果已支付请稍后查看订单是否成功购买或联系客服！");
@@ -270,6 +276,12 @@ public class AlipayController extends BaseController {
 						updateOrder.setStatus(0);
 						updateOrder.setUpdateTime(new Date());
 						orderMapper.updateByPrimaryKeySelective(updateOrder);
+						
+						//更新缴费状态
+						EntryForm entryForm = new EntryForm();
+						entryForm.setId(orders.get(0).getEntryFormId());
+						entryForm.setPayStatus(1);
+						entryFormMapper.updateByPrimaryKeySelective(entryForm);
 					} else if (orders.size() == 0) {
 						logger.info("订单不存在！");
 					}
