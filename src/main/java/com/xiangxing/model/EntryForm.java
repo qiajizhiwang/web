@@ -9,6 +9,8 @@ public class EntryForm {
 
     private Long studentId;
 
+    private Integer payStatus;
+
     private Date createTime;
 
     public Long getId() {
@@ -33,6 +35,14 @@ public class EntryForm {
 
     public void setStudentId(Long studentId) {
         this.studentId = studentId;
+    }
+
+    public Integer getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(Integer payStatus) {
+        this.payStatus = payStatus;
     }
 
     public Date getCreateTime() {

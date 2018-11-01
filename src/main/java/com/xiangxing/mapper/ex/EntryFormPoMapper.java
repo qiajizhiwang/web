@@ -8,7 +8,7 @@ import com.xiangxing.model.ex.EntryFormPo;
 
 public interface EntryFormPoMapper {
 
-	List<EntryFormPo> list(@Param("schoolId") Long schoolId, @Param("studentName") String studentName,
-			@Param("examId") Long examId, @Param("studentId") Long studentId);
+	List<EntryFormPo> list(@Param("schoolId") Long schoolId, @Param("studentName") String studentName, @Param("examId") Long examId,
+			@Param("studentId") Long studentId, @Param("openFlag") String openFlag, @Param("payFlag") String payFlag);
 
 }

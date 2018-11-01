@@ -15,13 +15,13 @@ t3.nation,
 t3.state,
 t3.major,
 t2.money AS entryFee,
-IF(t5.id IS NULL,'未缴费','已缴费') AS payFlag,
+IF(t1.pay_status=1,'未缴费','已缴费') AS payFlag,
 t5.create_time AS payTime
 FROM t_entry_form t1
 JOIN t_exam t2 ON t1.exam_id=t2.id
 JOIN t_student t3 ON t1.student_id=t3.id
 JOIN t_subject t4 ON t2.subject_id=t4.id
-LEFT JOIN t_order t5 ON t1.id=t5.entry_form_id AND t5.`status`=2
+LEFT JOIN t_order t5 ON t1.id=t5.entry_form_id AND t5.`status`=0
 where 1 = 1
     <if test="schoolId != null and schoolId !=0" >
 AND t2.school_id= #{schoolId}
@@ -34,6 +34,12 @@ AND t3.`name` LIKE CONCAT(#{studentName},'%')
     </if>
     <if test="examId != null and examId !=0" >
 AND t1.exam_id =#{examId}
+    </if>
+     <if test="openFlag != null" >
+AND t1.open_flag =#{openFlag}
+    </if>
+    <if test="payFlag != null" >
+AND t1.pay_status =#{payFlag}
     </if>
 ORDER BY t1.create_time DESC
   </select>

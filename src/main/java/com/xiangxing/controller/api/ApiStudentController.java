@@ -398,7 +398,7 @@ public class ApiStudentController {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		LoginInfo info = TokenManager.getNowUser();
-		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(null, null, null, info.getId());
+		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(null, null, null, info.getId(),"0","1");
 		long total = page.getTotal();
 		return new ApiPageResponse<EntryFormPo>(total, entryFormPos);
 

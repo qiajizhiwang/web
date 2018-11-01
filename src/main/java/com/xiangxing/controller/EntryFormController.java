@@ -65,7 +65,7 @@ public class EntryFormController extends BaseController {
 		if (me.getType() == 1) {
 			schoolId = me.getSchoolId();
 		}
-		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(schoolId, studentName, examId, null);
+		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(schoolId, studentName, examId, null, null, null);
 		for (EntryFormPo entryFormPo : entryFormPos) {
 			if (StringUtil.isNotEmpty(entryFormPo.getBirthday())) {
 				entryFormPo.setBirthday(DateUtil.dateToString(DateUtil.stringToDate(entryFormPo.getBirthday()), DateUtil.patternG));
@@ -88,7 +88,7 @@ public class EntryFormController extends BaseController {
 		if (me.getType() == 1) {
 			schoolId = me.getSchoolId();
 		}
-		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(schoolId, studentName, examId, null);
+		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(schoolId, studentName, examId, null, null, null);
 		for (EntryFormPo entryFormPo : entryFormPos) {
 			if (StringUtil.isNotEmpty(entryFormPo.getBirthday())) {
 				entryFormPo.setBirthday(DateUtil.dateToString(DateUtil.stringToDate(entryFormPo.getBirthday()), DateUtil.patternG));
@@ -108,25 +108,24 @@ public class EntryFormController extends BaseController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Autowired
 	ExamPoMapper poMapper;
 
 	@Value(value = "${pdf_path}")
 	private String pdfPath;
 
-	
 	@RequestMapping("/exportApplyTable")
 	public void exportApplyTable(Long entryFormId, HttpServletResponse response) throws IOException {
 		ExamPo examPo = poMapper.get(entryFormId);
 		examPo.setPinyin(HanyuPinyinHelper.toHanyuPinyin(examPo.getStudentName()));
-		String path = pdfPath + File.separator +"考生报名表"+ entryFormId + ".pdf";
+		String path = pdfPath + File.separator + "考生报名表" + entryFormId + ".pdf";
 		File file = new File(path);
 		if (!file.exists()) {
-			PdfUtils.createPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
-					"apply.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
-//			PdfUtils.createPdf(path, pdfPath+"templates/",
-//					"apply.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
+			PdfUtils.createPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(), "apply.ftl",
+					new org.apache.commons.beanutils.BeanMap(examPo));
+			// PdfUtils.createPdf(path, pdfPath+"templates/",
+			// "apply.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
 			file = new File(path);
 		}
 		response.addHeader("pragma", "NO-cache");
@@ -146,17 +145,17 @@ public class EntryFormController extends BaseController {
 		out.flush();
 		out.close();
 	}
-	
+
 	@RequestMapping("/exportExamTicket")
 	public void exportExamTicket(Long entryFormId, HttpServletResponse response) throws IOException {
 		ExamPo examPo = poMapper.get(entryFormId);
-		String path = pdfPath + File.separator +"准考证"+ entryFormId + ".pdf";
+		String path = pdfPath + File.separator + "准考证" + entryFormId + ".pdf";
 		File file = new File(path);
 		if (!file.exists()) {
-			PdfUtils.createMiniPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(),
-					"exam.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
-//			PdfUtils.createMiniPdf(path, pdfPath+"templates/",
-//					"exam.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
+			PdfUtils.createMiniPdf(path, PdfUtils.class.getClassLoader().getResource("templates/pdf").getPath(), "exam.ftl",
+					new org.apache.commons.beanutils.BeanMap(examPo));
+			// PdfUtils.createMiniPdf(path, pdfPath+"templates/",
+			// "exam.ftl", new org.apache.commons.beanutils.BeanMap(examPo));
 			file = new File(path);
 		}
 		response.addHeader("pragma", "NO-cache");
