@@ -36,7 +36,7 @@ AND t3.`name` LIKE CONCAT(#{studentName},'%')
 AND t1.exam_id =#{examId}
     </if>
      <if test="openFlag != null" >
-AND t1.open_flag =#{openFlag}
+AND t2.open_flag =#{openFlag}
     </if>
     <if test="payFlag != null" >
 AND t1.pay_status =#{payFlag}
