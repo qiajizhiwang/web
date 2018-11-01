@@ -143,7 +143,7 @@ public class ApiTeacherController {
 		long total = page.getTotal();
 
 		// 过滤字段
-		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(Course.class, "id", "name", "schoolTime");
+		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(Course.class, "id", "name", "schoolTime","firstName","secondName","thirdName");
 		return new ApiPageResponse<Course>(total,
 				JSON.parseArray(JSONObject.toJSONString(courses, filter), Course.class));
 
