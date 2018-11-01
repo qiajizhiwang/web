@@ -191,6 +191,17 @@
 			</tr>
 			</table>
 		</form>
+		<table id="ldg" class="easyui-datagrid"  style="width:100%;height:auto"
+	toolbar="#toolbar"	rownumbers="true" pagination="true"  fitColumns="true"	data-options="singleSelect:true,collapsible:true,url:'/entryForm/entryFormListByStudentId',method:'post'">
+		<thead>
+			<tr>
+				<th field="major" width="5%" editor="{type:'validatebox',options:{required:true}}">专业</th>
+				<th field="subjectName" width="5%" editor="{type:'validatebox',options:{required:true}}">科目</th>
+				<th field="rank" width="5%" editor="text">考试级别</th>
+				<th field="entryTime" width="10%" editor="text">报考时间</th>
+			</tr>
+		</thead>
+	</table>
 	</div>
 	<div id="entryForm-buttons">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveEntryForm()">保存</a>
@@ -368,7 +379,10 @@
 		if (row){
 		$('#entryForm').dialog('open').dialog('setTitle','报考');
 		$('#entryFormfm').form('load',row);
-		
+		 $("#ldg").datagrid({
+			     url: "/entryForm/entryFormListByStudentId?"+row.id,
+		 }
+			$('#dg').datagrid('reload')
 		}
 	}
 	

@@ -10,5 +10,9 @@ public interface EntryFormPoMapper {
 
 	List<EntryFormPo> list(@Param("schoolId") Long schoolId, @Param("studentName") String studentName,
 			@Param("examId") Long examId, @Param("studentId") Long studentId);
+	
+	List<EntryFormPo> listByStudentId(@Param("studentId") Long studentId,@Param("status") Integer status);
+	
+	
 
 }

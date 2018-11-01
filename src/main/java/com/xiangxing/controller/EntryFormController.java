@@ -75,6 +75,18 @@ public class EntryFormController extends BaseController {
 		return new PageResponse<EntryFormPo>(total, entryFormPos);
 
 	}
+	
+	@RequestMapping("/entryFormListByStudentId")
+	@ResponseBody
+	public PageResponse<EntryFormPo> entryFormListByStudentId(PageRequest pageRequest, Long studentId) {
+
+		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
+
+		List<EntryFormPo> entryFormPos = entryFormPoMapper.listByStudentId(studentId,1);
+		long total = page.getTotal();
+		return new PageResponse<EntryFormPo>(total, entryFormPos);
+
+	}
 
 	/***
 	 * 导出excel
