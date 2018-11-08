@@ -218,7 +218,7 @@ public class AlipayController extends BaseController {
 					//更新缴费状态
 					EntryForm entryForm = new EntryForm();
 					entryForm.setId(orders.get(0).getEntryFormId());
-					entryForm.setPayStatus(1);
+					entryForm.setPayStatus(0);
 					entryFormMapper.updateByPrimaryKeySelective(entryForm);
 				}
 			} else {
@@ -280,7 +280,7 @@ public class AlipayController extends BaseController {
 						//更新缴费状态
 						EntryForm entryForm = new EntryForm();
 						entryForm.setId(orders.get(0).getEntryFormId());
-						entryForm.setPayStatus(1);
+						entryForm.setPayStatus(0);
 						entryFormMapper.updateByPrimaryKeySelective(entryForm);
 					} else if (orders.size() == 0) {
 						logger.info("订单不存在！");
