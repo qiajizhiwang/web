@@ -64,6 +64,7 @@ import com.xiangxing.model.ex.NoticePo;
 import com.xiangxing.model.ex.ProductPo;
 import com.xiangxing.model.ex.StudentPo;
 import com.xiangxing.utils.DateUtil;
+import com.xiangxing.utils.StringUtil;
 import com.xiangxing.vo.api.ApiPageResponse;
 import com.xiangxing.vo.api.ApiResponse;
 import com.xiangxing.vo.api.CourseSignResponse;
@@ -394,11 +395,21 @@ public class ApiStudentController {
 	 */
 	@RequestMapping("/entryFormList")
 	@ResponseBody
-	public ApiResponse entryFormList(PageRequest pageRequest) {
+	public ApiResponse entryFormList(PageRequest pageRequest,String payStatus) {
 
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		LoginInfo info = TokenManager.getNowUser();
-		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(null, null, null, info.getId(),"0","1");
+		if (StringUtil.isEmpty(payStatus)) {
+			payStatus="1";
+		}
+		if ("2".equals(payStatus)) {
+			payStatus=null;
+		}
+		String openFlag="0";
+		if ("1".equals(payStatus)) {
+			openFlag=null;
+		}
+		List<EntryFormPo> entryFormPos = entryFormPoMapper.list(null, null, null, info.getId(),openFlag,payStatus);
 		long total = page.getTotal();
 		return new ApiPageResponse<EntryFormPo>(total, entryFormPos);
 
