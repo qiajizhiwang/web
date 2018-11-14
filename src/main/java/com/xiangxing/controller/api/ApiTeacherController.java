@@ -143,7 +143,8 @@ public class ApiTeacherController {
 		long total = page.getTotal();
 
 		// 过滤字段
-		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(Course.class, "id", "name", "schoolTime","firstName","secondName","thirdName");
+		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(Course.class, "id", "name", "schoolTime",
+				"firstName", "secondName", "thirdName");
 		return new ApiPageResponse<Course>(total,
 				JSON.parseArray(JSONObject.toJSONString(courses, filter), Course.class));
 
@@ -236,29 +237,30 @@ public class ApiTeacherController {
 		LoginInfo info = TokenManager.getNowUser();
 		Homework homework = new Homework();
 		FileOutputStream fileOutputStream = null;
-		byte[] imageByte = Base64Utils.decodeFromString(base64Image);
-		BufferedImage image;
-		try {
-			String dir = homeworkPath + File.separator + "job" + File.separator + courseId;
-			if (!new File(dir).exists())
-				new File(dir).mkdirs();
-			String path = dir + File.separator + UUID.randomUUID().toString() + ".jpg";
-			fileOutputStream = new FileOutputStream(path);
-			image = ImageIO.read(new ByteArrayInputStream(imageByte));
-			ImageIO.write(image, "jpg", fileOutputStream);
-			homework.setPath(path);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		} finally {
+		if (StringUtils.isNoneEmpty(base64Image)) {
+			byte[] imageByte = Base64Utils.decodeFromString(base64Image);
+			BufferedImage image;
 			try {
-				fileOutputStream.close();
+				String dir = homeworkPath + File.separator + "job" + File.separator + courseId;
+				if (!new File(dir).exists())
+					new File(dir).mkdirs();
+				String path = dir + File.separator + UUID.randomUUID().toString() + ".jpg";
+				fileOutputStream = new FileOutputStream(path);
+				image = ImageIO.read(new ByteArrayInputStream(imageByte));
+				ImageIO.write(image, "jpg", fileOutputStream);
+				homework.setPath(path);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new RuntimeException(e);
+			} finally {
+				try {
+					fileOutputStream.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
-
 		homework.setCourseId(courseId);
 		homework.setCreateTime(new Date());
 		homework.setName(name);
@@ -337,11 +339,12 @@ public class ApiTeacherController {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
-		List<HomeworkPo> homeworkPos = homeworkPoMapper.getTeacherHomeWork(info.getId(),courseId);
+		List<HomeworkPo> homeworkPos = homeworkPoMapper.getTeacherHomeWork(info.getId(), courseId);
 
 		long total = page.getTotal();
 		for (HomeworkPo homeworkPo : homeworkPos) {
-			homeworkPo.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getPath());
+			if(StringUtils.isNoneEmpty(homeworkPo.getPath()))
+				homeworkPo.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getPath());
 			homeworkPo
 					.setJobPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + homeworkPo.getJobPath());
 
@@ -401,27 +404,26 @@ public class ApiTeacherController {
 		List<StudentCourse> studentCourses = studentCourseMapper.selectByExample(example);
 		Course course = courseMapper.selectByPrimaryKey(courseId);
 		CourseSign record = null;
-        List errList = new ArrayList();
+		List errList = new ArrayList();
 		for (StudentCourse studentCourse1 : studentCourses) {
 			if (asList.contains(studentCourse1.getStudentId())) {
 				if (studentCourse1.getPeriod() + 2 > course.getPeriod()) {
 					errList.add(studentCourse1.getStudentId());
 				}
-			
+
+			}
 		}
+		if (org.apache.commons.collections.CollectionUtils.isNotEmpty(errList)) {
+			return ApiResponse.getErrorResponse("" + Arrays.toString(errList.toArray()));
 		}
-		if(org.apache.commons.collections.CollectionUtils.isNotEmpty(errList)){
-				return ApiResponse.getErrorResponse(""+ Arrays.toString(errList.toArray()));
-		}
-		
-		
+
 		for (StudentCourse studentCourse : studentCourses) {
 			// 重复签到忽略
 			try {
 				record = new CourseSign();
 				record.setStudentCourseId(studentCourse.getId());
 				if (asList.contains(studentCourse.getStudentId())) {
-					record.setSignFlag(1l);				
+					record.setSignFlag(1l);
 
 					// 签到
 					record.setSignTime(new Date());
@@ -429,10 +431,10 @@ public class ApiTeacherController {
 					// 修改课时
 					studentCourse.setPeriod(studentCourse.getPeriod() + 2);
 					studentCourseMapper.updateByPrimaryKey(studentCourse);
-					
+
 					Notice notice = new Notice();
 					notice.setType(2);
-					notice.setText("您的孩子已经开始上课了，本学期还剩"+(course.getPeriod()-studentCourse.getPeriod()-2)+"课时");
+					notice.setText("您的孩子已经开始上课了，本学期还剩" + (course.getPeriod() - studentCourse.getPeriod() - 2) + "课时");
 					notice.setSender(info.getId());
 					notice.setCreateTime(new Date());
 					notice.setSenderName(teacherMapper.selectByPrimaryKey(info.getId()).getName());
@@ -451,7 +453,7 @@ public class ApiTeacherController {
 		}
 
 		return new ApiResponse();
-		
+
 	}
 
 	/**
@@ -617,11 +619,12 @@ public class ApiTeacherController {
 	}
 
 	@RequestMapping("/products")
-	public ApiResponse products(PageRequest pageRequest, HttpServletRequest httpServletRequest,Long courseId,String studentName) {
+	public ApiResponse products(PageRequest pageRequest, HttpServletRequest httpServletRequest, Long courseId,
+			String studentName) {
 		LoginInfo info = TokenManager.getNowUser();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
-		List<ProductPo> products = productPoMapper.getListByTeacherId(info.getId(),courseId,studentName);
+		List<ProductPo> products = productPoMapper.getListByTeacherId(info.getId(), courseId, studentName);
 		for (ProductPo product : products) {
 			product.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + product.getPath());
 		}
