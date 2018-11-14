@@ -60,8 +60,10 @@
 		<span>课程状态</span>
 		<select class="easyui-combobox" id="status" style="width:100px;">
 		 	<option value=''>--请选择--</option>
-		 	<option value=1>已完结</option>
-	      	<option value=0>正常</option>
+		 
+	      	<option value=0>新建</option>
+	      		<option value=1>开课</option>
+	      			<option value=3>已完结</option>
 	      </select></td>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCourse()">新增</a>
@@ -357,8 +359,10 @@ $('#teacherCombox').combobox({
 	
 	function statusFormatter(value,row,index){
 	 if(value == 1 )  
+	     return "已开课"
+	 else if(value == 3 )  
 	     return "已完结"
-	 else if (value == 0 )   return "正常"
+	 else if (value == 0 )   return "新建"
 	 } 
 </script>
 </html>

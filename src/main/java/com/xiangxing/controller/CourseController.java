@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.BaseController;
@@ -196,8 +197,13 @@ public class CourseController extends BaseController {
 
 	@RequestMapping("/destroyCourse")
 	public void destroycourse(Long id) {
-		Course course = new Course();
-		course.setId(id);
+		Course course = courseMapper.selectByPrimaryKey(id);
+		if(course.getStatus()==1) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("msg", "已开课，无法删除！");
+			writeToErrorResponse(jsonObject);
+			return;
+		}
 		course.setStatus(2);
 		courseMapper.updateByPrimaryKeySelective(course);
 		writeToOkResponse();
