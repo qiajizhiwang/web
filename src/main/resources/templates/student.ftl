@@ -227,6 +227,16 @@
 // }) 
  
  
+ 
+  $("#applyTable").datagrid({
+    onLoadSuccess:function(data){  
+           $('.mydelete').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});
+ 
+     }
+      
+  })
+  
+ 
   $("#dg").datagrid({
   
        onLoadSuccess:function(data){  
@@ -278,10 +288,12 @@
      pagination: true ,
        fitColumns:true,
     columns:[[
+    	{field:'id',title:'Id'},
 		{field:'name',title:'课程'},
 		{field:'showCurriculumTime',title:'开课时间'},
 		{field:'schoolTime',title:'上课时间'},
-		{field:'teacherName',title:'老师'}
+		{field:'teacherName',title:'老师'},
+		{field:'_operate',title:'操作',width:'30%',formatter:deleteFormatter}
     ]]
 });
 		}
@@ -303,6 +315,26 @@
 		
 		$('#apply #courseId').combobox({url:'/course/validCourses?schoolId='+row.schoolId});
 		
+		}
+	}
+	
+	function deleteRow(){
+		var row = $('#applyTable').datagrid('getSelected');
+		if (row){
+			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
+				if (r){
+					$.post('deleteApply',{applyId:row.id},function(result){
+						if (result.status != 1){
+							$('#dg').datagrid('reload');	// reload the user data
+						} else {
+							$.messager.show({	// show error message
+								title: 'Error',
+								msg: result.memo
+							});
+						}
+					},'json');
+				}
+			});
 		}
 	}
 	
@@ -414,6 +446,11 @@
                "<a  class='myapply' onclick='apply("+index+")' href='javascript:void(0)' >报课</a>"+
                 "<a  class='queryApply' onclick='queryApply("+index+")' href='javascript:void(0)' >查看课程</a>"
                 +"<a  class='entryForm' onclick='entryForm("+index+")' href='javascript:void(0)' >报考</a>";  
+ } 
+ 
+ function deleteFormatter(value,row,index){  
+               return "<a  class='mydelete' onclick='deleteRow("+index+")' href='javascript:void(0)' >删除</a>";
+ 
  } 
  
  

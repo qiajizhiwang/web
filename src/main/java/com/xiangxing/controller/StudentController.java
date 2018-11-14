@@ -121,6 +121,11 @@ public class StudentController extends BaseController {
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
 		List<CourseEx> courseList = courseMapperEx.courseListByStudentId(studentId);
+		for(CourseEx courseEx:courseList){
+			courseEx.setShowCurriculumTime(DateUtil.dateToString(courseEx.getCurriculumTime(), DateUtil.patternA));
+			courseEx.setShowFinishTime(DateUtil.dateToString(courseEx.getFinishTime(), DateUtil.patternA));
+
+		}
 		long total = page.getTotal();
 		return new PageResponse<CourseEx>(total, courseList);
 
