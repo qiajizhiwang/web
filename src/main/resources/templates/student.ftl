@@ -171,7 +171,7 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#apply').dialog('close')">关闭</a>
 	</div>
 
-	<div id="entryForm" class="easyui-dialog" modal="true" style="width:400px;height:500px;padding:10px 20px" data-options="closed: true"
+	<div id="entryForm" class="easyui-dialog" modal="true" style="width:500px;height:500px;padding:10px 20px" data-options="closed: true"
 		 buttons="#entryForm-buttons">
 		<form id="entryFormfm" method="post">
 			<table cellpadding="5">
@@ -195,17 +195,19 @@
 	 pagination="true"  fitColumns="true"	data-options="singleSelect:true,collapsible:true,method:'post'">
 		<thead>
 			<tr>
-				<th field="major" width="25%" editor="{type:'validatebox',options:{required:true}}">专业</th>
-				<th field="subjectName" width="25%" editor="{type:'validatebox',options:{required:true}}">科目</th>
+				<th field="id" width="5%">ID</th>
+				<th field="major" width="20%" editor="{type:'validatebox',options:{required:true}}">专业</th>
+				<th field="subjectName" width="20%" editor="{type:'validatebox',options:{required:true}}">科目</th>
 				<th field="rank" width="15%" editor="text">考试级别</th>
 				<th field="entryTime" width="35%" editor="text">报考时间</th>
+				<th data-options="field:'_operate',width:'10%',formatter:examFormatter">操作</th>
 			</tr>
 		</thead>
 	</table>
 	</div>
 	<div id="entryForm-buttons">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveEntryForm()">保存</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">关闭</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#entryForm').dialog('close')">关闭</a>
 	</div>
 	
 		<div id="queryApply" style="width:50%;height:AUTO;padding:10px 20px" class="easyui-window" modal="true"  data-options="closed: true">
@@ -235,6 +237,17 @@
      }
       
   })
+  
+    $("#ldg").datagrid({
+    onLoadSuccess:function(data){  
+           $('.mydelete').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});
+ 
+     }
+      
+  })
+  
+  
+  
   
  
   $("#dg").datagrid({
@@ -287,6 +300,7 @@
     rownumbers:true,
      pagination: true ,
        fitColumns:true,
+       singleSelect:true,
     columns:[[
     	{field:'id',title:'Id'},
 		{field:'name',title:'课程'},
@@ -324,8 +338,29 @@
 			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
 				if (r){
 					$.post('deleteApply',{applyId:row.id},function(result){
-						if (result.status != 1){
-							$('#dg').datagrid('reload');	// reload the user data
+						if (result.status == 1){
+							$('#applyTable').datagrid('reload');	// reload the user data
+						} else {
+							$.messager.show({	// show error message
+								title: 'Error',
+								msg: result.memo
+							});
+						}
+					},'json');
+				}
+			});
+		}
+	}
+	
+	
+	function deleteExam(){
+		var row = $('#ldg').datagrid('getSelected');
+		if (row){
+			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
+				if (r){
+					$.post('/entryForm/deleteExam',{examId:row.id},function(result){
+						if (result.status == 1){
+							$('#ldg').datagrid('reload');	// reload the user data
 						} else {
 							$.messager.show({	// show error message
 								title: 'Error',
@@ -452,6 +487,11 @@
                return "<a  class='mydelete' onclick='deleteRow("+index+")' href='javascript:void(0)' >删除</a>";
  
  } 
+ 
+ function examFormatter(value,row,index){  
+     return "<a  class='mydelete' onclick='deleteExam("+index+")' href='javascript:void(0)' >删除</a>";
+
+}
  
  
   function statusFormatter(value,row,index){

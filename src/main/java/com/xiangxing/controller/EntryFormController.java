@@ -27,7 +27,10 @@ import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.EntryFormMapper;
 import com.xiangxing.mapper.ex.EntryFormPoMapper;
 import com.xiangxing.mapper.ex.ExamPoMapper;
+import com.xiangxing.model.Course;
 import com.xiangxing.model.EntryForm;
+import com.xiangxing.model.Exam;
+import com.xiangxing.model.StudentCourse;
 import com.xiangxing.model.User;
 import com.xiangxing.model.ex.EntryFormPo;
 import com.xiangxing.model.ex.ExamPo;
@@ -36,6 +39,7 @@ import com.xiangxing.utils.ExcleUtil;
 import com.xiangxing.utils.HanyuPinyinHelper;
 import com.xiangxing.utils.PdfUtils;
 import com.xiangxing.utils.StringUtil;
+import com.xiangxing.vo.api.ApiResponse;
 
 @Controller
 @RequestMapping("/entryForm")
@@ -55,6 +59,19 @@ public class EntryFormController extends BaseController {
 	public void saveentryForm(EntryForm entryForm) {
 		entryFormMapper.insertSelective(entryForm);
 		writeToOkResponse();
+	}
+	
+	@RequestMapping("/deleteExam")
+	@ResponseBody
+	public ApiResponse deleteExam(Long examId) {
+		EntryForm entryForm= entryFormMapper.selectByPrimaryKey(examId);
+		
+		if(entryForm.getPayStatus()==1)
+			entryFormMapper.deleteByPrimaryKey(examId);
+		else{
+			return ApiResponse.getErrorResponse("状态异常");
+		}
+		return new ApiResponse();
 	}
 
 	@RequestMapping("/entryFormList")

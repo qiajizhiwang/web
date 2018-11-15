@@ -5,7 +5,7 @@
  
   
   <select id="list" resultType="com.xiangxing.model.ex.EntryFormPo">
-  SELECT t1.id,t1.id AS entryFormId,t1.create_time AS entryTime,t1.exam_id AS examId,t1.student_id AS studentId,t4.`name` AS subjectName,
+  SELECT t1.id as id,t1.id AS entryFormId,t1.create_time AS entryTime,t1.exam_id AS examId,t1.student_id AS studentId,t4.`name` AS subjectName,
 t2.rank,
 t3.`name` AS studentName,
 t3.pinyin,
@@ -46,7 +46,7 @@ ORDER BY t1.create_time DESC
   
   
     <select id="listByStudentId" resultType="com.xiangxing.model.ex.EntryFormPo">
-  SELECT t1.create_time AS entryTime,
+  SELECT t1.id as id ,t1.create_time AS entryTime,
   t4.`name` AS subjectName,
 t2.rank,
 t3.`name` AS studentName,

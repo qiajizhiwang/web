@@ -81,29 +81,29 @@
 			<tr>  
 	            <td align="right">学校</td>  
 <td>  
-    <input id="schoolIdCombox" class="easyui-combobox" />  
+    <input id="schoolIdCombox" class="easyui-combobox"  required="true"/>  
     <input id="schoolId" name="schoolId" qr="schoolId" required="true" type="hidden" class="queryRequired" />  
 </td>   
 	        </tr>  
 	        <tr>  
 	            <td align="right" >教师ID</td>  
 <td>  
-    <input id="teacherCombox" class="easyui-combobox" />  
+    <input id="teacherCombox" class="easyui-combobox"  required="true"/>  
     <input id="teacherId" name="teacherId" qr="teacherId" required="true" type="hidden" class="queryRequired" />  
 </td>   
 	        </tr>
 	        
 			<tr>
 				<td>开课时间</td>
-				<td><input name="showCurriculumTime" class="easyui-datebox"></td>
+				<td><input name="showCurriculumTime" class="easyui-datebox"  required="true"></td>
 			</tr>
 			<tr>
 				<td>结课时间</td>
-				<td><input name="showFinishTime" class="easyui-datebox"></td>
+				<td><input name="showFinishTime" class="easyui-datebox"  required="true"></td>
 			</tr>
 			<tr>
 				<td>课时</td>
-				<td><input name="period" class="easyui-numberbox"></td>
+				<td><input name="period" class="easyui-numberbox"  required="true"></td>
 			</tr>
 			<tr>
 				<td>学费</td>

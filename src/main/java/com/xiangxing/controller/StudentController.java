@@ -28,11 +28,13 @@ import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.controller.admin.PageRequest;
 import com.xiangxing.controller.admin.PageResponse;
+import com.xiangxing.mapper.CourseMapper;
 import com.xiangxing.mapper.EntryFormMapper;
 import com.xiangxing.mapper.StudentCourseMapper;
 import com.xiangxing.mapper.StudentMapper;
 import com.xiangxing.mapper.ex.CourseMapperEx;
 import com.xiangxing.mapper.ex.StudentPoMapper;
+import com.xiangxing.model.Course;
 import com.xiangxing.model.EntryForm;
 import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentCourse;
@@ -69,6 +71,10 @@ public class StudentController extends BaseController {
 	StudentCourseMapper studentCourseMapper;
 	@Autowired
 	EntryFormMapper entryFormMapper;
+	
+	@Autowired
+	CourseMapper courseMapper;
+
 
 	@Value("${upload_file_path}")
 	private String upload_file_path;
@@ -151,6 +157,22 @@ public class StudentController extends BaseController {
 		studentMapper.deleteByPrimaryKey(studentId);
 		return new ApiResponse();
 	}
+	
+	@RequestMapping("/deleteApply")
+	@ResponseBody
+	public ApiResponse deleteApply(Long applyId) {
+		StudentCourse studentCourse = studentCourseMapper.selectByPrimaryKey(applyId);
+		Course course =courseMapper.selectByPrimaryKey(studentCourse.getCourseId());
+		if(course.getStatus()==0)
+		studentCourseMapper.deleteByPrimaryKey(applyId);
+		else{
+			return ApiResponse.getErrorResponse("状态异常");
+		}
+		return new ApiResponse();
+	}
+	
+
+
 
 	@RequestMapping("/saveApply")
 	@ResponseBody
