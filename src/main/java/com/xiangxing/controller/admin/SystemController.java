@@ -86,6 +86,7 @@ public class SystemController {
 		if(user.getSchoolId()==null){
 			return  ApiResponse.getErrorResponse("学校必填");
 		}
+		user.setType(1);
 		userMapper.insert(user);
 		for (String menu : menus.split(",")) {
 			UserMenu userMenu = new UserMenu();

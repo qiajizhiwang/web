@@ -100,7 +100,16 @@
     
     function addTab(title, url){
 	if ($('.easyui-tabs').tabs('exists', title)){
-		$('.easyui-tabs').tabs('select', title);
+		  $(".easyui-tabs").tabs("select", title); 
+	      var selTab = $('.easyui-tabs').tabs('getSelected'); 
+	      $('.easyui-tabs').tabs('update', { 
+	        tab: selTab, 
+	        options: { 
+	          content:'<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>'
+	        } 
+	      }) 
+	    
+		//$('.easyui-tabs').tabs('select', title);
 	} else {
 		var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
 		$('.easyui-tabs').tabs('add',{

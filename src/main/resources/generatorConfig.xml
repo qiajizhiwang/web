@@ -6,7 +6,7 @@
 <!-- 		location="D:\work\gitaaa\web\src\main\resources\mysql-connector-java-5.1.45.jar" /> -->
 		
 	<classPathEntry
-		location="D:\workspace\web\src\main\resources\mysql-connector-java-5.1.45.jar" />
+		location="D:\workspace3\web\src\main\resources\mysql-connector-java-5.1.45.jar" />
 		
 	<context id="context1">
 
@@ -28,13 +28,15 @@
 			type="XMLMAPPER" />
 
 <!-- 		<table tableName="menu" domainObjectName="Menu"></table>-->
-<!-- 		<table tableName="user" domainObjectName="User"></table> -->
+		<table tableName="user" domainObjectName="User">
+		<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
 <!-- 		<table tableName="user_menu" domainObjectName="UserMenu"></table> -->
 <!-- 		<table tableName="t_advertising" domainObjectName="Advertising"></table> -->
 <!-- 		<table tableName="t_course" domainObjectName="Course"> -->
 <!-- 		<generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
 <!-- 		</table> -->
-		<table tableName="t_entry_form" domainObjectName="EntryForm"></table>
+	<!-- 	<table tableName="t_entry_form" domainObjectName="EntryForm"></table> -->
 <!-- 		<table tableName="t_exam" domainObjectName="Exam"></table> -->
 <!-- 		<table tableName="t_school_image" domainObjectName="SchoolImage"></table> -->
 <!-- 		<table tableName="t_order" domainObjectName="Order"></table> -->
