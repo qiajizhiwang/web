@@ -299,6 +299,12 @@ $('#teacherCombox').combobox({
 				} else {
 					$('#dlg').dialog('close');		// close the dialog
 					$('#dg').datagrid('reload');	// reload the user data
+					$.messager.show({
+						title:'新增课程成功',
+						msg:'',
+						timeout:5000,
+						showType:'slide'
+					});
 				}
 			}
 		});
