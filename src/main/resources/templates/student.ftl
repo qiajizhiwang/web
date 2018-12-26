@@ -34,9 +34,15 @@
 		<thead>
 			<tr>
 				<th field="id" width="50" editor="{type:'validatebox',options:{required:true}}">学生ID</th>
-				<th field="phone" width="70" editor="{type:'validatebox',options:{required:true}}">手机号</th>
-				<th field="name" width="50" editor="text">姓名</th>
-				<th field="showBirthday" width="70" editor="text">生日</th>
+<!-- 				<th field="phone" width="70" editor="{type:'validatebox',options:{required:true}}">手机号</th> -->
+				<th data-options="field:'_operate0',width:'10%',formatter:nameFormatter">姓名</th>
+				<th data-options="field:'_operate1',width:'10%',formatter:classFormatter">报读班级</th>
+				<th data-options="field:'_operate2',width:'10%',formatter:productFormatter">作品档案</th>
+				<th field="allCount" width="50" editor="text">购买课时</th>
+				<th field="sendCount" width="50" editor="text">赠送课时</th>
+				<th field="usedCount" width="50" editor="text">已上课时</th>
+				<th field="remainCount" width="50" editor="text">剩余课时</th>
+<!-- 				<th field="showBirthday" width="70" editor="text">生日</th>
 				<th field="gender" width="50" editor="text">性别</th>
 				<th field="nation" width="50" editor="text">民族</th>
 				<th field="state" width="50" editor="text">国家</th>
@@ -45,9 +51,9 @@
 				<th field="classGrade" width="50" editor="text">班级</th>
 				<th field="houseAddress" width="50" editor="text">家庭地址</th>
 				<th field="homeTelephone" width="70" editor="text">父母电话</th>
-				<th field="idCard" width="50" editor="text">身份证号码</th>
-				<th field="status" width="50" editor="text" data-options="formatter:statusFormatter">审核状态</th>
-				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
+				<th field="idCard" width="50" editor="text">身份证号码</th> 
+				<th field="status" width="50" editor="text" data-options="formatter:statusFormatter">审核状态</th>-->
+				<th data-options="field:'_operate3',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
 		</thead>
 	</table>
@@ -210,10 +216,17 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#entryForm').dialog('close')">关闭</a>
 	</div>
 	
-		<div id="queryApply" style="width:50%;height:AUTO;padding:10px 20px" class="easyui-window" modal="true"  data-options="closed: true">
-		<table id="applyTable" style="width:100%;height:AUTO">
+		<div id="queryProduct" style="width:50%;height:AUTO;padding:10px 20px" class="easyui-window" modal="true"  data-options="closed: true">
+		<table id="productTable" style="width:100%;height:AUTO"></table>
+		</div>
+	<div id="queryApply" style="width:50%;height:AUTO;padding:10px 20px" class="easyui-window" modal="true"  data-options="closed: true">
+		<table id="applyTable" style="width:100%;height:AUTO"></table>
 	
 		</div>
+		
+		
+		
+	
 		
 		
 </body>
@@ -238,6 +251,14 @@
       
   })
   
+   $("#productTable").datagrid({
+    onLoadSuccess:function(data){  
+        $('.mydelete').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});
+
+     }
+      
+  })
+  
     $("#ldg").datagrid({
     onLoadSuccess:function(data){  
            $('.mydelete').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});
@@ -255,7 +276,8 @@
        onLoadSuccess:function(data){  
       $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
       $('.myapply').linkbutton({text:'报课',plain:true,iconCls:'icon-add'});
-        $('.queryApply').linkbutton({text:'查看课程',plain:true,iconCls:'icon-search'});
+        $('.queryApply').linkbutton({text:'其他课程',plain:true,iconCls:'icon-search'});
+        $('.queryProduct').linkbutton({text:'作品档案',plain:true,iconCls:'icon-search'});
         $('.entryForm').linkbutton({text:'报考',plain:true,iconCls:'icon-add'});
       
       
@@ -315,6 +337,32 @@
 		
 	}
 	
+	
+	function queryProduct(index){
+		
+		$('#dg').datagrid('selectRow',index);
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+			  $("#productTable").datagrid({
+	    url:'/product/productList?studentId='+row.id,
+	    rownumbers:true,
+	     pagination: true ,
+	       fitColumns:true,
+	       singleSelect:true,
+	    columns:[[
+	    	{field:'id',title:'Id'},
+			{field:'name',title:'名称'},
+			{field:'courseName',title:'课程'},
+			{field:'studentName',title:'学生'},
+			{field:'createTime',title:'上传时间'},
+			{field:'_operate',title:'操作',width:'30%',formatter:deleteProductFormatter}
+	    ]]
+	});
+			}
+			$('#queryProduct').dialog('open').dialog('setTitle','作品档案');
+			
+		}
+	
 	function apply(index){
 	$('#dg').datagrid('selectRow',index);
 		var row = $('#dg').datagrid('getSelected');
@@ -344,6 +392,26 @@
 							$.messager.show({	// show error message
 								title: 'Error',
 								msg: result.memo
+							});
+						}
+					},'json');
+				}
+			});
+		}
+	}
+	
+	function deleteProduct(){
+		var row = $('#productTable').datagrid('getSelected');
+		if (row){
+			$.messager.confirm('删除','您确认要删除该数据吗?',function(r){
+				if (r){
+					$.post('/product/destroyProduct',{productId:row.id},function(result){
+						if (result.code==10000){
+							$('#productTable').datagrid('reload');	// reload the user data
+						} else {
+							$.messager.show({	// show error message
+								title: 'Error',
+								msg: result.errorMsg
 							});
 						}
 					},'json');
@@ -478,15 +546,32 @@
 	
 	function rowFormatter(value,row,index){  
                return "<a  class='myedit' onclick='editRow("+index+")' href='javascript:void(0)' >编辑</a>"+
-               "<a  class='myapply' onclick='apply("+index+")' href='javascript:void(0)' >报课</a>"+
-                "<a  class='queryApply' onclick='queryApply("+index+")' href='javascript:void(0)' >查看课程</a>"
+               "<a  class='myapply' onclick='apply("+index+")' href='javascript:void(0)' >报课</a>"
                 +"<a  class='entryForm' onclick='entryForm("+index+")' href='javascript:void(0)' >报考</a>";  
  } 
+	
+	function nameFormatter(value,row,index){  
+        return     " <a  href='/student/studentInfo?id="+row.id+"' >"+row.name+"</a> ";
+} 
+	
+	function classFormatter(value,row,index){  
+        return     row.courseName+"  <br >  <a  class='queryApply' onclick='queryApply("+index+")' href='javascript:void(0)' >其他课程</a> <br /> ";
+} 
+	
+	function productFormatter(value,row,index){  
+        return    "<a  class='queryProduct' onclick='queryProduct("+index+")' href='javascript:void(0)' >作品</a>";
+} 
+
  
  function deleteFormatter(value,row,index){  
                return "<a  class='mydelete' onclick='deleteRow("+index+")' href='javascript:void(0)' >删除</a>";
  
  } 
+ 
+ function deleteProductFormatter(value,row,index){  
+     return "<a  class='mydelete' onclick='deleteProduct("+index+")' href='javascript:void(0)' >删除</a>";
+
+} 
  
  function examFormatter(value,row,index){  
      return "<a  class='mydelete' onclick='deleteExam("+index+")' href='javascript:void(0)' >删除</a>";
