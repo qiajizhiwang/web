@@ -40,6 +40,7 @@
 				<th field="courseName" width="50" editor="text">课程</th>
 				<th field="studentName" width="50" editor="text">学生</th>
 				<th data-options="field:'path',width:100, formatter:showImg">图片</th>
+				<th field="remark" width="150" editor="text">学生</th>
 				<th field="createTime" width="50" >上传时间</th>
 				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
 			</tr>
