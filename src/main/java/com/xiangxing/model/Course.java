@@ -33,6 +33,10 @@ public class Course {
 
     private String thirdName;
 
+    private Integer onePeriod;
+
+    private Integer price;
+
     public Long getId() {
         return id;
     }
@@ -151,5 +155,21 @@ public class Course {
 
     public void setThirdName(String thirdName) {
         this.thirdName = thirdName;
+    }
+
+    public Integer getOnePeriod() {
+        return onePeriod;
+    }
+
+    public void setOnePeriod(Integer onePeriod) {
+        this.onePeriod = onePeriod;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }

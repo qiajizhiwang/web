@@ -1074,6 +1074,126 @@ public class CourseExample {
             addCriterion("third_name not between", value1, value2, "thirdName");
             return (Criteria) this;
         }
+
+        public Criteria andOnePeriodIsNull() {
+            addCriterion("one_period is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodIsNotNull() {
+            addCriterion("one_period is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodEqualTo(Integer value) {
+            addCriterion("one_period =", value, "onePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodNotEqualTo(Integer value) {
+            addCriterion("one_period <>", value, "onePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodGreaterThan(Integer value) {
+            addCriterion("one_period >", value, "onePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodGreaterThanOrEqualTo(Integer value) {
+            addCriterion("one_period >=", value, "onePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodLessThan(Integer value) {
+            addCriterion("one_period <", value, "onePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodLessThanOrEqualTo(Integer value) {
+            addCriterion("one_period <=", value, "onePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodIn(List<Integer> values) {
+            addCriterion("one_period in", values, "onePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodNotIn(List<Integer> values) {
+            addCriterion("one_period not in", values, "onePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodBetween(Integer value1, Integer value2) {
+            addCriterion("one_period between", value1, value2, "onePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andOnePeriodNotBetween(Integer value1, Integer value2) {
+            addCriterion("one_period not between", value1, value2, "onePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIsNull() {
+            addCriterion("price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIsNotNull() {
+            addCriterion("price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceEqualTo(Integer value) {
+            addCriterion("price =", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotEqualTo(Integer value) {
+            addCriterion("price <>", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceGreaterThan(Integer value) {
+            addCriterion("price >", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("price >=", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceLessThan(Integer value) {
+            addCriterion("price <", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceLessThanOrEqualTo(Integer value) {
+            addCriterion("price <=", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIn(List<Integer> values) {
+            addCriterion("price in", values, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotIn(List<Integer> values) {
+            addCriterion("price not in", values, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceBetween(Integer value1, Integer value2) {
+            addCriterion("price between", value1, value2, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotBetween(Integer value1, Integer value2) {
+            addCriterion("price not between", value1, value2, "price");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

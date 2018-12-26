@@ -17,7 +17,7 @@
 		</commentGenerator>
 
 		<jdbcConnection
-			connectionURL="jdbc:mysql://120.78.211.181:3306/xiangxing?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnectForPools=true"
+			connectionURL="jdbc:mysql://120.78.211.181:3306/test_xiangxin?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnectForPools=true"
 			driverClass="com.mysql.jdbc.Driver" password="123456" userId="root" />
 		<javaModelGenerator targetPackage="com.xiangxing.model"
 			targetProject="src/main/java" />
@@ -28,14 +28,14 @@
 			type="XMLMAPPER" />
 
 <!-- 		<table tableName="menu" domainObjectName="Menu"></table>-->
-		<table tableName="user" domainObjectName="User">
+<!-- 		<table tableName="user" domainObjectName="User">
 		<generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
+		</table> -->
 <!-- 		<table tableName="user_menu" domainObjectName="UserMenu"></table> -->
 <!-- 		<table tableName="t_advertising" domainObjectName="Advertising"></table> -->
-<!-- 		<table tableName="t_course" domainObjectName="Course"> -->
-<!-- 		<generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
-<!-- 		</table> -->
+<!-- 		<table tableName="t_course" domainObjectName="Course">
+		<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table> -->
 	<!-- 	<table tableName="t_entry_form" domainObjectName="EntryForm"></table> -->
 <!-- 		<table tableName="t_exam" domainObjectName="Exam"></table> -->
 <!-- 		<table tableName="t_school_image" domainObjectName="SchoolImage"></table> -->
@@ -47,7 +47,9 @@
 <!-- 		<table tableName="t_school" domainObjectName="School"></table> -->
 <!-- 		<table tableName="t_student" domainObjectName="Student"></table> -->
 	<!-- 	<table tableName="t_exam_rank" domainObjectName="ExamRank"></table> -->
-<!-- 		<table tableName="t_student_course" domainObjectName="StudentCourse"></table> -->
+	<!-- 	<table tableName="t_student_course" domainObjectName="StudentCourse">
+		<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table> -->
 <!-- 		<table tableName="t_subject" domainObjectName="Subject"></table> -->
 <!-- 		<table tableName="t_teacher" domainObjectName="Teacher"></table> -->
  <!-- <table tableName="t_homework" domainObjectName="Homework">

@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -94,6 +95,13 @@ public class StudentController extends BaseController {
 		model.addAttribute("courses", courses);
 		return "student";
 	}
+	
+	@RequestMapping("/studentInfo")
+	public String studentInfo(Model model,Long id) {
+		Student student = studentMapper.selectByPrimaryKey(id);
+		model.addAttribute("student", student);
+		return "studentInfo";
+	}
 
 	@RequestMapping("/saveStudent")
 	@ResponseBody
@@ -104,15 +112,26 @@ public class StudentController extends BaseController {
 		studentMapper.insertSelective(student);
 		return new ApiResponse();
 	}
+	
 
 	@RequestMapping("/studentList")
 	@ResponseBody
-	public PageResponse<StudentPo> studentList(PageRequest pageRequest, String name) {
+	public PageResponse<StudentPo> studentList(PageRequest pageRequest, String name,Long id) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 
-		List<StudentPo> students = studentPoMapper.list(name, me.getSchoolId(), null);
+		List<StudentPo> students = studentPoMapper.list(name, me.getSchoolId(), id);
 		for (StudentPo studentPo : students) {
+			
+			List<CourseEx> courseExs = courseMapperEx.courseListByStudentId(studentPo.getId());
+			if(CollectionUtils.isNotEmpty(courseExs)){
+				CourseEx courseEx = courseExs.get(0);
+				studentPo.setCourseName(courseEx.getName());
+				studentPo.setSendCount(0);
+				studentPo.setAllCount(courseEx.getPeriod());
+				studentPo.setRemainCount(courseEx.getPeriod()-courseEx.getSignPeriod());
+				studentPo.setUsedCount(courseEx.getSignPeriod());
+			}
 			studentPo.setShowBirthday(DateUtil.dateToString(studentPo.getBirthday(), DateUtil.patternA));
 			studentPo.setPassword(null);
 		}

@@ -16,6 +16,9 @@
     <result column="first_name" property="firstName" jdbcType="VARCHAR" />
     <result column="second_name" property="secondName" jdbcType="VARCHAR" />
     <result column="third_name" property="thirdName" jdbcType="VARCHAR" />
+     <result column="period" property="period" jdbcType="INTEGER" />
+    <result column="one_period" property="onePeriod" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="INTEGER" />
   </resultMap>
   
   <select id="courseList" resultMap="BaseResultMap">

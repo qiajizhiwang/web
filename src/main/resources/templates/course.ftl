@@ -40,6 +40,7 @@
 				<th field="showCurriculumTime" width="50" editor="text">开课时间</th>
 				<th field="showFinishTime" width="50" editor="text">结课时间</th>
 				<th field="period" width="50" editor="text">课时</th>
+				<th field="onePeriod" width="50" editor="text">单次课时</th>
 				<th field="fee" width="50" editor="text">学费</th>
 				<th field="schoolTime" width="50" editor="text">上课时间</th>
 				<th data-options="field:'imageUrl',width:100, formatter:showImg">图片</th>
@@ -73,11 +74,6 @@
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post" enctype="multipart/form-data">
 			<table cellpadding="5">
-			<tr>
-				<td>课程名称</td>
-				<td><input name="name" class="easyui-textbox" required="true"></td>
-			</tr>
-			
 			<tr>  
 	            <td align="right">学校</td>  
 <td>  
@@ -85,8 +81,14 @@
     <input id="schoolId" name="schoolId" qr="schoolId" required="true" type="hidden" class="queryRequired" />  
 </td>   
 	        </tr>  
+			<tr>
+				<td>课程名称</td>
+				<td><input name="name" class="easyui-textbox" required="true"></td>
+			</tr>
+			
+
 	        <tr>  
-	            <td align="right" >教师ID</td>  
+	            <td align="right" >授课老师</td>  
 <td>  
     <input id="teacherCombox" class="easyui-combobox"  required="true"/>  
     <input id="teacherId" name="teacherId" qr="teacherId" required="true" type="hidden" class="queryRequired" />  
@@ -102,24 +104,20 @@
 				<td><input name="showFinishTime" class="easyui-datebox"  required="true"></td>
 			</tr>
 			<tr>
-				<td>课时</td>
-				<td><input name="period" class="easyui-numberbox"  required="true"></td>
+				<td>总课时</td>
+				<td><input id="period" name="period"  class="easyui-numberbox"  required="true"></td>
 			</tr>
 			<tr>
-				<td>学费</td>
-				<td><input name="fee" class="easyui-numberbox"></td>
+				<td>单次课时</td>
+				<td><input name="onePeriod"  class="easyui-numberbox"  required="true"></td>
 			</tr>
 			<tr>
-				<td>上课时间</td>
-				<td><input name="schoolTime" class="easyui-textbox"></td>
+				<td>课程总价</td>
+				<td><input id="fee" name="fee" required="true"  class="easyui-numberbox"></td>
 			</tr>
 			<tr>
-				<td>照片</td>
-				<td><input name="file" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
-			</tr>
-			<tr>
-				<td>课程介绍</td>
-				<td><input name="comment" class="easyui-textbox" data-options="multiline:true" style="width:100%;height:100px"></td>
+				<td>课程单价</td>
+				<td><input id="price" name="price"  readonly class="easyui-numberbox"></td>
 			</tr>
 			<tr>
 				<td>评价维度1</td>
@@ -133,6 +131,20 @@
 				<td>评价维度3</td>
 				<td><input name="thirdName" class="easyui-textbox" required="true"  style="width:100%;"></td>
 			</tr>
+			<tr>
+				<td>上课时间</td>
+				<td><input name="schoolTime" class="easyui-textbox"  ></td>
+			</tr>
+			<tr>
+				<td>课程介绍</td>
+				<td><input name="comment" class="easyui-textbox" data-options="multiline:true" style="width:100%;height:100px" ></td>
+			</tr>
+			<tr>
+				<td>课程照片</td>
+				<td><input name="file" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
+			</tr>
+			
+			
 			</table>
 		</form>
 	</div>
@@ -146,49 +158,53 @@
 		closed="true" buttons="#dlg-buttonsedit">
 		<form id="fmedit" method="post" enctype="multipart/form-data">
 			<table cellpadding="5">
-			<tr>
-				<td>课程名称</td>
-				<td><input name="name" class="easyui-textbox" required="true"></td>
-			</tr>
-			<tr>
+				<tr>
 				<td>开课时间</td>
-				<td><input name="showCurriculumTime" class="easyui-datebox"></td>
+				<td><input name="showCurriculumTime" class="easyui-datebox"  required="true"></td>
 			</tr>
 			<tr>
 				<td>结课时间</td>
-				<td><input name="showFinishTime" class="easyui-datebox"></td>
+				<td><input name="showFinishTime" class="easyui-datebox"  required="true"></td>
 			</tr>
 			<tr>
-				<td>课时</td>
-				<td><input name="period" class="easyui-numberbox"></td>
+				<td>总课时</td>
+				<td><input id="period1" name="period"  class="easyui-numberbox"  required="true"></td>
 			</tr>
 			<tr>
-				<td>学费</td>
-				<td><input name="fee" class="easyui-numberbox"></td>
+				<td>单次课时</td>
+				<td><input name="onePeriod" r class="easyui-numberbox"  required="true"></td>
 			</tr>
 			<tr>
-				<td>上课时间</td>
-				<td><input name="schoolTime" class="easyui-textbox"></td>
+				<td>课程总价</td>
+				<td><input id="fee1" name="fee" required="true"  class="easyui-numberbox"></td>
 			</tr>
 			<tr>
-				<td>照片</td>
-				<td><input name="file" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
-			</tr>
-			<tr>
-				<td>课程介绍</td>
-				<td><input name="comment" class="easyui-textbox" data-options="multiline:true" style="width:100%;height:100px"></td>
+				<td>课程单价</td>
+				<td><input name="price" id="price1"  class="easyui-numberbox"></td>
 			</tr>
 			<tr>
 				<td>评价维度1</td>
-				<td><input name="firstName" class="easyui-textbox" required="true"  style="width:100%"></td>
+				<td><input name="firstName" class="easyui-textbox" required="true"  style="width:100%;"></td>
 			</tr>
 			<tr>
 				<td>评价维度2</td>
-				<td><input name="secondName" class="easyui-textbox" required="true"  style="width:100%"></td>
+				<td><input name="secondName" class="easyui-textbox" required="true"  style="width:100%;"></td>
 			</tr>
 			<tr>
 				<td>评价维度3</td>
-				<td><input name="thirdName" class="easyui-textbox" required="true"  style="width:100%"></td>
+				<td><input name="thirdName" class="easyui-textbox" required="true"  style="width:100%;"></td>
+			</tr>
+			<tr>
+				<td>上课时间</td>
+				<td><input name="schoolTime" class="easyui-textbox"  ></td>
+			</tr>
+			<tr>
+				<td>课程介绍</td>
+				<td><input name="comment" class="easyui-textbox" data-options="multiline:true" style="width:100%;height:100px" ></td>
+			</tr>
+			<tr>
+				<td>课程照片</td>
+				<td><input name="file" class="easyui-filebox" data-options="buttonText:'选择',prompt:'选择文件...'" style="width:100%"></td>
 			</tr>
 			<tr>
     			<td>审核状态:</td>
@@ -209,6 +225,31 @@
 <script type="text/javascript">
 	
 	$(function(){ 
+		
+		$('#fee,#period').numberbox({
+			
+			  "onChange":function(){
+				  
+				  var fee= $('#fee').numberbox('getValue');
+				  var period= $('#period').numberbox('getValue');
+				  var price  = fee/period;
+				  $('#price').numberbox('setValue', price);
+				 
+			    }
+			  });
+		
+		$('#fee1,#period1').numberbox({
+			
+			  "onChange":function(){
+				  
+				  var fee= $('#fee1').numberbox('getValue');
+				  var period= $('#period1').numberbox('getValue');
+				  var price  = fee/period;
+				  $('#price1').numberbox('setValue', price);
+				 
+			    }
+			  });
+
 	
 	$('#schoolIdCombox').combobox({  
     url: "../school/comboboxData",  
@@ -256,7 +297,7 @@ $('#teacherCombox').combobox({
 	function editCourse(){
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
-			$('#dlg').dialog('open').dialog('setTitle','Edit User');
+			$('#dlg').dialog('open').dialog('setTitle','修改课程');
 			$('#fm').form('load',row);
 			url = 'editCourse?id='+row.id;
 		}

@@ -64,14 +64,19 @@ public class ProductController extends BaseController {
 
 	@RequestMapping("/productList")
 	@ResponseBody
-	public PageResponse<ProductPo> productList(PageRequest pageRequest, String name, String courseId,HttpServletRequest httpServletRequest) {
+	public PageResponse<ProductPo> productList(PageRequest pageRequest, String name, String courseId,Long studentId,HttpServletRequest httpServletRequest) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		Long schoolId = null;
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		if (me.getType() == 1) {
 			schoolId = me.getSchoolId();
 		}
-		List<ProductPo> products = productPoMapper.list(name, courseId, schoolId);
+		List<ProductPo> products;
+		if(null!=studentId && schoolId!=0){
+			 products = productPoMapper.getListByStudentId(studentId);
+		}
+		else
+		products = productPoMapper.list(name, courseId, schoolId);
 		for (ProductPo product : products) {
 			product.setPath(httpServletRequest.getContextPath() + "/initImage?imageUrl=" + product.getPath());
 		}

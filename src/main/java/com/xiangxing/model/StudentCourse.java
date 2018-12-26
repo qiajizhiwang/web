@@ -13,6 +13,8 @@ public class StudentCourse {
 
     private Date createTime;
 
+    private Integer type;
+
     public Long getId() {
         return id;
     }
@@ -51,5 +53,13 @@ public class StudentCourse {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }
