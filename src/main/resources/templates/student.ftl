@@ -9,6 +9,10 @@
     <script src="../js/jquery.min.js"></script>
     <script src="../js/jquery.easyui.min.js"></script>
     <script src="../js/easyui-lang-zh_CN.js"></script>
+    
+    
+<style>.datagrid-cell{line-height:33px}</style>
+    
 <script>
     $.parser.onComplete = function () {
        closes();
@@ -29,7 +33,7 @@
 	
 		
 	<table id="dg" class="easyui-datagrid"  style="width:100%;height:auto"
-	toolbar="#toolbar"	rownumbers="true" pagination="true"  fitColumns="true"	data-options="singleSelect:true,collapsible:true,url:'/student/studentList',method:'post'">
+	toolbar="#toolbar"	rownumbers="true" pagination="true"  fitColumns="true" data-options="autoRowHeight:true,singleSelect:true,collapsible:true,url:'/student/studentList',method:'post'">
 	
 		<thead>
 			<tr>
