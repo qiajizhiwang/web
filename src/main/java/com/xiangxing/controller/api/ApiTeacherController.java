@@ -31,6 +31,7 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.PageRequest;
+import com.xiangxing.enums.SignFlagEnum;
 import com.xiangxing.interceptor.TokenManager;
 import com.xiangxing.mapper.CourseMapper;
 import com.xiangxing.mapper.CourseSignMapper;
@@ -417,16 +418,16 @@ public class ApiTeacherController {
 			return ApiResponse.getErrorResponse("" + Arrays.toString(errList.toArray()));
 		}
 
+		Date singDate = new Date();
 		for (StudentCourse studentCourse : studentCourses) {
 			// 重复签到忽略
 			try {
 				record = new CourseSign();
 				record.setStudentCourseId(studentCourse.getId());
 				if (asList.contains(studentCourse.getStudentId())) {
-					record.setSignFlag(1l);
-
 					// 签到
-					record.setSignTime(new Date());
+					record.setSignFlag(SignFlagEnum.qd.getMsg());
+					record.setSignTime(singDate);
 					courseSignMapper.insertSelective(record);
 					// 修改课时
 					studentCourse.setPeriod(studentCourse.getPeriod() + 2);
@@ -436,7 +437,7 @@ public class ApiTeacherController {
 					notice.setType(2);
 					notice.setText("您的孩子已经开始上课了，本学期还剩" + (course.getPeriod() - studentCourse.getPeriod() - 2) + "课时");
 					notice.setSender(info.getId());
-					notice.setCreateTime(new Date());
+					notice.setCreateTime(singDate);
 					notice.setSenderName(teacherMapper.selectByPrimaryKey(info.getId()).getName());
 					noticeMapper.insertSelective(notice);
 					NoticeDetail noticeDetail = new NoticeDetail();
@@ -445,6 +446,11 @@ public class ApiTeacherController {
 					noticeDetail.setReceiver(studentCourse.getStudentId());
 					// 签到消息
 					noticeDetailMapper.insert(noticeDetail);
+				}else {
+					//缺勤
+					record.setSignFlag(SignFlagEnum.qq.getMsg());
+					record.setSignTime(singDate);
+					courseSignMapper.insertSelective(record);
 				}
 
 			} catch (Exception e) {
