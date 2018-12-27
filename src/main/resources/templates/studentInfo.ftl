@@ -79,7 +79,7 @@
 	$('#dg').datagrid('selectRow',index);
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
-		  $("#applyTable").datagrid({
+		  $("#signTable").datagrid({
     url:'/student/applyList?studentId='+row.id,
     rownumbers:true,
      pagination: true ,
@@ -91,11 +91,11 @@
 		{field:'showCurriculumTime',title:'开课时间'},
 		{field:'schoolTime',title:'上课时间'},
 		{field:'teacherName',title:'老师'},
-		{field:'_operate',title:'操作',width:'30%',formatter:deleteFormatter}
+		{field:'_operate',title:'操作',width:'30%',formatter:updSingFormatter}
     ]]
 });
 		}
-		$('#queryApply').dialog('open').dialog('setTitle','课程');
+		$('#querySign').dialog('open').dialog('setTitle','课程');
 		
 	}
 	
@@ -103,6 +103,12 @@
 	
 	function signFormatter(value,row,index){  
                return "<a  class='myedit' onclick='querySign("+index+")' href='javascript:void(0)' >签到记录</a>";
+ } 
+	function updSingFormatter(value,row,index){  
+			if(value == 0 )  
+     return "停用"
+ else if (value == 1 )   return "启用"
+              // return "<a  class='myedit' onclick='querySign("+index+")' href='javascript:void(0)' >签到记录</a>";
  } 
 	
 	
