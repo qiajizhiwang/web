@@ -289,8 +289,8 @@
        onLoadSuccess:function(data){  
       $('.myedit').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});
       $('.myapply').linkbutton({text:'报课',plain:true,iconCls:'icon-add'});
-        $('.queryApply').linkbutton({text:'其他课程',plain:true,iconCls:'icon-search'});
-        $('.queryProduct').linkbutton({text:'作品档案',plain:true,iconCls:'icon-search'});
+    /*     $('.queryApply').linkbutton({text:'其他课程',plain:true,iconCls:'icon-search'});
+        $('.queryProduct').linkbutton({text:'作品档案',plain:true,iconCls:'icon-search'}); */
         $('.entryForm').linkbutton({text:'报考',plain:true,iconCls:'icon-add'});
       
       
@@ -582,7 +582,7 @@
 } 
 	
 	function productFormatter(value,row,index){  
-        return    "<a  class='queryProduct' onclick='queryProduct("+index+")' href='javascript:void(0)' >作品</a>";
+        return    "<a  class='queryProduct' onclick='queryProduct("+index+")' href='javascript:void(0)' >作品档案</a>";
 } 
 
  
