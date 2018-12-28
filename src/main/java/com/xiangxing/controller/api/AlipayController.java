@@ -100,7 +100,7 @@ public class AlipayController extends BaseController {
 
 		// 确认报名信息
 		EntryForm entryForm = entryFormMapper.selectByPrimaryKey(entryFormId);
-		if (null == entryForm || entryForm.getStudentId() != studentId) {
+		if (null == entryForm || !entryForm.getStudentId().equals(studentId)) {
 			// "不存在！");
 			return ApiResponse.getErrorResponse("生成支付订单失败，报名信息有误！");
 		}

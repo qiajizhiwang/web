@@ -12,6 +12,7 @@ public class ExceptionAdvice {
 	@ExceptionHandler({ Exception.class })
 	@ResponseBody
 	public ApiResponse handleArrayIndexOutOfBoundsException(Exception e) {
+		e.printStackTrace();
 		return ApiResponse.getErrorResponse(e.getMessage());
 	}
 }

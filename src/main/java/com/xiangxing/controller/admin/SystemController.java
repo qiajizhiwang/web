@@ -124,7 +124,7 @@ public class SystemController {
 			user.setPassword(null);
 		}
 		userMapper.updateByPrimaryKeySelective(user);
-
+		user = userMapper.selectByPrimaryKey(user.getId());
 		if (user.getType() == 1) {
 			UserMenuExample example = new UserMenuExample();
 			example.createCriteria().andUserIdEqualTo(user.getId());
