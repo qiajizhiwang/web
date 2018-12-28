@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiangxing.mapper.ex.FinanceMapper" >
+  
+
+  
+  <select id="sumAllPeriodBySchool" resultType="java.lang.Long">
+select COALESCE(sum(t2.period * t2.price),0) from t_student_course t1,t_course t2,t_teacher t3 where t1.course_id = t2.id and t2.teacher_id = t3.id 
+    <if test="startDate != null" >
+and t1.create_time &gt; #{startDate}
+    </if>
+     <if test="endDate != null" >
+and t1.create_time &lt; #{endDate}
+    </if>
+    <if test="schoolId != null" >
+AND t3.school_id=#{schoolId}
+    </if>
+    <if test="type != null " >
+AND t1.type=#{type}
+    </if>
+  </select>
+  
+    <select id="sumUsedPeriodBySchool" resultType="java.lang.Long">
+select COALESCE(sum(t1.period * t2.price),0) from t_student_course t1,t_course t2,t_teacher t3 where t1.course_id = t2.id and t2.teacher_id = t3.id 
+    <if test="startDate != null" >
+and t1.create_time &gt; #{startDate}
+    </if>
+     <if test="endDate != null" >
+and t1.create_time &lt; #{endDate}
+    </if>
+    <if test="schoolId != null" >
+AND t3.school_id=#{schoolId}
+    </if>
+    <if test="type != null " >
+AND t1.type=#{type}
+    </if>
+  </select>
+ 
+</mapper>
