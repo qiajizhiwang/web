@@ -11,4 +11,7 @@ public interface CourseSignPoMapper {
 
 	List<CourseSignPo> getCourseSignInfo(@Param("courseId") Long courseId, @Param("studentId") Long studentId,
 			@Param("singDate") Date singDate);
+
+	
+	List<CourseSignPo> getStudentSignInfo(@Param("courseId") Long courseId, @Param("studentId") Long studentId);
 }
