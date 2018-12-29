@@ -2,6 +2,7 @@
 <html>
 <head>
 <#assign ctx= (request.contextPath)??/>
+<#import "/selected.ftl" as selects/>
     <link href="../css/easyui.css" rel="stylesheet" />
     <link href="../css/icon.css" rel="stylesheet" />
     <script src="../js/jquery.min.js"></script>
@@ -41,7 +42,7 @@
 			<tr>
 				<th field="id" width="50" editor="{type:'validatebox',options:{required:true}}">学校ID</th>
 				<th field="code" width="50" editor="{type:'validatebox',options:{required:true}}">自定义编码</th>
-				<th field="name" width="50" editor="text">学校名称</th>
+				<th field="name" width="50" editor="text">校区名称</th>
 				<th field="adress" width="50" editor="{type:'validatebox',options:{validType:'email'}}">地址</th>
 				<th field="linkman" width="50" editor="text">联系人</th>
 				<th data-options="field:'_operate',width:'30%',formatter:rowFormatter">操作</th>
@@ -49,7 +50,7 @@
 		</thead>
 	</table>
 	<div id="toolbar">
-		<span>学校名称</span>
+		<span>校区名称</span>
 		<input id="name" style="line-height:26px;border:1px solid #ccc">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">搜索</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newSchool()">新增</a>
@@ -60,13 +61,19 @@
 		<form id="fm" method="post">
 			<table cellpadding="5">
 			<tr>
-				<td>学校代码</td>
+				<td>学校</td>
+				<td>
+				   <@selects.select id="headquartersId" datas=headquarterss key="id" text="name"  defaultValue=myHeadquartersId/> 
+                   </td>
+			</tr>
+			<tr>
+				<td>校区代码</td>
 				<td><input name="code" class="easyui-numberbox" data-options="min:10000,required:true"
 							validType="remote['validateCode','code']"   
                             missingMessage="学校代码不能空" invalidMessage="学校代码已存在"></td>
 			</tr>
 			<tr>
-				<td><label>学校名称</label>
+				<td><label>校区名称</label>
 				<td><input name="name" class="easyui-textbox" required="true"></td>
 			</tr>
 			<tr>
@@ -78,7 +85,7 @@
 				<td><input name="linkman" class="easyui-textbox"></td>
 			</tr>
 			<tr>
-				<td><label>学校介绍</label></td>
+				<td><label>校区介绍</label></td>
 				<td>
 				<textarea rows="3" style="width:200px;height:100px;" id="comment" name="comment" class="easyui-validatebox"></textarea>
 				</td>

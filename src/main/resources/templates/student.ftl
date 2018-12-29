@@ -82,7 +82,7 @@
 		<form id="fm" method="post">
 			<table cellpadding="5">
 			<tr>
-				<td>学校</td>
+				<td>校区</td>
 				<td>
 				   <@selects.select id="schoolId" datas=schools key="id" text="name"  defaultValue=mySchoolId/> 
                    </td>

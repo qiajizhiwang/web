@@ -17,6 +17,8 @@ public class School {
 
     private Date createTime;
 
+    private Long headquartersId;
+
     public Long getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class School {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Long getHeadquartersId() {
+        return headquartersId;
+    }
+
+    public void setHeadquartersId(Long headquartersId) {
+        this.headquartersId = headquartersId;
     }
 }

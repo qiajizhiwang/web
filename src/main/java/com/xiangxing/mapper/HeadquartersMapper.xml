@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xiangxing.mapper.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.xiangxing.model.User" >
+<mapper namespace="com.xiangxing.mapper.HeadquartersMapper" >
+  <resultMap id="BaseResultMap" type="com.xiangxing.model.Headquarters" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
-    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="linkman" property="linkman" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,15 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, password, type, school_id, status
+    id, name, count, create_time, phone, linkman
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.UserExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiangxing.model.HeadquartersExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from user
+    from t_headquarters
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,76 +87,76 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from user
+    from t_headquarters
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from user
+    delete from t_headquarters
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.xiangxing.model.UserExample" >
-    delete from user
+  <delete id="deleteByExample" parameterType="com.xiangxing.model.HeadquartersExample" >
+    delete from t_headquarters
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.xiangxing.model.User" >
+  <insert id="insert" parameterType="com.xiangxing.model.Headquarters" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into user (name, password, type, 
-      school_id, status)
-    values (#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{schoolId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER})
+    insert into t_headquarters (name, count, create_time, 
+      phone, linkman)
+    values (#{name,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{phone,jdbcType=VARCHAR}, #{linkman,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.xiangxing.model.User" >
+  <insert id="insertSelective" parameterType="com.xiangxing.model.Headquarters" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into user
+    insert into t_headquarters
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         name,
       </if>
-      <if test="password != null" >
-        password,
+      <if test="count != null" >
+        count,
       </if>
-      <if test="type != null" >
-        type,
+      <if test="createTime != null" >
+        create_time,
       </if>
-      <if test="schoolId != null" >
-        school_id,
+      <if test="phone != null" >
+        phone,
       </if>
-      <if test="status != null" >
-        status,
+      <if test="linkman != null" >
+        linkman,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="schoolId != null" >
-        #{schoolId,jdbcType=BIGINT},
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
+      <if test="linkman != null" >
+        #{linkman,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.xiangxing.model.UserExample" resultType="java.lang.Integer" >
-    select count(*) from user
+  <select id="countByExample" parameterType="com.xiangxing.model.HeadquartersExample" resultType="java.lang.Integer" >
+    select count(*) from t_headquarters
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update user
+    update t_headquarters
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
@@ -164,17 +164,17 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.password != null" >
-        password = #{record.password,jdbcType=VARCHAR},
+      <if test="record.count != null" >
+        count = #{record.count,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.schoolId != null" >
-        school_id = #{record.schoolId,jdbcType=BIGINT},
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=INTEGER},
+      <if test="record.linkman != null" >
+        linkman = #{record.linkman,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -182,45 +182,45 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update user
+    update t_headquarters
     set id = #{record.id,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=INTEGER},
-      school_id = #{record.schoolId,jdbcType=BIGINT},
-      status = #{record.status,jdbcType=INTEGER}
+      count = #{record.count,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      linkman = #{record.linkman,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xiangxing.model.User" >
-    update user
+  <update id="updateByPrimaryKeySelective" parameterType="com.xiangxing.model.Headquarters" >
+    update t_headquarters
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="schoolId != null" >
-        school_id = #{schoolId,jdbcType=BIGINT},
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+      <if test="linkman != null" >
+        linkman = #{linkman,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xiangxing.model.User" >
-    update user
+  <update id="updateByPrimaryKey" parameterType="com.xiangxing.model.Headquarters" >
+    update t_headquarters
     set name = #{name,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
-      school_id = #{schoolId,jdbcType=BIGINT},
-      status = #{status,jdbcType=INTEGER}
+      count = #{count,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      phone = #{phone,jdbcType=VARCHAR},
+      linkman = #{linkman,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

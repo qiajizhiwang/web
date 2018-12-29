@@ -13,6 +13,8 @@ public class User {
 
     private Integer status;
 
+    private Long headquartersId;
+
     public Long getId() {
         return id;
     }
@@ -59,5 +61,13 @@ public class User {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getHeadquartersId() {
+        return headquartersId;
+    }
+
+    public void setHeadquartersId(Long headquartersId) {
+        this.headquartersId = headquartersId;
     }
 }

@@ -1,5 +1,6 @@
 package com.xiangxing.config;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import com.xiangxing.interceptor.TokenInterceptor;
 public class ShiroConfig implements WebMvcConfigurer {
 	@Bean
 	public ShiroFilterFactoryBean shirFilter(org.apache.shiro.mgt.SecurityManager securityManager) {
-		System.out.println("ShiroConfiguration.shirFilter()");
+		//System.out.println("ShiroConfiguration.shirFilter()");
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
 		// 拦截器.
@@ -41,6 +42,9 @@ public class ShiroConfig implements WebMvcConfigurer {
 		shiroFilterFactoryBean.setSuccessUrl("/");
 		// 未授权界面;
 		shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+		Map map = new HashMap();
+		map.put("authc", new MyFormAuthenticationFilter());
+		shiroFilterFactoryBean.setFilters(map);
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
 	}

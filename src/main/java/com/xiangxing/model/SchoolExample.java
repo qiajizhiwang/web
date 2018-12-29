@@ -574,6 +574,66 @@ public class SchoolExample {
             addCriterion("create_time not between", value1, value2, "createTime");
             return (Criteria) this;
         }
+
+        public Criteria andHeadquartersIdIsNull() {
+            addCriterion("headquarters_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdIsNotNull() {
+            addCriterion("headquarters_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdEqualTo(Long value) {
+            addCriterion("headquarters_id =", value, "headquartersId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdNotEqualTo(Long value) {
+            addCriterion("headquarters_id <>", value, "headquartersId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdGreaterThan(Long value) {
+            addCriterion("headquarters_id >", value, "headquartersId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("headquarters_id >=", value, "headquartersId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdLessThan(Long value) {
+            addCriterion("headquarters_id <", value, "headquartersId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdLessThanOrEqualTo(Long value) {
+            addCriterion("headquarters_id <=", value, "headquartersId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdIn(List<Long> values) {
+            addCriterion("headquarters_id in", values, "headquartersId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdNotIn(List<Long> values) {
+            addCriterion("headquarters_id not in", values, "headquartersId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdBetween(Long value1, Long value2) {
+            addCriterion("headquarters_id between", value1, value2, "headquartersId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadquartersIdNotBetween(Long value1, Long value2) {
+            addCriterion("headquarters_id not between", value1, value2, "headquartersId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
