@@ -111,7 +111,6 @@
               // return "<a  class='myedit' onclick='querySign("+index+")' href='javascript:void(0)' >签到记录</a>";
  } 
 	
-	
  
 </script>
 
