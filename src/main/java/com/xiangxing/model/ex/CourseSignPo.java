@@ -9,9 +9,17 @@ public class CourseSignPo extends CourseSign {
 	private Integer period=2;
 	private String courseName;
 	private String teacherName;
-
+	private String schoolTime;
 	private String showSignTime;
 	
+	public String getSchoolTime() {
+		return schoolTime;
+	}
+
+	public void setSchoolTime(String schoolTime) {
+		this.schoolTime = schoolTime;
+	}
+
 	public String getShowSignTime() {
 		return showSignTime;
 	}
