@@ -47,7 +47,7 @@
 	</div>
 	
 	<div id="querySign" style="width:50%;height:AUTO;padding:10px 20px" class="easyui-window" modal="true"  data-options="closed: true">
-		<table id="signTable" style="width:100%;height:AUTO"></table>
+		<table id="signTable" class="easyui-datagrid" style="width:100%;height:AUTO"></table>
 	
 		</div>
 
@@ -80,18 +80,19 @@
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
 		  $("#signTable").datagrid({
-    url:'/student/applyList?studentId='+row.id,
+    url:'/courseSign/courseSignList?studentId='+row.id,
     rownumbers:true,
      pagination: true ,
        fitColumns:true,
        singleSelect:true,
     columns:[[
     	{field:'id',title:'Id'},
-		{field:'name',title:'课程'},
-		{field:'showCurriculumTime',title:'开课时间'},
+		{field:'showSignTime',title:'点名时间'},
 		{field:'schoolTime',title:'上课时间'},
+		{field:'courseName',title:'班级名称'},
 		{field:'teacherName',title:'老师'},
-		{field:'_operate',title:'操作',width:'30%',formatter:updSingFormatter}
+		{field:'_operate1',title:'到课状态',formatter:singFlagFormatter},
+		{field:'_operate2',title:'操作',width:'30%',formatter:updSingFormatter}
     ]]
 });
 		}
@@ -99,16 +100,56 @@
 		
 	}
 	
+	function editCourseSign(index,signFlag){
+	
+	$('#signTable').datagrid('selectRow',index);
+		var row = $('#signTable').datagrid('getSelected');
+		if (row){
+			$.messager.confirm('修改','您确认要修改该数据吗?',function(r){
+				if (r){
+					$.post('../courseSign/editcourseSignFlag',{id:row.id,signFlag:signFlag},function(result){
+						if (result.code==10000){
+							$('#signTable').datagrid('reload');	// reload the user data
+						} else {
+							$.messager.show({	// show error message
+								title: 'Error',
+								msg: result.errorMsg
+							});
+						}
+					},'json');
+				}
+			});
+		}
+		
+	}
 
 	
 	function signFormatter(value,row,index){  
                return "<a  class='myedit' onclick='querySign("+index+")' href='javascript:void(0)' >签到记录</a>";
  } 
+ 
+ 
+ 
+ function singFlagFormatter(value,row,index){  
+			if(row.signFlag == 0 )  
+     			return "缺勤"
+ 			else if (row.signFlag == 1 )   
+ 				return "正常"
+ 			else if (row.signFlag == 2 )   
+ 				return "请假"
+ 			else if (row.signFlag == 3 )   
+ 				return "旷课"
+ } 
+ 
 	function updSingFormatter(value,row,index){  
-			if(value == 0 )  
-     return "停用"
- else if (value == 1 )   return "启用"
-              // return "<a  class='myedit' onclick='querySign("+index+")' href='javascript:void(0)' >签到记录</a>";
+			if(row.signFlag == 0 )  
+     			return "<a  class='myedit' onclick='editCourseSign("+index+",1)' href='javascript:void(0)' >签到</a> <a  class='myedit' onclick='editCourseSign("+index+",2)' href='javascript:void(0)' >请假</a> <a  class='myedit' onclick='editCourseSign("+index+",3)' href='javascript:void(0)' >旷课</a>";
+ 			else if (row.signFlag == 1 )   
+ 				return "<a  class='myedit' onclick='editCourseSign("+index+",0)' href='javascript:void(0)' >缺勤</a> <a  class='myedit' onclick='editCourseSign("+index+",2)' href='javascript:void(0)' >请假</a> <a  class='myedit' onclick='editCourseSign("+index+",3)' href='javascript:void(0)' >旷课</a>";
+ 			else if (row.signFlag == 2 )   
+ 				return "<a  class='myedit' onclick='editCourseSign("+index+",0)' href='javascript:void(0)' >缺勤</a> <a  class='myedit' onclick='editCourseSign("+index+",1)' href='javascript:void(0)' >签到</a> <a  class='myedit' onclick='editCourseSign("+index+",3)' href='javascript:void(0)' >旷课</a>";
+ 			else if (row.signFlag == 3 )   
+ 				return "<a  class='myedit' onclick='editCourseSign("+index+",0)' href='javascript:void(0)' >缺勤</a> <a  class='myedit' onclick='editCourseSign("+index+",1)' href='javascript:void(0)' >签到</a> <a  class='myedit' onclick='editCourseSign("+index+",2)' href='javascript:void(0)' >请假</a>";
  } 
 	
  
