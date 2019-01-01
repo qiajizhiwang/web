@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiangxing.mapper.ex.MessagePoMapper" >
+  
+ 
+  
+  <select id="getStudentMessageInfo" resultType="com.xiangxing.model.ex.MessagePo">
+  SELECT IF(t2.origin=1,t.`name`,s.`name`) name,text,t2.create_time createTime FROM t_message_queue t1
+JOIN t_message t2 ON t1.id=t2.queue_id 
+JOIN t_student s ON t1.student=s.id
+JOIN t_teacher t ON t1.teacher=t.id
+WHERE 
+t1.student=#{studentId}
+ORDER BY t2.create_time DESC
+  </select>
+  
+</mapper>

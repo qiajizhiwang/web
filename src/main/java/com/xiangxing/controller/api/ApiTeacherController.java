@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Base64Utils;
@@ -44,6 +43,7 @@ import com.xiangxing.mapper.ProductMapper;
 import com.xiangxing.mapper.StudentCourseMapper;
 import com.xiangxing.mapper.StudentHomeworkMapper;
 import com.xiangxing.mapper.TeacherMapper;
+import com.xiangxing.mapper.TeacherPeriodMapper;
 import com.xiangxing.mapper.ex.CourseMapperEx;
 import com.xiangxing.mapper.ex.CourseSignPoMapper;
 import com.xiangxing.mapper.ex.HomeworkPoMapper;
@@ -65,6 +65,7 @@ import com.xiangxing.model.Student;
 import com.xiangxing.model.StudentCourse;
 import com.xiangxing.model.StudentCourseExample;
 import com.xiangxing.model.StudentHomework;
+import com.xiangxing.model.TeacherPeriod;
 import com.xiangxing.model.ex.CourseEx;
 import com.xiangxing.model.ex.CourseSignPo;
 import com.xiangxing.model.ex.HomeworkPo;
@@ -103,6 +104,8 @@ public class ApiTeacherController {
 
 	@Autowired
 	private TeacherMapper teacherMapper;
+	@Autowired
+	private TeacherPeriodMapper teacherPeriodMapper;
 	@Autowired
 	private TeacherPoMapper teacherPoMapper;
 
@@ -457,7 +460,13 @@ public class ApiTeacherController {
 				e.printStackTrace();
 			}
 		}
-
+		//记录老师课时
+		TeacherPeriod teacherPeriod=new TeacherPeriod();
+		teacherPeriod.setCourseId(courseId);
+		teacherPeriod.setTeacherId(info.getId());
+		teacherPeriod.setPeriod(2);
+		teacherPeriod.setCreateTime(singDate);
+		teacherPeriodMapper.insertSelective(teacherPeriod);
 		return new ApiResponse();
 
 	}

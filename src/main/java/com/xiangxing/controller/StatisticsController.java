@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xiangxing.mapper.SchoolMapper;
+import com.xiangxing.mapper.TeacherPeriodMapper;
 import com.xiangxing.mapper.ex.FinanceMapper;
+import com.xiangxing.mapper.ex.TeacherPeriodPoMapper;
 import com.xiangxing.model.User;
+import com.xiangxing.model.ex.TeacherPeriodPo;
 import com.xiangxing.vo.FinanceVo;
 
 @Controller
@@ -31,6 +34,8 @@ public class StatisticsController {
 
 	@Autowired
 	FinanceMapper financeMapper;
+	@Autowired
+	TeacherPeriodPoMapper teacherPeriodPoMapper;
 	@Autowired
 	SchoolMapper schoolMapper;
 	
@@ -44,6 +49,19 @@ public class StatisticsController {
 	@RequestMapping("/financeReport")
 	public String financeReport(Model model) {
 		return "financeReport";
+	}
+
+	@RequestMapping("/periodData")
+	public String periodData(Model model) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		if (me.getType()==1) {
+//			教师课时
+			return "teacherPeriod";
+		}else if (me.getType()==2) {
+//			校区课时
+			return "schoolPeriod";
+		}
+		return null;
 	}
 	@RequestMapping("/financeList")
 	@ResponseBody
@@ -68,6 +86,43 @@ public class StatisticsController {
 			financeVos.add(financeVo);
 		}
 		return financeVos;
+		
+	}
+
+	@RequestMapping("/teacherPeriodData")
+	@ResponseBody
+	public List<TeacherPeriodPo> teacherPeriodData(Date startDate, Date endDate) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		List<TeacherPeriodPo> teacherPeriodPos =new ArrayList<>();
+		if(null!=startDate&&null!=endDate)
+			teacherPeriodPos = teacherPeriodPoMapper.teacherPeriodDataByDate(me.getSchoolId(),startDate,endDate);
+		else{
+			teacherPeriodPos = teacherPeriodPoMapper.teacherPeriodData(me.getSchoolId());
+		}
+		return teacherPeriodPos;
+		
+	}
+
+	@RequestMapping("/schoolPeriodData")
+	@ResponseBody
+	public List<TeacherPeriodPo> schoolPeriodData(Date startDate, Date endDate) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		List<TeacherPeriodPo> teacherPeriodPos =new ArrayList<>();
+		if(null!=startDate&&null!=endDate)
+			teacherPeriodPos = teacherPeriodPoMapper.schoolPeriodDataByDate(me.getHeadquartersId(),startDate,endDate);
+		else{
+			teacherPeriodPos = teacherPeriodPoMapper.schoolPeriodData(me.getHeadquartersId());
+		}
+		return teacherPeriodPos;
+		
+	}
+
+	@RequestMapping("/schoolTotalPeriodData")
+	@ResponseBody
+	public List<TeacherPeriodPo> schoolTotalPeriodData() {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		List<TeacherPeriodPo> teacherPeriodPos = teacherPeriodPoMapper.schoolTotalPeriodData(me.getHeadquartersId());
+		return teacherPeriodPos;
 		
 	}
 
