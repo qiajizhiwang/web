@@ -1,5 +1,6 @@
 package com.xiangxing.controller.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +40,7 @@ public class HomeController {
 			List schools = schoolMapper.selectByExample(schoolExample);
 			httpSession.setAttribute("schools", schools);
 			httpSession.setAttribute("mySchoolId", me.getSchoolId());
-			httpSession.setAttribute("headquarterss", null);
+			httpSession.setAttribute("headquarterss", new ArrayList());
 			httpSession.setAttribute("myHeadquartersId", null);
 		}
 

@@ -27,6 +27,7 @@ import com.github.pagehelper.PageHelper;
 import com.xiangxing.controller.admin.BaseController;
 import com.xiangxing.controller.admin.PageRequest;
 import com.xiangxing.controller.admin.PageResponse;
+import com.xiangxing.mapper.HeadquartersMapper;
 import com.xiangxing.mapper.SchoolImageMapper;
 import com.xiangxing.mapper.SchoolMapper;
 import com.xiangxing.model.School;
@@ -34,6 +35,7 @@ import com.xiangxing.model.SchoolExample;
 import com.xiangxing.model.SchoolImage;
 import com.xiangxing.model.SchoolImageExample;
 import com.xiangxing.model.User;
+import com.xiangxing.model.AdvertExample.Criteria;
 import com.xiangxing.utils.FileUtil;
 
 @Controller
@@ -45,6 +47,9 @@ public class SchoolController extends BaseController {
 	private SchoolMapper schoolMapper;
 	@Autowired
 	private SchoolImageMapper schoolImageMapper;
+	
+	@Autowired
+	HeadquartersMapper headquartersMapper;
 
 	@Value("${upload_file_path}")
 	private String upload_file_path;
@@ -62,6 +67,15 @@ public class SchoolController extends BaseController {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 		if (me.getType() == 1) {
 			logger.info("权限不足！");
+			writeToErrorResponse(new JSONObject());
+			return;
+		}
+		
+		int count = headquartersMapper.selectByPrimaryKey(school.getHeadquartersId()).getCount();
+		SchoolExample example = new SchoolExample();
+		example.createCriteria().andHeadquartersIdEqualTo(school.getHeadquartersId());
+		int nowCount = schoolMapper.countByExample(example);
+		if(count <= nowCount) {
 			writeToErrorResponse(new JSONObject());
 			return;
 		}
@@ -83,10 +97,16 @@ public class SchoolController extends BaseController {
 			School school = schoolMapper.selectByPrimaryKey(me.getSchoolId());
 			schools = new ArrayList<>();
 			schools.add(school);
-		} else {
+		}
+		
+		else {
+			com.xiangxing.model.SchoolExample.Criteria criteria = schoolExample.createCriteria();
+			if (me.getType() == 2) {
+				criteria.andHeadquartersIdEqualTo(me.getHeadquartersId());
+			}
 			if (StringUtils.isNotBlank(name)) {
 				name = "%" + name + "%";
-				schoolExample.createCriteria().andNameLike(name);
+				criteria.andNameLike(name);
 
 			}
 			schools = schoolMapper.selectByExample(schoolExample);

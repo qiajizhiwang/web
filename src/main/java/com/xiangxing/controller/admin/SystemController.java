@@ -45,6 +45,9 @@ public class SystemController {
 
 	@RequestMapping("/user")
 	public String user(Model model) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+
+		model.addAttribute("userType", me.getType());
 		return "user";
 	}
 
@@ -60,13 +63,16 @@ public class SystemController {
 	public PageResponse<User> userList(PageRequest pageRequest, String name, Model model) {
 		User me = (User) SecurityUtils.getSubject().getPrincipal();
 
-		Long schoolId = me.getSchoolId();
 		Page<?> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getRows(), true);
 		UserExample userExample = new UserExample();
 		Criteria criteria = userExample.createCriteria();
-		criteria.andTypeEqualTo(1);
-		if (me.getType() != 0)
-			criteria.andSchoolIdEqualTo(schoolId);
+		
+		if (me.getType() ==1)
+			criteria.andSchoolIdEqualTo(me.getSchoolId()).andTypeEqualTo(1);
+		else if (me.getType() ==2)
+			criteria.andHeadquartersIdEqualTo(me.getHeadquartersId()).andTypeEqualTo(1);
+		else 
+			criteria.andTypeNotEqualTo(0);
 		if (StringUtils.isNotBlank(name)) {
 			name = "%" + name + "%";
 			criteria.andNameLike(name);
@@ -86,8 +92,31 @@ public class SystemController {
 		if(user.getSchoolId()==null){
 			return  ApiResponse.getErrorResponse("学校必填");
 		}
+		user.setHeadquartersId(schoolMapper.selectByPrimaryKey(user.getSchoolId()).getHeadquartersId());
 		user.setType(1);
 		userMapper.insert(user);
+		for (String menu : menus.split(",")) {
+			UserMenu userMenu = new UserMenu();
+			userMenu.setUserId(user.getId());
+			userMenu.setMenuId(Long.valueOf(menu));
+			userMenuMapper.insert(userMenu);
+		}
+
+		return new ApiResponse();
+	}
+	
+	
+	@RequestMapping("/addHeadquartersUser")
+	@ResponseBody
+	public ApiResponse addHeadquartersUser(User user) {
+		user.setPassword(
+				new SimpleHash("MD5", user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());
+		if(user.getHeadquartersId()==null){
+			return  ApiResponse.getErrorResponse("学校必填");
+		}
+		user.setType(2);
+		userMapper.insert(user);
+		String menus = "2,5,22,23";
 		for (String menu : menus.split(",")) {
 			UserMenu userMenu = new UserMenu();
 			userMenu.setUserId(user.getId());
@@ -123,6 +152,8 @@ public class SystemController {
 		}else{
 			user.setPassword(null);
 		}
+		user.setHeadquartersId(schoolMapper.selectByPrimaryKey(user.getSchoolId()).getHeadquartersId());
+
 		userMapper.updateByPrimaryKeySelective(user);
 		user = userMapper.selectByPrimaryKey(user.getId());
 		if (user.getType() == 1) {
@@ -142,6 +173,28 @@ public class SystemController {
 		return new ApiResponse();
 	}
 
+	
+	@RequestMapping("/editHeadquartersUser")
+	@ResponseBody
+	public ApiResponse editHeadquartersUser(User user, String menus) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		if (me.getType() == 2) {
+			if (!user.getSchoolId().equals(me.getSchoolId())) {
+				return ApiResponse.getDenyErrorResponse();
+			}
+		}
+		if (StringUtils.isNotBlank(user.getPassword())) {
+			user.setPassword(
+					new SimpleHash("MD5", user.getPassword(), user.getName() + "xiaochendaiwolaiqiaji", 1).toString());
+		}else{
+			user.setPassword(null);
+		}
+
+		userMapper.updateByPrimaryKeySelective(user);
+		
+
+		return new ApiResponse();
+	}
 	@RequestMapping("/menu")
 	public String menu() {
 
