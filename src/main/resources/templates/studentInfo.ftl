@@ -38,7 +38,7 @@
 				<th field="name"  width="10%">姓名</th>
 				<th field="phone" width="15%" editor="text">联系方式</th>
 				<th data-options="field:'_operate1',width:'10%',formatter:signFormatter">签到记录</th>
-				<!-- <th data-options="field:'_operate2',width:'10%',formatter:productFormatter">沟通记录</th> -->
+				<th data-options="field:'_operate2',width:'10%',formatter:messageFormatter">沟通记录</th>
 			</tr>
 		</thead>
 	</table>
@@ -48,6 +48,11 @@
 	
 	<div id="querySign" style="width:50%;height:AUTO;padding:10px 20px" class="easyui-window" modal="true"  data-options="closed: true">
 		<table id="signTable" class="easyui-datagrid" style="width:100%;height:AUTO"></table>
+	
+		</div>
+
+	<div id="queryMessage" style="width:50%;height:AUTO;padding:10px 20px" class="easyui-window" modal="true"  data-options="closed: true">
+		<table id="messageTable" class="easyui-datagrid" style="width:100%;height:AUTO"></table>
 	
 		</div>
 
@@ -100,6 +105,29 @@
 		
 	}
 	
+
+	function queryMessage(index){
+	
+	$('#dg').datagrid('selectRow',index);
+		var row = $('#dg').datagrid('getSelected');
+		if (row){
+		  $("#messageTable").datagrid({
+    url:'/message/getStudentMessageInfo?studentId='+row.id,
+    rownumbers:true,
+     pagination: true ,
+       fitColumns:true,
+       singleSelect:true,
+    columns:[[
+		{field:'name',title:'发件人'},
+		{field:'showCreateTime',title:'沟通时间'},
+		{field:'text',title:'沟通内容'}
+    ]]
+});
+		}
+		$('#queryMessage').dialog('open').dialog('setTitle','沟通记录');
+		
+	}
+	
 	function editCourseSign(index,signFlag){
 	
 	$('#signTable').datagrid('selectRow',index);
@@ -126,6 +154,9 @@
 	
 	function signFormatter(value,row,index){  
                return "<a  class='myedit' onclick='querySign("+index+")' href='javascript:void(0)' >签到记录</a>";
+ } 
+	function messageFormatter(value,row,index){  
+               return "<a  class='myedit' onclick='queryMessage("+index+")' href='javascript:void(0)' >沟通记录</a>";
  } 
  
  
