@@ -76,7 +76,9 @@ public class SchoolController extends BaseController {
 		example.createCriteria().andHeadquartersIdEqualTo(school.getHeadquartersId());
 		int nowCount = schoolMapper.countByExample(example);
 		if(count <= nowCount) {
-			writeToErrorResponse(new JSONObject());
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("errorMsg", "校区数量超限，请联系管理员");
+			writeToErrorResponse(jsonObject);
 			return;
 		}
 		school.setCreateTime(new Date());

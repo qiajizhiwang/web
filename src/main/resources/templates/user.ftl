@@ -122,9 +122,7 @@
 	    	</table>
 	    
 	    </form>
-	      <div >
-	      	<ul id="tt1"></ul>
-	      </div>
+	     
 	     <div style="text-align:center;padding:5px">
 	     		
 	     
@@ -204,13 +202,11 @@
 	    	</table>
 	    
 	    </form>
-	      <div >
-	      	<ul id="tt2"></ul>
-	      </div>
+	  
 	     <div style="text-align:center;padding:5px">
 	     		
 	     
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm1()">保存</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submiteditUserForm()">保存</a>
 	    </div>
 </div>
 
@@ -249,6 +245,12 @@
 		}
     
     }
+});
+
+$('#tt1').tree({
+    url:'/system/defaultMenu',
+    onlyLeafCheck:true,
+    checkbox:true
 });
 
 
@@ -295,7 +297,7 @@ $('#ff2').form({
     success:function(data){
         var data = eval('(' + data + ')');
 		if(data.status==1){
-		  $('#edit').window('close')
+		  $('#editUser').window('close')
 		  $('#tt').datagrid('reload')
 		}
 		else{
@@ -319,6 +321,11 @@ function submitaddUserForm(){
 function submitForm1(){
   $('#ff1').submit();
 }
+
+function submiteditUserForm(){
+  $('#ff2').submit();
+}
+
 
  function doSearch(){
 	$('#tt').datagrid('load',{

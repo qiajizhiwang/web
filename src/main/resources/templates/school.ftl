@@ -56,7 +56,7 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newSchool()">新增</a>
 	</div>
 	
-	<div id="dlg" class="easyui-dialog" style="width:400px;height:300px;padding:10px 20px"
+	<div id="dlg" modal="true" class="easyui-dialog" style="width:400px;height:300px;padding:10px 20px"
 		closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post">
 			<table cellpadding="5">
@@ -76,6 +76,7 @@
 				<td><label>校区名称</label>
 				<td><input name="name" class="easyui-textbox" required="true"></td>
 			</tr>
+			
 			<tr>
 				<td><label>地址</label></td>
 				<td><input name="adress" class="easyui-textbox"></td>
