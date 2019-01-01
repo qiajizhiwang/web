@@ -129,11 +129,34 @@ public class EntryFormController extends BaseController {
 		}
 
 		List<Map> dataMaps = JSON.parseArray(JSON.toJSONString(entryFormPos), Map.class);
+		
+		List<String> stateData=new ArrayList<>();
+		List<String> nationData=new ArrayList<>();
+		List<String> majorData=new ArrayList<>();
+		List<String> rankData=new ArrayList<>();
 
+		for (Map map : dataMaps) {
+			Object rank = map.get("rank");
+			if (null!=rank&&!rankData.contains(rank)) {
+				rankData.add(String.valueOf(rank));
+			}
+			Object major = map.get("major");
+			if (null!=major&&!majorData.contains(major)) {
+				majorData.add(String.valueOf(major));
+			}
+			Object nation = map.get("nation");
+			if (null!=nation&&!nationData.contains(nation)) {
+				nationData.add(String.valueOf(nation));
+			}
+			Object state = map.get("state");
+			if (null!=state&&!stateData.contains(state)) {
+				stateData.add(String.valueOf(state));
+			}
+		}
 		String[] valueKeys = { "studentName", "pinyin", "gender", "birthday", "nation", "state", "major", "rank" };
 		String[] columnNames = { "考生姓名", "拼音", "性别", "出生日期", "民族", "国家", "专业", "级别" };
 		try {
-			ExcleUtil.doExcle(response, dataMaps, "学生检测报表", columnNames, valueKeys);
+			ExcleUtil.doExcle(response, dataMaps, "学生报名报表", columnNames, valueKeys,stateData,nationData,majorData,rankData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
