@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xiangxing.mapper.HeadquartersMapper;
 import com.xiangxing.mapper.SchoolMapper;
-import com.xiangxing.mapper.TeacherPeriodMapper;
 import com.xiangxing.mapper.ex.FinanceMapper;
 import com.xiangxing.mapper.ex.TeacherPeriodPoMapper;
+import com.xiangxing.model.School;
+import com.xiangxing.model.SchoolExample;
 import com.xiangxing.model.User;
 import com.xiangxing.model.ex.TeacherPeriodPo;
 import com.xiangxing.vo.FinanceVo;
@@ -38,6 +40,9 @@ public class StatisticsController {
 	TeacherPeriodPoMapper teacherPeriodPoMapper;
 	@Autowired
 	SchoolMapper schoolMapper;
+	
+	@Autowired
+	HeadquartersMapper headquartersMapper;
 	
 	@InitBinder  
 	public void initBinder(WebDataBinder binder) {  
@@ -83,6 +88,52 @@ public class StatisticsController {
 			financeVo.setUsedFinance(usedF);
 			financeVo.setRemainFinance(newF+reF+exdF-usedF);
 			financeVo.setSchoolName(schoolMapper.selectByPrimaryKey(schoolId).getName());
+			financeVos.add(financeVo);
+		}
+		if (me.getType() == 2) {
+			SchoolExample schoolExample = new SchoolExample();
+			schoolExample.createCriteria().andHeadquartersIdEqualTo(me.getHeadquartersId());
+			List<School> schools = schoolMapper.selectByExample(schoolExample); 
+			for(School school :schools){
+				FinanceVo financeVo =new FinanceVo();
+			Long schoolId = school.getId();
+			long newF= financeMapper.sumAllPeriodBySchool(startDate,endDate , schoolId, 1);
+			long reF= financeMapper.sumAllPeriodBySchool(startDate,endDate , schoolId, 2);
+			long exdF= financeMapper.sumAllPeriodBySchool(startDate,endDate , schoolId, 3);
+			long usedF= financeMapper.sumUsedPeriodBySchool(startDate,endDate , schoolId, null);
+			financeVo.setAllFinance(newF+reF+exdF);
+			financeVo.setNewFinance(newF+exdF);
+			financeVo.setReFinance(reF);
+			financeVo.setUsedFinance(usedF);
+			financeVo.setRemainFinance(newF+reF+exdF-usedF);
+			financeVo.setSchoolName(schoolMapper.selectByPrimaryKey(schoolId).getName());
+			financeVos.add(financeVo);
+			}
+		}
+		return financeVos;
+		
+	}
+	
+	@RequestMapping("/financeAllList")
+	@ResponseBody
+	public List<FinanceVo> financeAllList(Date startDate, Date endDate) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+		List<FinanceVo> financeVos = new ArrayList<FinanceVo>();
+		if(null!=endDate)
+			endDate = DateUtils.addDays(endDate, 1);
+		if (me.getType() == 2) {
+			FinanceVo financeVo =new FinanceVo();
+			Long headquartersId = me.getHeadquartersId();
+			long newF= financeMapper.sumAllPeriodByHeadquarters(startDate,endDate , headquartersId, 1);
+			long reF= financeMapper.sumAllPeriodByHeadquarters(startDate,endDate , headquartersId, 2);
+			long exdF= financeMapper.sumAllPeriodByHeadquarters(startDate,endDate , headquartersId, 3);
+			long usedF= financeMapper.sumUsedPeriodByHeadquarters(startDate,endDate , headquartersId, null);
+			financeVo.setAllFinance(newF+reF+exdF);
+			financeVo.setNewFinance(newF+exdF);
+			financeVo.setReFinance(reF);
+			financeVo.setUsedFinance(usedF);
+			financeVo.setRemainFinance(newF+reF+exdF-usedF);
+			financeVo.setSchoolName(headquartersMapper.selectByPrimaryKey(headquartersId).getName());
 			financeVos.add(financeVo);
 		}
 		return financeVos;

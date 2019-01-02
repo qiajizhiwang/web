@@ -30,11 +30,13 @@ import com.xiangxing.controller.admin.PageResponse;
 import com.xiangxing.mapper.HeadquartersMapper;
 import com.xiangxing.mapper.SchoolImageMapper;
 import com.xiangxing.mapper.SchoolMapper;
+import com.xiangxing.mapper.UserMapper;
 import com.xiangxing.model.School;
 import com.xiangxing.model.SchoolExample;
 import com.xiangxing.model.SchoolImage;
 import com.xiangxing.model.SchoolImageExample;
 import com.xiangxing.model.User;
+import com.xiangxing.model.UserExample;
 import com.xiangxing.model.AdvertExample.Criteria;
 import com.xiangxing.utils.FileUtil;
 
@@ -50,6 +52,9 @@ public class SchoolController extends BaseController {
 	
 	@Autowired
 	HeadquartersMapper headquartersMapper;
+	
+	@Autowired
+	UserMapper userMapper;
 
 	@Value("${upload_file_path}")
 	private String upload_file_path;
@@ -120,7 +125,24 @@ public class SchoolController extends BaseController {
 
 	@RequestMapping("/editSchool")
 	public void editSchool(School school, Long id) {
+		int count = headquartersMapper.selectByPrimaryKey(school.getHeadquartersId()).getCount();
+		SchoolExample example = new SchoolExample();
+		example.createCriteria().andHeadquartersIdEqualTo(school.getHeadquartersId()).andIdNotEqualTo(id);
+		int nowCount = schoolMapper.countByExample(example);
+		if(count <= nowCount) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("errorMsg", "校区数量超限，请联系管理员");
+			writeToErrorResponse(jsonObject);
+			return;
+		}
 		schoolService.editSchool(school, id);
+		UserExample userExample = new UserExample();
+		userExample.createCriteria().andSchoolIdEqualTo(id);
+		List<User> users = userMapper.selectByExample(userExample);
+		for(User user:users){
+			user.setHeadquartersId(school.getHeadquartersId());
+			userMapper.updateByPrimaryKeySelective(user);
+		}
 		writeToOkResponse();
 	}
 

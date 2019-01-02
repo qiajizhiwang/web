@@ -13,5 +13,11 @@ public interface FinanceMapper {
 	
 	Long sumUsedPeriodBySchool(@Param("startDate") Date startDate, @Param("endDate") Date endDate,
 			@Param("schoolId") Long schoolId, @Param("type") Integer type);
+	
+	Long sumAllPeriodByHeadquarters(@Param("startDate") Date startDate, @Param("endDate") Date endDate,
+			@Param("headquartersId") Long headquartersId, @Param("type") Integer type);
+	
+	Long sumUsedPeriodByHeadquarters(@Param("startDate") Date startDate, @Param("endDate") Date endDate,
+			@Param("headquartersId") Long headquartersId, @Param("type") Integer type);
 
 }

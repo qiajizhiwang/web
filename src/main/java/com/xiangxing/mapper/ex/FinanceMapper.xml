@@ -35,5 +35,39 @@ AND t3.school_id=#{schoolId}
 AND t1.type=#{type}
     </if>
   </select>
+  
+    <select id="sumAllPeriodByHeadquarters" resultType="java.lang.Long">
+select COALESCE(sum(t2.period * t2.price),0) from t_student_course t1,t_course t2,t_teacher t3,t_school t4 where t1.course_id = t2.id and t2.teacher_id = t3.id 
+and t4.id = t3.school_id
+    <if test="startDate != null" >
+and t1.create_time &gt; #{startDate}
+    </if>
+     <if test="endDate != null" >
+and t1.create_time &lt; #{endDate}
+    </if>
+    <if test="headquartersId != null" >
+AND t4.headquarters_id=#{headquartersId}
+    </if>
+    <if test="type != null " >
+AND t1.type=#{type}
+    </if>
+  </select>
+  
+    <select id="sumUsedPeriodByHeadquarters" resultType="java.lang.Long">
+select COALESCE(sum(t1.period * t2.price),0) from t_student_course t1,t_course t2,t_teacher t3,t_school t4 where t1.course_id = t2.id and t2.teacher_id = t3.id 
+and t4.id = t3.school_id
+    <if test="startDate != null" >
+and t1.create_time &gt; #{startDate}
+    </if>
+     <if test="endDate != null" >
+and t1.create_time &lt; #{endDate}
+    </if>
+    <if test="headquartersId != null" >
+AND t4.headquarters_id=#{headquartersId}
+    </if>
+    <if test="type != null " >
+AND t1.type=#{type}
+    </if>
+  </select>
  
 </mapper>
