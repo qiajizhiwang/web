@@ -53,6 +53,9 @@ public class StatisticsController {
 	
 	@RequestMapping("/financeReport")
 	public String financeReport(Model model) {
+		User me = (User) SecurityUtils.getSubject().getPrincipal();
+
+		model.addAttribute("userType", me.getType());
 		return "financeReport";
 	}
 

@@ -30,7 +30,7 @@ selects/>
 		</h1>
 	</div>
 	
-	
+		<#if userType == 2>
 		<table id="dg1" class="easyui-datagrid" title="学校业绩"
 		style="width: 100%; height: auto" toolbar="#toolbar1" rownumbers="true"
 		pagination="true" fitColumns="true"
@@ -57,7 +57,7 @@ selects/>
 			onclick="doSearch1()">查询</a>
 	</form>		
 	</div>
-
+</#if>
 
 	<table id="dg" class="easyui-datagrid" title="校区业绩"
 		style="width: 100%; height: auto" toolbar="#toolbar" rownumbers="true"
