@@ -99,12 +99,14 @@
     });   
     
     function addTab(title, url){
-	if ($('.easyui-tabs').tabs('exists', title)){
-		  $(".easyui-tabs").tabs("select", title); 
+    	if ($('.easyui-tabs').tabs('exists',0)){
+	//if ($('.easyui-tabs').tabs('exists', title)){
+		  $(".easyui-tabs").tabs("select", 0); 
 	      var selTab = $('.easyui-tabs').tabs('getSelected'); 
 	      $('.easyui-tabs').tabs('update', { 
 	        tab: selTab, 
 	        options: { 
+	        title:title,
 	          content:'<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>'
 	        } 
 	      }) 
