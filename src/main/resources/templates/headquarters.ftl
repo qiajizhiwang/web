@@ -136,6 +136,9 @@
 				} else {
 					$('#dlg').dialog('close');		// close the dialog
 					$('#dg').datagrid('reload');	// reload the user data
+					$.get("/", function(result){
+					    
+					  });
 				}
 			}
 		});
